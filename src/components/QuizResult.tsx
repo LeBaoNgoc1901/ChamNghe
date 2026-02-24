@@ -246,31 +246,36 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
           </div>
 
           {/* Footer Actions */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-primary/10">
+          <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-primary/10">
             <button 
               onClick={() => window.print()}
-              className="flex-1 px-8 py-4 bg-text-dark text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-colors"
+              className="flex-1 px-5 py-2.5 bg-text-dark text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-black transition-colors"
             >
-              <Download size={18} />
-              Lưu kết quả về máy
+              <Download size={16} />
+              Lưu kết quả
             </button>
-            <div className="flex gap-4 flex-1">
-              <button 
-                onClick={onExploreCareers}
-                className={`flex-1 px-6 py-4 ${data.colorClass} ${data.accentClass} rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-80 transition-all`}
-              >
-                Khám phá ngành nghề
-                <ArrowRight size={18} />
-              </button>
-              <button className="px-6 py-4 bg-white border-2 border-primary/10 text-text-dark rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-background transition-colors">
-                <Share2 size={18} />
-              </button>
-              <button 
-                onClick={onRestart}
-                className="px-6 py-4 bg-background text-primary rounded-2xl font-bold hover:bg-primary/5 transition-colors"
-              >
-                Làm lại
-              </button>
+
+          <div className="flex gap-3 flex-1">
+            <button 
+              onClick={onExploreCareers}
+              className={`flex-1 px-4 py-2.5 ${data.colorClass} ${data.accentClass} rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-80 transition-all`}
+            >
+              Khám phá
+              <ArrowRight size={16} />
+            </button>
+
+            <button 
+              className="px-4 py-2.5 bg-white border border-primary/10 text-text-dark rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-background transition-colors"
+            >
+              <Share2 size={16} />
+            </button>
+
+            <button 
+              onClick={onRestart}
+              className="px-4 py-2.5 bg-background text-primary rounded-xl text-sm font-semibold hover:bg-primary/5 transition-colors"
+            >
+              Làm lại
+            </button>
             </div>
           </div>
         </div>

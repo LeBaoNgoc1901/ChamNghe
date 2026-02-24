@@ -30,7 +30,7 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
       }, 200);
     } else {
       setIsFinished(true);
-      
+
       // Calculate result before calling onComplete
       const categories = {
         EI: { A: 0, B: 0 },
@@ -51,7 +51,7 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
       result += categories.SN.A > 5 ? "S" : "N";
       result += categories.TF.A > 5 ? "T" : "F";
       result += categories.JP.A > 5 ? "J" : "P";
-      
+
       onComplete(result);
     }
   };
@@ -110,7 +110,7 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
           <span className="text-sm font-medium text-text-muted">{Math.round(progress)}%</span>
         </div>
         <div className="h-3 w-full bg-surface rounded-full overflow-hidden border border-primary/5">
-          <motion.div 
+          <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             className="h-full bg-accent"
@@ -131,9 +131,15 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="bg-surface rounded-[2.5rem] p-8 md:p-12 shadow-xl border border-primary/10"
           >
-            <h2 className="text-2xl md:text-3xl font-serif text-text-dark mb-10 leading-snug">
+            <h2 className="text-2xl md:text-3xl font-serif text-text-dark mb-4 leading-snug">
               {currentQuestion.text}
             </h2>
+
+            {currentQuestion.source && (
+              <p className="text-xs font-medium text-primary/60 italic mb-10">
+                {currentQuestion.source}
+              </p>
+            )}
 
             <div className="space-y-4">
               {currentQuestion.options.map((option) => (
@@ -142,20 +148,18 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
                   whileHover={{ scale: 1.02, backgroundColor: "rgba(141, 182, 160, 0.1)" }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleAnswer(option.value)}
-                  className={`w-full text-left p-6 rounded-2xl border-2 transition-all flex items-center justify-between group ${
-                    answers[currentIndex] === option.value 
-                      ? "border-primary bg-primary/5" 
+                  className={`w-full text-left p-6 rounded-2xl border-2 transition-all flex items-center justify-between group ${answers[currentIndex] === option.value
+                      ? "border-primary bg-primary/5"
                       : "border-primary/10 bg-background hover:border-primary/30"
-                  }`}
+                    }`}
                 >
                   <span className="text-lg text-text-dark group-hover:text-primary transition-colors">
                     {option.label}
                   </span>
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    answers[currentIndex] === option.value 
-                      ? "border-primary bg-primary" 
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${answers[currentIndex] === option.value
+                      ? "border-primary bg-primary"
                       : "border-primary/20"
-                  }`}>
+                    }`}>
                     {answers[currentIndex] === option.value && <div className="w-2 h-2 bg-white rounded-full" />}
                   </div>
                 </motion.button>
@@ -167,24 +171,22 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
 
       {/* Navigation */}
       <div className="mt-8 flex justify-between items-center">
-        <button 
+        <button
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className={`flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-opacity ${
-            currentIndex === 0 ? "opacity-0 pointer-events-none" : "text-text-muted hover:text-primary"
-          }`}
+          className={`flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-opacity ${currentIndex === 0 ? "opacity-0 pointer-events-none" : "text-text-muted hover:text-primary"
+            }`}
         >
           <ChevronLeft size={18} />
           Quay lại
         </button>
-        
+
         <div className="flex gap-2">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div 
-              key={i} 
-              className={`w-2 h-2 rounded-full transition-colors ${
-                Math.floor(currentIndex / 10) === i ? "bg-primary" : "bg-primary/20"
-              }`} 
+            <div
+              key={i}
+              className={`w-2 h-2 rounded-full transition-colors ${Math.floor(currentIndex / 10) === i ? "bg-primary" : "bg-primary/20"
+                }`}
             />
           ))}
         </div>

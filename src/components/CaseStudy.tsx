@@ -58,8 +58,8 @@ export default function CaseStudy() {
           <section>
             <div className="flex justify-between items-end mb-8">
               <div>
-                <h2 className="text-4xl font-serif text-text-dark mb-2">Giải Case Thực Tế</h2>
-                <p className="text-text-muted">Thử thách bản thân với những bài toán thực tế từ doanh nghiệp.</p>
+                <h2 className="text-6xl font-serif font-black text-[#8DB6A0] mb-4">Giải Case Thực Tế</h2>
+                <p className="text-text-muted text-xl font-sans">Thử thách bản thân với những bài toán thực tế từ doanh nghiệp.</p>
               </div>
               <button className="text-primary font-bold text-sm hover:underline flex items-center gap-1">
                 Xem tất cả <ArrowRight size={16} />

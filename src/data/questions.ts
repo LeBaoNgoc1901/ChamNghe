@@ -9,6 +9,7 @@ export interface Question {
   options: Option[];
   category: 'EI' | 'SN' | 'TF' | 'JP';
   categoryName: string;
+  source?: string;
 }
 
 export const MBTI_QUESTIONS: Question[] = [
@@ -17,6 +18,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 1,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Sau một tuần làm việc căng thẳng, bạn thường chọn cách nào để "sạc" lại năng lượng?',
     options: [
       { label: 'Đi chơi cùng bạn bè, tham gia các buổi tiệc sôi động.', value: 'A' },
@@ -27,6 +29,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 2,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Trong một buổi tiệc, bạn thường là người:',
     options: [
       { label: 'Chủ động bắt chuyện với nhiều người, kể cả người lạ.', value: 'A' },
@@ -37,6 +40,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 3,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi đối mặt với một vấn đề khó khăn, bạn thích:',
     options: [
       { label: 'Thảo luận ngay lập tức với người khác để tìm giải pháp.', value: 'A' },
@@ -47,6 +51,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 4,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn cảm thấy thoải mái nhất khi:',
     options: [
       { label: 'Được làm việc trong một môi trường mở, náo nhiệt.', value: 'A' },
@@ -57,6 +62,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 5,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Cách bạn kết bạn thường là:',
     options: [
       { label: 'Có rất nhiều bạn bè xã giao và dễ dàng làm quen người mới.', value: 'A' },
@@ -67,6 +73,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 6,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Sau khi tham gia một sự kiện đông người, bạn cảm thấy:',
     options: [
       { label: 'Hào hứng và tràn đầy năng lượng hơn.', value: 'A' },
@@ -77,6 +84,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 7,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi bắt đầu một công việc mới, bạn thường:',
     options: [
       { label: 'Hành động ngay và học hỏi thông qua trải nghiệm thực tế.', value: 'A' },
@@ -87,6 +95,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 8,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn thích kiểu giao tiếp nào hơn?',
     options: [
       { label: 'Nói chuyện trực tiếp hoặc gọi điện thoại.', value: 'A' },
@@ -97,6 +106,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 9,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Mọi người thường nhận xét bạn là người:',
     options: [
       { label: 'Cởi mở, dễ gần và tràn đầy sức sống.', value: 'A' },
@@ -107,6 +117,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 10,
     category: 'EI',
     categoryName: 'Trạm sạc',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Trong các cuộc thảo luận nhóm, bạn thường:',
     options: [
       { label: 'Phát biểu ý kiến ngay khi suy nghĩ vừa lóe lên.', value: 'A' },
@@ -119,6 +130,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 11,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi tiếp nhận thông tin mới, bạn quan tâm đến điều gì hơn?',
     options: [
       { label: 'Những chi tiết cụ thể, số liệu và thực tế hiện tại.', value: 'A' },
@@ -129,6 +141,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 12,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn tin tưởng vào điều gì hơn?',
     options: [
       { label: 'Kinh nghiệm thực tế và những gì mắt thấy tai nghe.', value: 'A' },
@@ -139,6 +152,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 13,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi giải quyết một vấn đề, bạn thích sử dụng:',
     options: [
       { label: 'Những phương pháp đã được chứng minh là hiệu quả.', value: 'A' },
@@ -149,6 +163,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 14,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Mọi người thường nói bạn là người:',
     options: [
       { label: 'Thực tế và có đầu óc thực tiễn.', value: 'A' },
@@ -159,6 +174,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 15,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi đọc một cuốn sách, bạn chú ý đến:',
     options: [
       { label: 'Cốt truyện rõ ràng và các chi tiết miêu tả cụ thể.', value: 'A' },
@@ -169,6 +185,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 16,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn thích làm việc với:',
     options: [
       { label: 'Sự thật và những con số chính xác.', value: 'A' },
@@ -179,6 +196,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 17,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi mô tả một sự kiện, bạn thường:',
     options: [
       { label: 'Kể lại chính xác những gì đã xảy ra theo trình tự.', value: 'A' },
@@ -189,6 +207,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 18,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn cảm thấy khó chịu hơn với:',
     options: [
       { label: 'Những ý tưởng viển vông, thiếu thực tế.', value: 'A' },
@@ -199,6 +218,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 19,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Trong học tập, bạn thích:',
     options: [
       { label: 'Học những kỹ năng có thể áp dụng ngay vào cuộc sống.', value: 'A' },
@@ -209,6 +229,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 20,
     category: 'SN',
     categoryName: 'Ống kính',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn thường sống cho:',
     options: [
       { label: 'Hiện tại, tận hưởng những gì đang có.', value: 'A' },
@@ -221,6 +242,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 21,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi đưa ra một quyết định quan trọng, bạn dựa vào điều gì nhiều hơn?',
     options: [
       { label: 'Sự logic, khách quan và các tiêu chuẩn công bằng.', value: 'A' },
@@ -231,6 +253,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 22,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Trong một cuộc tranh luận, bạn ưu tiên:',
     options: [
       { label: 'Tìm ra sự thật, dù nó có thể gây mất lòng.', value: 'A' },
@@ -241,6 +264,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 23,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn thường được nhận xét là người:',
     options: [
       { label: 'Cứng rắn, lý trí và thẳng thắn.', value: 'A' },
@@ -251,6 +275,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 24,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi giúp đỡ người khác, bạn thường:',
     options: [
       { label: 'Đưa ra những lời khuyên thực tế để giải quyết vấn đề.', value: 'A' },
@@ -261,6 +286,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 25,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn coi trọng điều gì hơn ở một nhà lãnh đạo?',
     options: [
       { label: 'Sự công minh và khả năng phân tích sắc bén.', value: 'A' },
@@ -271,6 +297,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 26,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Cách bạn phê bình người khác thường là:',
     options: [
       { label: 'Trực tiếp chỉ ra lỗi sai để họ sửa đổi.', value: 'A' },
@@ -281,6 +308,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 27,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn cảm thấy tồi tệ hơn khi bị coi là:',
     options: [
       { label: 'Người thiếu năng lực hoặc vô lý.', value: 'A' },
@@ -291,6 +319,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 28,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi xem một bộ phim buồn, bạn thường:',
     options: [
       { label: 'Phân tích tính logic của kịch bản.', value: 'A' },
@@ -301,6 +330,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 29,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Trong công việc, bạn thích được đánh giá dựa trên:',
     options: [
       { label: 'Kết quả công việc và hiệu suất đạt được.', value: 'A' },
@@ -311,6 +341,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 30,
     category: 'TF',
     categoryName: 'Bộ não',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn tin rằng thế giới sẽ tốt đẹp hơn nếu mọi người:',
     options: [
       { label: 'Hành động theo lý trí và các quy luật khách quan.', value: 'A' },
@@ -323,6 +354,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 31,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Cách bạn sắp xếp công việc hàng ngày thường là:',
     options: [
       { label: 'Lập danh sách việc cần làm và tuân thủ nghiêm ngặt.', value: 'A' },
@@ -333,6 +365,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 32,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi chuẩn bị cho một chuyến đi, bạn thường:',
     options: [
       { label: 'Lên lịch trình chi tiết từ trước đó rất lâu.', value: 'A' },
@@ -343,6 +376,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 33,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn cảm thấy thoải mái hơn khi:',
     options: [
       { label: 'Mọi thứ đã được quyết định và chốt phương án.', value: 'A' },
@@ -353,6 +387,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 34,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Đối với thời hạn (deadline), bạn thường:',
     options: [
       { label: 'Hoàn thành công việc sớm để tránh áp lực phút chót.', value: 'A' },
@@ -363,6 +398,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 35,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Không gian làm việc của bạn thường:',
     options: [
       { label: 'Gọn gàng, ngăn nắp và có trật tự.', value: 'A' },
@@ -373,6 +409,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 36,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn thích kiểu cuộc sống nào hơn?',
     options: [
       { label: 'Ổn định, có kế hoạch và rõ ràng.', value: 'A' },
@@ -383,6 +420,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 37,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi bắt đầu một dự án, bạn ưu tiên:',
     options: [
       { label: 'Xác định mục tiêu cuối cùng và các bước thực hiện.', value: 'A' },
@@ -393,6 +431,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 38,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Mọi người thường nhận xét bạn là người:',
     options: [
       { label: 'Có kỷ luật và đáng tin cậy.', value: 'A' },
@@ -403,6 +442,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 39,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Bạn cảm thấy khó chịu hơn khi:',
     options: [
       { label: 'Kế hoạch bị thay đổi đột ngột.', value: 'A' },
@@ -413,6 +453,7 @@ export const MBTI_QUESTIONS: Question[] = [
     id: 40,
     category: 'JP',
     categoryName: 'Phong cách',
+    source: 'Nguồn: Myers-Briggs Type Indicator (MBTI)',
     text: 'Khi mua sắm một món đồ lớn, bạn thường:',
     options: [
       { label: 'Tìm hiểu kỹ, so sánh giá và quyết định nhanh chóng.', value: 'A' },
