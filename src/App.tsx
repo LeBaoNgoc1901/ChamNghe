@@ -11,6 +11,7 @@ import MBTIQuiz from "./components/MBTIQuiz";
 import CareerExploration, { Footer } from "./components/CareerExploration";
 import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
+import Certificates from "./components/Certificates";
 
 type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile';
 
@@ -396,12 +397,9 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="py-12 text-center"
+              className="py-12"
             >
-              <h2 className="text-4xl font-bold mb-4">Certificates</h2>
-              <p className="text-text-muted">
-                Chứng chỉ và thành tích của bạn sẽ hiển thị tại đây.
-              </p>
+              <Certificates />
             </motion.section>
           )}
 
