@@ -51,7 +51,7 @@ export default function App() {
     { id: 'quiz', label: 'Trắc nghiệm MBTI' },
     { id: 'careers', label: 'Khám phá ngành nghề' },
     { id: 'cases', label: 'Thi đấu giải Case & BXH' },
-    { id: 'certificates', label: 'Certificates' },
+    { id: 'certificates', label: 'Dấu ấn bản sắc' },
   ];
 
   const navigate = (target: View) => {
