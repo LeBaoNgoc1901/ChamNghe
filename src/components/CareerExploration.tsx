@@ -177,10 +177,10 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
     <section className="py-12 max-w-7xl mx-auto px-6">
       <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-8">
         <div className="max-w-2xl">
-          <h2 className="text-4xl md:text-5xl font-serif text-text-dark mb-4">
+          <h2 className="text-6xl font-serif font-black text-[#8DB6A0] mb-4">
             {hasTested ? `Gợi ý cho nhóm ${mbtiResult}` : "Khám phá ngành nghề"}
           </h2>
-          <p className="text-text-muted text-lg">
+          <p className="text-text-muted text-xl font-sans">
             {hasTested 
               ? `Dựa trên bản sắc ${groupKey}, đây là những bến đỗ hứa hẹn dành cho bạn.` 
               : "Tìm kiếm bến đỗ phù hợp với bản sắc riêng của bạn."}
