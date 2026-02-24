@@ -195,31 +195,6 @@ export default function App() {
                         referrerPolicy="no-referrer"
                       />
                     </div>
-                    
-                    {/* Floating Elements */}
-                    <motion.div 
-                      animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute -top-8 -right-8 z-20 bg-surface p-4 rounded-2xl shadow-xl border border-primary/10"
-                    >
-                      <span className="text-3xl">💡</span>
-                    </motion.div>
-
-                    <motion.div 
-                      animate={{ y: [0, 15, 0], rotate: [0, -10, 0] }}
-                      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                      className="absolute top-1/2 -left-10 z-20 bg-surface p-4 rounded-2xl shadow-xl border border-primary/10"
-                    >
-                      <span className="text-3xl">🚀</span>
-                    </motion.div>
-
-                    <motion.div 
-                      animate={{ x: [0, 10, 0], y: [0, -10, 0] }}
-                      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                      className="absolute -bottom-6 right-10 z-20 bg-surface p-4 rounded-2xl shadow-xl border border-primary/10"
-                    >
-                      <span className="text-3xl">🎨</span>
-                    </motion.div>
                   </motion.div>
 
                   {/* Left Column (Content) */}
