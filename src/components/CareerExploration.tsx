@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  ChevronRight, 
-  Search, 
-  Cpu, 
-  Megaphone, 
+import {
+  ChevronRight,
+  Search,
+  Cpu,
+  Megaphone,
   TrendingUp,
   Mail,
   ArrowRight,
@@ -16,7 +16,10 @@ import {
   Palette,
   Compass,
   CheckCircle2,
-  Briefcase
+  Briefcase,
+  Facebook,
+  Instagram,
+  Linkedin
 } from "lucide-react";
 
 interface Career {
@@ -33,25 +36,25 @@ interface Career {
 
 const CAREER_GROUPS: Record<string, Career[]> = {
   'NF': [
-    { 
+    {
       id: 1, title: 'Tâm lý học', income: '15 - 35tr', skills: ['#Empathy', '#Active_Listening', '#Ethics'], category: 'Xã hội',
       whyYou: 'Vì bạn có trái tim ấm áp và khả năng thấu cảm sâu sắc với nỗi đau của người khác.',
       dailyTasks: ['Lắng nghe thân chủ', 'Phân tích hành vi', 'Xây dựng lộ trình chữa lành'],
       icon: Heart, color: 'text-accent bg-accent/10'
     },
-    { 
+    {
       id: 2, title: 'Biên kịch', income: '12 - 40tr', skills: ['#Storytelling', '#Creativity', '#Persistence'], category: 'Nghệ thuật',
       whyYou: 'Vì bạn có trí tưởng tượng phong phú và khao khát kể những câu chuyện chạm đến cảm xúc.',
       dailyTasks: ['Xây dựng kịch bản', 'Phát triển nhân vật', 'Thảo luận cùng đạo diễn'],
       icon: Palette, color: 'text-accent bg-accent/10'
     },
-    { 
+    {
       id: 3, title: 'Quản lý NGO', income: '10 - 25tr', skills: ['#Leadership', '#Planning', '#Social_Impact'], category: 'Xã hội',
       whyYou: 'Vì bạn luôn khao khát tạo ra những giá trị tích cực và bền vững cho cộng đồng.',
       dailyTasks: ['Lập kế hoạch dự án', 'Gây quỹ từ thiện', 'Kết nối các tình nguyện viên'],
       icon: Sparkles, color: 'text-accent bg-accent/10'
     },
-    { 
+    {
       id: 4, title: 'Content Creator', income: '10 - 50tr', skills: ['#Digital_Marketing', '#Editing', '#Branding'], category: 'Truyền thông',
       whyYou: 'Vì bạn yêu thích việc chia sẻ góc nhìn cá nhân và lan tỏa năng lượng tích cực.',
       dailyTasks: ['Lên ý tưởng video', 'Quay dựng nội dung', 'Tương tác cùng followers'],
@@ -59,25 +62,25 @@ const CAREER_GROUPS: Record<string, Career[]> = {
     },
   ],
   'SJ': [
-    { 
+    {
       id: 5, title: 'Kiểm toán', income: '15 - 45tr', skills: ['#Attention_to_Detail', '#Integrity', '#SQL'], category: 'Kinh tế',
       whyYou: 'Vì bạn là người cực kỳ tỉ mỉ, trung thực và coi trọng sự minh bạch.',
       dailyTasks: ['Kiểm tra sổ sách', 'Xác minh số liệu', 'Lập báo cáo tài chính'],
       icon: ShieldCheck, color: 'text-primary bg-primary/10'
     },
-    { 
+    {
       id: 6, title: 'Quản lý dự án', income: '20 - 60tr', skills: ['#Organization', '#Communication', '#Agile'], category: 'Kinh tế',
       whyYou: 'Vì bạn có khả năng tổ chức tuyệt vời và luôn đảm bảo mọi thứ đi đúng quỹ đạo.',
       dailyTasks: ['Phân bổ nguồn lực', 'Theo dõi tiến độ', 'Giải quyết các rủi ro'],
       icon: Target, color: 'text-primary bg-primary/10'
     },
-    { 
+    {
       id: 7, title: 'Luật sư', income: '15 - 80tr', skills: ['#Critical_Thinking', '#Research', '#Persuasion'], category: 'Xã hội',
       whyYou: 'Vì bạn có tư duy sắc bén và ý thức trách nhiệm cao trong việc bảo vệ công lý.',
       dailyTasks: ['Nghiên cứu hồ sơ', 'Tư vấn pháp lý', 'Tranh tụng tại tòa'],
       icon: ShieldCheck, color: 'text-primary bg-primary/10'
     },
-    { 
+    {
       id: 8, title: 'Logistics', income: '12 - 35tr', skills: ['#Supply_Chain', '#Planning', '#Problem_Solving'], category: 'Kinh tế',
       whyYou: 'Vì bạn giỏi trong việc điều phối và tối ưu hóa các quy trình vận hành.',
       dailyTasks: ['Quản lý kho bãi', 'Điều phối vận chuyển', 'Tối ưu chi phí'],
@@ -85,25 +88,25 @@ const CAREER_GROUPS: Record<string, Career[]> = {
     },
   ],
   'SP': [
-    { 
+    {
       id: 9, title: 'Thiết kế thời trang', income: '10 - 40tr', skills: ['#Aesthetics', '#Sewing', '#Trend_Analysis'], category: 'Nghệ thuật',
       whyYou: 'Vì bạn có óc thẩm mỹ độc đáo và đôi bàn tay khéo léo để biến ý tưởng thành hiện thực.',
       dailyTasks: ['Vẽ phác thảo', 'Chọn lựa chất liệu', 'Giám sát sản xuất'],
       icon: Palette, color: 'text-secondary bg-secondary/10'
     },
-    { 
+    {
       id: 10, title: 'Đầu bếp', income: '12 - 50tr', skills: ['#Culinary_Arts', '#Creativity', '#Resilience'], category: 'Dịch vụ',
       whyYou: 'Vì bạn yêu thích việc sáng tạo ra những hương vị mới và làm hài lòng thực khách.',
       dailyTasks: ['Sáng tạo thực đơn', 'Chế biến món ăn', 'Quản lý bếp'],
       icon: Zap, color: 'text-secondary bg-secondary/10'
     },
-    { 
+    {
       id: 11, title: 'Nhiếp ảnh gia', income: '10 - 45tr', skills: ['#Composition', '#Lighting', '#Retouching'], category: 'Nghệ thuật',
       whyYou: 'Vì bạn có khả năng bắt trọn những khoảnh khắc đẹp nhất qua ống kính.',
       dailyTasks: ['Lên concept chụp', 'Thực hiện buổi chụp', 'Hậu kỳ hình ảnh'],
       icon: Compass, color: 'text-secondary bg-secondary/10'
     },
-    { 
+    {
       id: 12, title: 'Kỹ sư hiện trường', income: '15 - 40tr', skills: ['#Technical_Skills', '#Safety', '#Teamwork'], category: 'Kỹ thuật',
       whyYou: 'Vì bạn là người thực tế, năng động và không ngại đối mặt với thử thách tại công trường.',
       dailyTasks: ['Giám sát thi công', 'Kiểm tra kỹ thuật', 'Đảm bảo an toàn'],
@@ -111,25 +114,25 @@ const CAREER_GROUPS: Record<string, Career[]> = {
     },
   ],
   'NT': [
-    { 
+    {
       id: 13, title: 'Lập trình viên AI', income: '25 - 70tr', skills: ['#Python', '#Machine_Learning', '#Math'], category: 'IT',
       whyYou: 'Vì bạn có tư duy logic cực mạnh và khao khát giải mã những công nghệ tương lai.',
       dailyTasks: ['Xây dựng mô hình', 'Xử lý dữ liệu', 'Tối ưu thuật toán'],
       icon: Cpu, color: 'text-primary bg-primary/10'
     },
-    { 
+    {
       id: 14, title: 'Chuyên gia bảo mật', income: '20 - 60tr', skills: ['#Networking', '#Cybersecurity', '#Linux'], category: 'IT',
       whyYou: 'Vì bạn luôn cảnh giác, tỉ mỉ và có khả năng phân tích các lỗ hổng hệ thống.',
       dailyTasks: ['Kiểm tra bảo mật', 'Xử lý sự cố', 'Xây dựng tường lửa'],
       icon: ShieldCheck, color: 'text-primary bg-primary/10'
     },
-    { 
+    {
       id: 15, title: 'Phân tích dữ liệu', income: '18 - 50tr', skills: ['#SQL', '#Statistics', '#Visualization'], category: 'IT',
       whyYou: 'Vì bạn yêu thích việc tìm ra những quy luật ẩn giấu đằng sau những con số khô khan.',
       dailyTasks: ['Thu thập dữ liệu', 'Phân tích xu hướng', 'Lập báo cáo trực quan'],
       icon: TrendingUp, color: 'text-primary bg-primary/10'
     },
-    { 
+    {
       id: 16, title: 'Tư vấn chiến lược', income: '25 - 100tr', skills: ['#Strategy', '#Analysis', '#Presentation'], category: 'Kinh tế',
       whyYou: 'Vì bạn có tầm nhìn xa trông rộng và khả năng hoạch định những bước đi vĩ đại.',
       dailyTasks: ['Phân tích thị trường', 'Xây dựng chiến lược', 'Tư vấn cho doanh nghiệp'],
@@ -165,8 +168,8 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
   const careers = hasTested ? CAREER_GROUPS[groupKey] : [];
 
   // Filter careers by category if not tested, or just show the group's careers
-  const displayCareers = hasTested 
-    ? careers 
+  const displayCareers = hasTested
+    ? careers
     : Object.values(CAREER_GROUPS).flat().filter(c => c.category === activeTab).slice(0, 6);
 
   const toggleExpand = (id: number) => {
@@ -181,23 +184,22 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
             {hasTested ? `Gợi ý cho nhóm ${mbtiResult}` : "Khám phá ngành nghề"}
           </h2>
           <p className="text-text-muted text-xl font-sans">
-            {hasTested 
-              ? `Dựa trên bản sắc ${groupKey}, đây là những bến đỗ hứa hẹn dành cho bạn.` 
+            {hasTested
+              ? `Dựa trên bản sắc ${groupKey}, đây là những bến đỗ hứa hẹn dành cho bạn.`
               : "Tìm kiếm bến đỗ phù hợp với bản sắc riêng của bạn."}
           </p>
         </div>
-        
+
         {!hasTested && (
           <div className="flex bg-surface p-1.5 rounded-2xl border border-primary/10">
             {['IT', 'Truyền thông', 'Kinh tế'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                  activeTab === tab 
-                    ? "bg-primary text-white shadow-lg shadow-primary/20" 
+                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === tab
+                    ? "bg-primary text-white shadow-lg shadow-primary/20"
                     : "text-text-muted hover:text-primary"
-                }`}
+                  }`}
               >
                 {tab}
               </button>
@@ -207,7 +209,7 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
       </div>
 
       {!hasTested ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -222,7 +224,7 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
             <p className="text-text-muted mb-10 text-lg">
               Làm bài trắc nghiệm MBTI để chúng mình có thể gợi ý những ngành nghề "sinh ra là dành cho bạn" nhé!
             </p>
-            <button 
+            <button
               onClick={onStartQuiz}
               className="px-10 py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform flex items-center gap-2 mx-auto"
             >
@@ -239,11 +241,10 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
               layout
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`bg-surface rounded-[2rem] border transition-all overflow-hidden cursor-pointer ${
-                expandedId === career.id 
-                  ? "border-primary shadow-2xl ring-1 ring-primary/20" 
+              className={`bg-surface rounded-[2rem] border transition-all overflow-hidden cursor-pointer ${expandedId === career.id
+                  ? "border-primary shadow-2xl ring-1 ring-primary/20"
                   : "border-primary/5 shadow-md hover:shadow-lg hover:-translate-y-1"
-              }`}
+                }`}
               onClick={() => toggleExpand(career.id)}
             >
               <div className="p-8">
@@ -265,12 +266,11 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
                       </div>
                     </div>
                   </div>
-                  
-                  <button className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                    expandedId === career.id 
-                      ? "bg-primary text-white" 
+
+                  <button className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${expandedId === career.id
+                      ? "bg-primary text-white"
                       : "bg-background text-text-dark hover:bg-primary/10 hover:text-primary"
-                  }`}>
+                    }`}>
                     {expandedId === career.id ? "Thu gọn" : "Xem chi tiết"}
                   </button>
                 </div>
@@ -323,7 +323,7 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
                               </li>
                             ))}
                           </ul>
-                          
+
                           <button className="w-full mt-8 py-4 bg-white border-2 border-primary/10 text-primary rounded-2xl font-bold hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2">
                             <CheckCircle2 size={18} />
                             Test kiến thức ngành
@@ -361,7 +361,7 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
               </div>
 
               <h4 className="text-2xl font-serif text-text-dark mb-4 group-hover:text-primary transition-colors">{career.title}</h4>
-              
+
               <div className="flex flex-wrap gap-2 mb-8">
                 {career.skills.map(skill => (
                   <span key={skill} className="px-3 py-1 bg-background rounded-lg text-[10px] font-bold uppercase tracking-wider text-text-muted border border-primary/5">
@@ -371,7 +371,7 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
               </div>
 
               <div className="flex gap-3">
-                <button 
+                <button
                   onClick={onStartQuiz}
                   className="flex-1 py-3 bg-primary/5 text-primary rounded-xl text-xs font-bold hover:bg-primary hover:text-white transition-all"
                 >
@@ -400,9 +400,20 @@ export function Footer() {
               Nền tảng thấu hiểu bản thân và định hướng nghề nghiệp hàng đầu cho Gen Z Việt Nam.
             </p>
             <div className="flex gap-4">
-              {['FB', 'IG', 'LN', 'TT'].map(social => (
-                <div key={social} className="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-xs font-bold hover:bg-white hover:text-black transition-all cursor-pointer">
-                  {social}
+              {[
+                { id: 'FB', icon: <Facebook size={18} /> },
+                { id: 'IG', icon: <Instagram size={18} /> },
+                { id: 'LN', icon: <Linkedin size={18} /> },
+                {
+                  id: 'TT', icon: (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                    </svg>
+                  )
+                }
+              ].map(social => (
+                <div key={social.id} className="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center hover:bg-white hover:text-black transition-all cursor-pointer">
+                  {social.icon}
                 </div>
               ))}
             </div>
@@ -411,13 +422,13 @@ export function Footer() {
           <div className="bg-white/5 rounded-[2.5rem] p-10 border border-white/10">
             <h4 className="text-xl font-serif mb-2">Nhận bản tin định hướng</h4>
             <p className="text-gray-400 text-sm mb-8">Cập nhật xu hướng ngành nghề và bài viết thấu hiểu bản thân mỗi tuần.</p>
-            
+
             <form className="flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
               <div className="relative flex-1">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                <input 
-                  type="email" 
-                  placeholder="Email của bạn..." 
+                <input
+                  type="email"
+                  placeholder="Email của bạn..."
                   className="w-full bg-white/10 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
