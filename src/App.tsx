@@ -12,6 +12,7 @@ import CareerExploration, { Footer } from "./components/CareerExploration";
 import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
 import Certificates from "./components/Certificates";
+import AuthModal from "./components/AuthModal";
 
 type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile';
 
@@ -22,6 +23,8 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +61,12 @@ export default function App() {
     setView(target);
     setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const openAuth = (mode: "login" | "register") => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -100,13 +109,13 @@ export default function App() {
               {!isLoggedIn ? (
                 <>
                   <button
-                    onClick={() => setIsLoggedIn(true)}
+                    onClick={() => openAuth('register')}
                     className="px-6 py-2.5 rounded-full border-2 border-primary text-primary text-sm font-bold hover:bg-primary/10 transition-all"
                   >
                     Đăng ký
                   </button>
                   <button
-                    onClick={() => setIsLoggedIn(true)}
+                    onClick={() => openAuth('login')}
                     className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
                   >
                     Đăng nhập
@@ -182,13 +191,13 @@ export default function App() {
                   {!isLoggedIn ? (
                     <>
                       <button
-                        onClick={() => setIsLoggedIn(true)}
+                        onClick={() => openAuth('register')}
                         className="w-full py-4 border-2 border-primary text-primary rounded-2xl font-bold"
                       >
                         Đăng ký
                       </button>
                       <button
-                        onClick={() => setIsLoggedIn(true)}
+                        onClick={() => openAuth('login')}
                         className="w-full py-4 bg-primary text-white rounded-2xl font-bold"
                       >
                         Đăng nhập
@@ -424,6 +433,12 @@ export default function App() {
       </div>
 
       <Footer />
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        initialView={authMode}
+      />
 
       {/* Subtle background texture */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" 
