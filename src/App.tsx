@@ -302,7 +302,7 @@ export default function App() {
                         onClick={() => navigate('quiz')}
                         className="px-10 py-4 bg-secondary text-white rounded-[50px] font-bold shadow-lg shadow-secondary/20 flex items-center justify-center gap-2 group transition-all"
                       >
-                        Làm trắc nghiệm ngay
+                        Làm trắc nghiệm MBTI ngay
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </motion.button>
                       
