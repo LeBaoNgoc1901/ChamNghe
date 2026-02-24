@@ -243,7 +243,7 @@ export default function App() {
                   >
                     <div className="relative z-10 rounded-[24px] overflow-hidden shadow-2xl border-4 border-accent/30 p-2 bg-surface">
                       <img 
-                        src="/hinhchinh.png" 
+                        src="/hero.png" 
                         alt="Gen Z Creative Team" 
                         className="w-full h-auto object-cover aspect-[4/5] rounded-[18px]"
                         referrerPolicy="no-referrer"
