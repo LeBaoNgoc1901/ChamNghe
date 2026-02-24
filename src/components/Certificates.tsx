@@ -3,6 +3,16 @@ import { motion, AnimatePresence } from "motion/react";
 
 type Field = "IT" | "Kinh tế" | "Truyền thông";
 
+type RoadmapStep = {
+  step: string;
+  title: string;
+  date?: string;
+  status: "completed" | "active" | "upcoming";
+  desc: string;
+  image?: string;
+  xp?: number;
+};
+
 type Cert = {
   id: number;
   title: string;
@@ -12,14 +22,8 @@ type Cert = {
   date?: string;
   hot?: boolean;
   value?: string;
-};
-
-type RoadmapStep = {
-  step: string;
-  title: string;
-  date: string;
-  status: "completed" | "active" | "upcoming";
-  desc: string;
+  xp?: number;
+  roadmap?: RoadmapStep[];
 };
 
 type Competition = {
@@ -34,6 +38,7 @@ type Competition = {
   tag?: string;
   category?: string[];
   roadmap: RoadmapStep[];
+  xp?: number;
 };
 
 const CARD_COLORS = [
@@ -55,7 +60,8 @@ const MOCK_ACHIEVED: Cert[] = [
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600",
     date: "15/02/2026",
     hot: true,
-    value: "Chứng chỉ này chứng minh khả năng phân tích dữ liệu chuyên nghiệp, cực kỳ có giá trị cho các vị trí Data Analyst."
+    value: "Chứng chỉ này chứng minh khả năng phân tích dữ liệu chuyên nghiệp, cực kỳ có giá trị cho các vị trí Data Analyst.",
+    xp: 1200
   },
   {
     id: 2,
@@ -64,30 +70,135 @@ const MOCK_ACHIEVED: Cert[] = [
     issuer: "Hubspot / Meta",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600",
     date: "20/01/2026",
-    value: "Nắm vững các công cụ quảng cáo số, chiến lược nội dung và tối ưu hóa chuyển đổi."
+    value: "Nắm vững các công cụ quảng cáo số, chiến lược nội dung và tối ưu hóa chuyển đổi.",
+    xp: 800
   },
 ];
 
 const MOCK_SUGGESTED: Record<string, Cert[]> = {
   NF: [
-    { id: 101, title: "Content Marketing Certification", field: "Truyền thông", issuer: "HubSpot Academy", image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=600", value: "Tăng khả năng sáng tạo nội dung chạm đến cảm xúc khách hàng." },
-    { id: 102, title: "Social Media Strategy", field: "Truyền thông", issuer: "LinkedIn Learning", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=600", value: "Xây dựng thương hiệu cá nhân và cộng đồng bền vững." },
+    { 
+      id: 101, 
+      title: "Content Marketing Certification", 
+      field: "Truyền thông", 
+      issuer: "HubSpot Academy", 
+      image: "https://images.unsplash.com/photo-1499750310107-5fef28a66646?auto=format&fit=crop&q=80&w=600", 
+      value: "Tăng khả năng sáng tạo nội dung chạm đến cảm xúc khách hàng.", 
+      xp: 450,
+      roadmap: [
+        { step: "01", title: "Storytelling Basics", status: "active", desc: "Học cách xây dựng cấu trúc câu chuyện thu hút.", xp: 100, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=300" },
+        { step: "02", title: "Content Strategy", status: "upcoming", desc: "Lập kế hoạch phân phối nội dung đa kênh.", xp: 150, image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=300" },
+        { step: "03", title: "Final Project", status: "upcoming", desc: "Triển khai một chiến dịch nội dung thực tế.", xp: 200, image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?auto=format&fit=crop&q=80&w=300" },
+      ]
+    },
+    { id: 102, title: "Social Media Strategy", field: "Truyền thông", issuer: "LinkedIn Learning", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e112?auto=format&fit=crop&q=80&w=600", value: "Xây dựng thương hiệu cá nhân và cộng đồng bền vững.", xp: 350 },
   ],
   NT: [
-    { id: 201, title: "Python for Data Science", field: "IT", issuer: "IBM", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=600", hot: true, value: "Công cụ đắc lực cho phân tích logic và xử lý dữ liệu lớn." },
-    { id: 202, title: "AWS Cloud Practitioner", field: "IT", issuer: "Amazon Web Services", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600", value: "Hiểu sâu về hạ tầng đám mây hiện đại nhất thế giới." },
+    { 
+      id: 201, 
+      title: "Python for Data Science", 
+      field: "IT", 
+      issuer: "IBM", 
+      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c4?auto=format&fit=crop&q=80&w=600", 
+      hot: true, 
+      value: "Công cụ đắc lực cho phân tích logic và xử lý dữ liệu lớn.", 
+      xp: 900,
+      roadmap: [
+        { step: "01", title: "Python Fundamentals", status: "active", desc: "Nắm vững cú pháp và cấu trúc dữ liệu cơ bản.", xp: 200, image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c4?auto=format&fit=crop&q=80&w=300" },
+        { step: "02", title: "Pandas & Numpy", status: "upcoming", desc: "Xử lý và tính toán trên các tập dữ liệu lớn.", xp: 300, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=300" },
+        { step: "03", title: "Data Visualization", status: "upcoming", desc: "Trực quan hóa dữ liệu bằng Matplotlib và Seaborn.", xp: 400, image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=300" },
+      ]
+    },
+    { id: 202, title: "AWS Cloud Practitioner", field: "IT", issuer: "Amazon Web Services", image: "https://images.unsplash.com/photo-1451187580459-43490279c0f9?auto=format&fit=crop&q=80&w=600", value: "Hiểu sâu về hạ tầng đám mây hiện đại nhất thế giới.", xp: 750 },
   ],
   SJ: [
-    { id: 301, title: "Financial Accounting Basics", field: "Kinh tế", issuer: "Harvard Business", image: "https://images.unsplash.com/photo-1454165833767-027ffea1e45b?auto=format&fit=crop&q=80&w=600", value: "Xây dựng nền tảng tài chính vững chắc và minh bạch." },
-    { id: 302, title: "Supply Chain Management", field: "Kinh tế", issuer: "Coursera", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=600", value: "Quy trình vận hành tối ưu cho các doanh nghiệp quy mô lớn." },
+    { id: 301, title: "Financial Accounting Basics", field: "Kinh tế", issuer: "Harvard Business", image: "https://images.unsplash.com/photo-1454165833767-027ffea1e45a?auto=format&fit=crop&q=80&w=600", value: "Xây dựng nền tảng tài chính vững chắc và minh bạch.", xp: 600 },
+    { id: 302, title: "Supply Chain Management", field: "Kinh tế", issuer: "Coursera", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310c?auto=format&fit=crop&q=80&w=600", value: "Quy trình vận hành tối ưu cho các doanh nghiệp quy mô lớn.", xp: 550 },
   ],
   SP: [
-    { id: 401, title: "UX/UI Design Fundamentals", field: "IT", issuer: "Google", image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=600", value: "Sáng tạo trải nghiệm người dùng linh hoạt và bắt mắt." },
-    { id: 402, title: "Event Planning Excellence", field: "Truyền thông", issuer: "Chạm Nghề Academy", image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=600", value: "Thực thi các sự kiện bùng nổ và đầy tính ngẫu hứng." },
+    { 
+      id: 401, 
+      title: "UX/UI Design Fundamentals", 
+      field: "IT", 
+      issuer: "Google", 
+      image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4b?auto=format&fit=crop&q=80&w=600", 
+      value: "Sáng tạo trải nghiệm người dùng linh hoạt và bắt mắt.", 
+      xp: 500,
+      roadmap: [
+        { step: "01", title: "User Research", status: "active", desc: "Phỏng vấn người dùng và xây dựng persona.", xp: 150, image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=300" },
+        { step: "02", title: "Wireframing", status: "upcoming", desc: "Thiết kế khung xương cho ứng dụng di động.", xp: 150, image: "https://images.unsplash.com/photo-1541462608141-ad511a7ee596?auto=format&fit=crop&q=80&w=300" },
+        { step: "03", title: "Prototyping", status: "upcoming", desc: "Tạo bản mẫu tương tác thực tế.", xp: 200, image: "https://images.unsplash.com/photo-1581291417004-6e7411a842f1?auto=format&fit=crop&q=80&w=300" },
+      ]
+    },
+    { id: 402, title: "Event Planning Excellence", field: "Truyền thông", issuer: "Chạm Nghề Academy", image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61621?auto=format&fit=crop&q=80&w=600", value: "Thực thi các sự kiện bùng nổ và đầy tính ngẫu hứng.", xp: 400 },
   ],
   default: [
-    { id: 501, title: "Critical Thinking", field: "Kinh tế", issuer: "University of Sydney", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=600", value: "Kỹ năng nền tảng cho mọi ngành nghề trong tương lai." },
-    { id: 502, title: "AI Basics for Everyone", field: "IT", issuer: "IBM", image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=600", value: "Hiểu về AI để không bị tụt hậu trong cuộc cách mạng 4.0." },
+    { 
+      id: 501, 
+      title: "Critical Thinking", 
+      field: "Kinh tế", 
+      issuer: "University of Sydney", 
+      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b2?auto=format&fit=crop&q=80&w=600", 
+      value: "Kỹ năng nền tảng cho mọi ngành nghề trong tương lai.", 
+      xp: 300,
+      roadmap: [
+        { step: "01", title: "Analysis Skills", status: "active", desc: "Phân biệt sự thật và ý kiến chủ quan.", xp: 100, image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=300" },
+        { step: "02", title: "Bias Detection", status: "upcoming", desc: "Nhận diện các định kiến trong tư duy.", xp: 100, image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=300" },
+        { step: "03", title: "Decision Making", status: "upcoming", desc: "Quy trình đưa ra quyết định dựa trên bằng chứng.", xp: 100, image: "https://images.unsplash.com/photo-1454165833767-027ffea1e45a?auto=format&fit=crop&q=80&w=300" },
+      ]
+    },
+    { id: 502, title: "AI Basics for Everyone", field: "IT", issuer: "IBM", image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595d?auto=format&fit=crop&q=80&w=600", value: "Hiểu về AI để không bị tụt hậu trong cuộc cách mạng 4.0.", xp: 200 },
+  ]
+};
+
+const MOCK_COURSES_ACHIEVED: Cert[] = [
+  {
+    id: 901,
+    title: "Fullstack Web Development",
+    field: "IT",
+    issuer: "Udemy / Chạm Nghề",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600",
+    date: "10/02/2026",
+    value: "Chương trình chuyên sâu về React, Node.js và SQL.",
+    xp: 2500
+  },
+  {
+    id: 902,
+    title: "Business Communication Expert",
+    field: "Kinh tế",
+    issuer: "Coursera",
+    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=600",
+    date: "05/01/2026",
+    value: "Nâng tầm kỹ năng thuyết trình và đàm phán trong môi trường đa quốc gia.",
+    xp: 1500
+  }
+];
+
+const MOCK_COURSES_SUGGESTED: Record<string, Cert[]> = {
+  default: [
+    {
+      id: 951,
+      title: "Generative AI Masterclass",
+      field: "IT",
+      issuer: "Microsoft / Chạm Nghề",
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=600",
+      value: "Làm chủ các công cụ AI tạo nội dung và tự động hóa quy trình.",
+      xp: 1800,
+      roadmap: [
+        { step: "01", title: "Prompt Engineering", status: "active", desc: "Học cách viết prompt tối ưu để điều khiển AI.", xp: 300, image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=300" },
+        { step: "02", title: "AI Image Generation", status: "upcoming", desc: "Sử dụng Midjourney và DALL-E cho thiết kế.", xp: 500, image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=300" },
+        { step: "03", title: "Automating Workflow", status: "upcoming", desc: "Tích hợp AI vào các tác vụ công việc hàng ngày.", xp: 1000, image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=300" }
+      ]
+    },
+    {
+      id: 952,
+      title: "Emotional Intelligence at Work",
+      field: "Truyền thông",
+      issuer: "LinkedIn Learning",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=600",
+      value: "Phát triển tư duy đồng cảm và khả năng quản trị cảm xúc đỉnh cao.",
+      xp: 1200
+    }
   ]
 };
 
@@ -102,6 +213,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     progress: 30, 
     ranking: "Hạng 12/200 (Vòng loại)",
     details: "Tìm kiếm các chiến dịch Marketing sáng tạo thúc đẩy lối sống bền vững và bảo vệ môi trường.",
+    xp: 2850,
     roadmap: [
       { step: "01", title: "Nộp Concept", date: "01/03", status: "completed", desc: "Ý tưởng chủ đạo cho chiến dịch truyền thông xanh." },
       { step: "02", title: "Phát Triển", date: "10/03 - 20/03", status: "active", desc: "Xây dựng chi tiết các kênh và thông điệp truyền tải." },
@@ -117,6 +229,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     progress: 75,
     ranking: "Hạng 2/50 (Bán kết)",
     details: "Tối ưu hóa chuỗi cung ứng thực tế cho doanh nghiệp xuất khẩu.",
+    xp: 3200,
     roadmap: [
       { step: "01", title: "Vòng Sơ Tuyển", date: "15/02", status: "completed", desc: "Kiểm tra kiến thức Logistics cơ bản." },
       { step: "02", title: "Phân Tích Cấu Trúc", date: "20/02", status: "completed", desc: "Xây dựng mô hình chuỗi hiện tại." },
@@ -133,6 +246,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     progress: 10,
     ranking: "Chưa cập nhật",
     details: "Kiến tạo các giải pháp công nghệ giáo dục đột phá cho tương lai giáo dục Việt Nam.",
+    xp: 4800,
     roadmap: [
       { step: "01", title: "Thành Lập Đội", date: "20/02", status: "completed", desc: "Tìm kiếm cộng sự và đăng ký ý tưởng ban đầu." },
       { step: "02", title: "Coding Phase", date: "01/03 - 03/03", status: "upcoming", desc: "48h phát triển sản phẩm demo hoàn thiện." },
@@ -150,6 +264,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     progress: 100, 
     ranking: "Hạng 1 - Quán quân",
     details: "Cuộc thi giải quyết các bài toán vận hành thực tế của các startup công nghệ. Bạn đã xuất sắc vượt qua 4 vòng thi nghẹt thở.",
+    xp: 10000,
     roadmap: [
       { step: "01", title: "Vòng Đơn", date: "01/02", status: "completed", desc: "Nộp ý tưởng kinh doanh sơ bộ và hồ sơ năng lực." },
       { step: "02", title: "Vòng Loại", date: "10/02", status: "completed", desc: "Thuyết trình mô hình kinh doanh chi tiết." },
@@ -166,6 +281,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     progress: 100, 
     ranking: "Hạng 5 - Giải khuyến khích",
     details: "Đối đầu trực tiếp trong việc xây dựng kế hoạch tài chính cho các gia đình trẻ Việt Nam.",
+    xp: 4500,
     roadmap: [
       { step: "01", title: "Khai Mạc", date: "01/12/2025", status: "completed", desc: "Phổ biến luật chơi và công bố đề bài chính thức." },
       { step: "02", title: "Lập Kế Hoạch", date: "05/12/2025", status: "completed", desc: "Xây dựng chiến lược phân bổ tài sản và quản trị rủi ro." },
@@ -181,6 +297,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     progress: 100, 
     ranking: "Top 10 - Finalist",
     details: "Thử thách giải quyết 5 case study kinh điển trong vòng 24h liên tục. Kiểm tra sức bền và tư duy phân tích sắc bén.",
+    xp: 3500,
     roadmap: [
       { step: "01", title: "Vòng Sơ Loại", date: "10/01", status: "completed", desc: "Bài test tư duy logic và phân tích dữ liệu cơ bản." },
       { step: "02", title: "Vòng Marathon", date: "15/01", status: "completed", desc: "24h giải quyết tình huống kinh doanh đa ngành." },
@@ -199,6 +316,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     category: ["NT", "SP"],
     progress: 0, 
     details: "Đấu trường an ninh mạng đỉnh cao dành cho các tài năng Capture The Flag. Thử thách kỹ năng bảo mật và tấn công mạng thực chiến.",
+    xp: 1500,
     roadmap: [
       { step: "01", title: "Qualifiers", date: "05/04", status: "upcoming", desc: "Bài thi CTF trực tuyến để lựa chọn các đội xuất sắc nhất." },
       { step: "02", title: "Final Battle", date: "15/04", status: "upcoming", desc: "Đấu đối kháng trực tiếp (Attack & Defense) tại vòng chung kết." },
@@ -214,6 +332,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     category: ["NF", "SP"],
     progress: 0, 
     details: "Cơ hội cho các nhà sáng tạo nội dung thể hiện bản sắc qua video ngắn. Tỏa sáng và lan tỏa thông điệp tích cực đến cộng đồng.",
+    xp: 2000,
     roadmap: [
       { step: "01", title: "Vòng Sáng Tạo", date: "10/05", status: "upcoming", desc: "Sản xuất video theo chủ đề yêu cầu từ ban tổ chức." },
       { step: "02", title: "Vòng Lan Tỏa", date: "20/05", status: "upcoming", desc: "Đo lường mức độ tương tác và ảnh hưởng thực tế từ cộng đồng." },
@@ -230,6 +349,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     category: ["SJ", "NT"],
     progress: 0, 
     details: "Mô phỏng đàm phán thương mại quốc tế và quản trị rủi ro xuất nhập khẩu. Trải nghiệm môi trường kinh doanh toàn cầu thực thụ.",
+    xp: 1800,
     roadmap: [
       { step: "01", title: "Training", date: "01/06", status: "upcoming", desc: "Huấn luyện chuyên sâu về kỹ năng đàm phán và luật thương mại quốc tế." },
       { step: "02", title: "Simulation", date: "10/06", status: "upcoming", desc: "Thực hiện mô phỏng các giao dịch thương mại với đối tác nước ngoài." },
@@ -246,22 +366,33 @@ const MOCK_COMPETITIONS: Competition[] = [
     category: ["NF", "NT"],
     progress: 0, 
     details: "Giải quyết các bài toán UX phức tạp cho ứng dụng siêu ứng dụng (Super App). Nâng tầm trải nghiệm người dùng bằng tư duy thiết kế đột phá.",
+    xp: 2200,
     roadmap: [
       { step: "01", title: "Research", date: "15/07", status: "upcoming", desc: "Nghiên cứu sâu về hành vi và nhu cầu thực tế của người dùng." },
       { step: "02", title: "Ideation", date: "25/07", status: "upcoming", desc: "Thiết kế các giải pháp wireframe và prototype cho các tính năng mới." },
       { step: "03", title: "Testing", date: "05/08", status: "upcoming", desc: "Kiểm thử khả năng sử dụng và nhận phản hồi trực tiếp từ người dùng." },
     ]
-  }
+  },
 ];
 
 export default function Certificates() {
-  const [tab, setTab] = useState("achieved");
+  const [tab, setTab] = useState("certificates");
+  const [certSubTab, setCertSubTab] = useState("achieved");
+  const [courseSubTab, setCourseSubTab] = useState("achieved");
   const [compSubTab, setCompSubTab] = useState("active"); // 'completed', 'active', 'suggested'
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
   const [modal, setModal] = useState<any>(null); // Changed to any to support competition objects
   const [expandedComp, setExpandedComp] = useState<number | null>(null);
   const [mbti, setMbti] = useState<string | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const filterOptions = [
+    { value: "All", label: "Tất cả lĩnh vực" },
+    { value: "IT", label: "IT" },
+    { value: "Kinh tế", label: "Kinh tế" },
+    { value: "Truyền thông", label: "Truyền thông" },
+  ];
 
   useEffect(() => {
     const result = localStorage.getItem("mbti_result");
@@ -283,14 +414,18 @@ export default function Certificates() {
     return MOCK_SUGGESTED[mbti] || MOCK_SUGGESTED.default;
   };
 
-  const competitionsData = MOCK_COMPETITIONS.filter(c => c.status === compSubTab);
-
   const currentData: any[] = useMemo(() => {
-    if (tab === "achieved") return MOCK_ACHIEVED;
-    if (tab === "suggested") return getSuggestedCerts();
-    if (tab === "competition") return competitionsData;
+    if (tab === "certificates") {
+      return certSubTab === "achieved" ? MOCK_ACHIEVED : getSuggestedCerts();
+    }
+    if (tab === "courses") {
+      return courseSubTab === "achieved" ? MOCK_COURSES_ACHIEVED : (MOCK_COURSES_SUGGESTED[mbti || 'default'] || MOCK_COURSES_SUGGESTED.default);
+    }
+    if (tab === "competition") {
+      return MOCK_COMPETITIONS.filter(c => c.status === compSubTab);
+    }
     return [];
-  }, [tab, mbti]);
+  }, [tab, certSubTab, courseSubTab, compSubTab, mbti, getSuggestedCerts]);
 
   const filtered = useMemo(() => {
     return currentData.filter(
@@ -301,9 +436,9 @@ export default function Certificates() {
   }, [currentData, filter, search, tab]);
 
   const getActiveColor = () => {
-    if (tab === "achieved") return "bg-[#FFD9D1]"; // Darker Pink
-    if (tab === "suggested") return "bg-[#D1E9FF]"; // Darker Blue
-    return "bg-[#D1E6DB]"; // Darker Green
+    if (tab === "certificates") return "bg-[#FFD9D1]";
+    if (tab === "courses") return "bg-[#D1E9FF]";
+    return "bg-[#D1E6DB]"; // Competition
   };
 
   return (
@@ -321,21 +456,21 @@ export default function Certificates() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex w-full items-end">
           {[
-            { key: "achieved", label: "Certificates của bạn", color: "bg-[#FF6F61]", textColor: "text-white" },
-            { key: "suggested", label: "Certificates đề xuất", color: "bg-[#60A5FA]", textColor: "text-white" },
+            { key: "certificates", label: "Certificates", color: "bg-[#FF6F61]", textColor: "text-white" },
+            { key: "courses", label: "Khoá học", color: "bg-[#60A5FA]", textColor: "text-white" },
             { key: "competition", label: "Cuộc thi", color: "bg-[#8DB6A0]", textColor: "text-white" },
           ].map((t) => (
             <button
               key={t.key}
               onClick={() => { setTab(t.key); setFilter("All"); }}
-              className={`flex-1 py-6 text-xl font-bold transition-all duration-300 relative
+              className={`flex-1 py-8 text-2xl font-black transition-all duration-500 relative
               ${
                 tab === t.key
-                  ? `${t.color} ${t.textColor} z-20 rounded-t-[40px] shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.15)] translate-y-[2px]`
-                  : "bg-white/40 text-gray-500 hover:bg-white/60 rounded-t-[32px] mb-[-4px]"
+                  ? `${t.color} ${t.textColor} z-20 rounded-t-[50px] shadow-[0_-15px_40px_-5px_rgba(0,0,0,0.15)] translate-y-[2px]`
+                  : "bg-white/40 text-gray-500 hover:bg-white/60 rounded-t-[40px] mb-[-4px]"
               }`}
             >
-              <span className={tab === t.key ? "inline-block transform" : ""}>
+              <span className="inline-block tracking-tight">
                 {t.label}
               </span>
             </button>
@@ -354,41 +489,114 @@ export default function Certificates() {
         <div className="max-w-7xl mx-auto px-10 pt-16">
           {/* SEARCH + FILTER BAR */}
           <div className="flex flex-wrap gap-6 items-center mb-12">
-            <div className="relative group flex-1 max-w-md">
+            <div className="relative group flex-[2] max-w-2xl">
               <input
                 placeholder="Tìm kiếm chứng chỉ..."
-                className="w-full px-10 py-5 rounded-full bg-white border-none shadow-sm focus:ring-4 focus:ring-black/5 outline-none transition-all placeholder:text-gray-300"
+                className="w-full px-12 py-6 rounded-full bg-white/60 backdrop-blur-xl border border-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.03)] focus:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.08)] focus:bg-white/90 outline-none transition-all duration-500 placeholder:text-gray-400 font-medium text-lg"
                 onChange={(e) => setSearch(e.target.value)}
               />
-            </div>
-
-            <div className="relative">
-              <select
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="appearance-none px-10 py-5 rounded-full bg-white border-none shadow-sm outline-none transition-all cursor-pointer font-bold text-gray-700 min-w-[200px]"
-              >
-                <option value="All">Tất cả lĩnh vực</option>
-                <option value="IT">IT</option>
-                <option value="Kinh tế">Kinh tế</option>
-                <option value="Truyền thông">Truyền thông</option>
-              </select>
-              <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">
+                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               </div>
             </div>
 
-            {tab === "suggested" && mbti && (
-              <div className="bg-white/50 backdrop-blur-md px-8 py-5 rounded-full border-2 border-white/50 font-black text-sm text-[#8DB6A0] uppercase tracking-widest flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#8DB6A0] animate-ping" />
+            <div className="relative flex-1">
+              <div 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="pl-12 pr-20 py-6 rounded-full bg-white/60 backdrop-blur-xl border border-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.08)] hover:bg-white/90 outline-none transition-all duration-500 cursor-pointer font-bold text-gray-700 min-w-[320px] text-lg flex items-center justify-between group"
+              >
+                <span>{filterOptions.find(opt => opt.value === filter)?.label}</span>
+                <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none transition-transform group-hover:translate-x-1">
+                  <svg className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full left-0 right-0 mt-4 bg-white/70 backdrop-blur-2xl border border-white rounded-[32px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-[100]"
+                  >
+                    {filterOptions.map((opt) => (
+                      <div
+                        key={opt.value}
+                        onClick={() => {
+                          setFilter(opt.value);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`px-12 py-5 cursor-pointer transition-colors font-bold text-lg ${
+                          filter === opt.value 
+                            ? "bg-[#8DB6A0] text-white" 
+                            : "hover:bg-white/50 text-gray-700"
+                        }`}
+                      >
+                        {opt.label}
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {tab === "certificates" && certSubTab === "suggested" && mbti && (
+              <div className="bg-white/40 backdrop-blur-md px-8 py-5 rounded-full border border-white shadow-sm font-black text-sm text-[#FF6F61] uppercase tracking-widest flex items-center gap-3 animate-fadeIn ml-auto">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#FF6F61] shadow-[0_0_10px_rgba(255,111,97,0.8)]" />
                 GỢI Ý THEO MBTI: {mbti}
               </div>
             )}
           </div>
+          
+          {/* CERTIFICATES SUB-TABS Styled as Secondary Bookmarks */}
+          {tab === "certificates" && (
+            <div className="flex gap-2 mb-12 border-b-2 border-white/20 pb-0">
+              {[
+                { key: "achieved", label: "Của bạn" },
+                { key: "suggested", label: "Đề xuất" },
+              ].map((s) => (
+                <button
+                  key={s.key}
+                  onClick={() => setCertSubTab(s.key)}
+                  className={`px-10 py-4 rounded-t-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${
+                    certSubTab === s.key
+                      ? "bg-white text-[#FF6F61] shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.05)] translate-y-0"
+                      : "bg-white/30 text-white/70 hover:bg-white/50 translate-y-2 hover:translate-y-1"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          )}
 
-          {/* COMPETITION SUB-TABS */}
+          {/* COURSES SUB-TABS Styled as Secondary Bookmarks */}
+          {tab === "courses" && (
+            <div className="flex gap-2 mb-12 border-b-2 border-white/20 pb-0">
+              {[
+                { key: "achieved", label: "Của bạn" },
+                { key: "suggested", label: "Đề xuất" },
+              ].map((s) => (
+                <button
+                  key={s.key}
+                  onClick={() => setCourseSubTab(s.key)}
+                  className={`px-10 py-4 rounded-t-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${
+                    courseSubTab === s.key
+                      ? "bg-white text-[#60A5FA] shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.05)] translate-y-0"
+                      : "bg-white/30 text-white/70 hover:bg-white/50 translate-y-2 hover:translate-y-1"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* COMPETITION SUB-TABS Styled as Secondary Bookmarks */}
           {tab === "competition" && (
-            <div className="flex gap-4 mb-12">
+            <div className="flex gap-2 mb-12 border-b-2 border-white/20 pb-0">
               {[
                 { key: "active", label: "Đang tham gia" },
                 { key: "completed", label: "Đã tham gia" },
@@ -397,10 +605,10 @@ export default function Certificates() {
                 <button
                   key={st.key}
                   onClick={() => setCompSubTab(st.key)}
-                  className={`px-8 py-4 rounded-full font-bold transition-all ${
+                  className={`px-10 py-4 rounded-t-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${
                     compSubTab === st.key
-                      ? "bg-[#8DB6A0] text-white shadow-lg"
-                      : "bg-white text-gray-500 hover:bg-gray-50"
+                      ? "bg-white text-[#8DB6A0] shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.05)] translate-y-0"
+                      : "bg-white/30 text-white/70 hover:bg-white/50 translate-y-2 hover:translate-y-1"
                   }`}
                 >
                   {st.label}
@@ -469,6 +677,13 @@ export default function Certificates() {
                                    </span>
                                  </div>
                                )}
+                               {comp.xp && (
+                                 <div className="mt-3 flex items-center gap-1.5">
+                                   <div className="flex items-center gap-1.5 bg-[#FFF9E5] text-[#D35400] px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm border border-[#FFEAA7] group-hover:scale-105 transition-transform duration-300">
+                                     <span className="text-sm">✨</span> THƯỞNG {comp.xp} XP
+                                   </div>
+                                 </div>
+                               )}
                             </div>
                           </div>
 
@@ -534,10 +749,19 @@ export default function Certificates() {
                           </h3>
 
                           {cert.date && (
-                            <p className="text-sm text-gray-500 mb-8 flex items-center gap-2 font-medium">
-                              <span className="w-2.5 h-2.5 rounded-full bg-[#8DB6A0] shadow-[0_0_8px_rgba(141,182,160,0.6)] animate-pulse"></span>
-                              Đã xác thực: {cert.date}
-                            </p>
+                            <div className="flex flex-col gap-2 mb-8">
+                               <p className="text-sm text-gray-500 flex items-center gap-2 font-medium">
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#8DB6A0] shadow-[0_0_8px_rgba(141,182,160,0.6)] animate-pulse"></span>
+                                Đã xác thực: {cert.date}
+                              </p>
+                              {cert.xp && (
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <div className="flex items-center gap-1.5 bg-[#FFF9E5] text-[#D35400] px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm border border-[#FFEAA7] group-hover:scale-105 transition-transform duration-300">
+                                    <span className="text-sm">✨</span> THƯỞNG {cert.xp} XP
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           )}
 
                           <div className="flex gap-4">
@@ -565,72 +789,112 @@ export default function Certificates() {
 
     {/* MODAL - CERTIFICATE DETAILS */}
       {modal && (
-        <div className="fixed inset-0 bg-[#F6E7D8]/90 backdrop-blur-xl flex items-center justify-center z-50 p-6 animate-fadeIn">
-          <div className="bg-white rounded-[40px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.2)] max-w-2xl w-full overflow-hidden relative border-8 border-white">
+        <div className="fixed inset-0 bg-[#F6E7D8]/90 backdrop-blur-3xl flex items-center justify-center z-50 p-4 md:p-8 animate-fadeIn overflow-y-auto">
+          <div className="bg-white rounded-[40px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] max-w-6xl w-full overflow-hidden relative border-8 border-white/50 transition-all duration-500 my-auto">
             <button 
               onClick={() => setModal(null)}
-              className="absolute top-6 right-6 z-10 p-3 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-black hover:rotate-90 transition-all duration-300"
+              className="absolute top-8 right-8 z-20 p-4 bg-white/60 hover:bg-white backdrop-blur-md rounded-full text-gray-400 hover:text-black hover:rotate-90 transition-all duration-500 shadow-xl"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <div className="grid md:grid-cols-2">
-              <div className="h-64 md:h-full relative">
+            <div className="grid md:grid-cols-12 min-h-[85vh]">
+              {/* Image Section - Takes 5 cols */}
+              <div className="md:col-span-5 relative overflow-hidden group">
                 <img
                   src={modal.image}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   alt={modal.title}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8 md:hidden">
-                   <div className="flex flex-col">
-                      <h2 className="text-white text-3xl font-black">{modal.title}</h2>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-12">
+                   <div className="flex flex-col gap-4">
+                      <span className="w-fit px-4 py-1 bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em]">
+                        {modal.issuer || modal.host}
+                      </span>
+                      <h2 className="text-white text-4xl md:text-5xl font-black leading-tight drop-shadow-2xl">{modal.title}</h2>
                       {modal.ranking && (
-                        <span className="mt-2 inline-block w-fit px-2 py-0.5 bg-green-100 text-green-600 rounded-md text-[10px] font-black uppercase tracking-widest">
-                          {modal.ranking}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="px-3 py-1 bg-[#8DB6A0] text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-lg">
+                            {modal.ranking}
+                          </span>
+                        </div>
                       )}
                    </div>
                 </div>
               </div>
 
-              <div className="p-10 flex flex-col justify-center">
-                <div className="hidden md:block mb-6">
-                  <span className="text-xs font-black text-[#FF6F61] uppercase tracking-[0.2em] mb-2 block">Chi tiết</span>
-                  <h2 className="text-3xl font-black leading-tight mb-2">{modal.title}</h2>
-                  {modal.ranking && (
-                    <span className="inline-block px-2 py-0.5 bg-green-100 text-green-600 rounded-md text-[10px] font-black uppercase tracking-widest">
-                       {modal.ranking}
-                    </span>
-                  )}
+              {/* Content Section - Takes 7 cols */}
+              <div className="md:col-span-7 p-10 md:p-16 bg-white overflow-y-auto custom-scrollbar max-h-[85vh]">
+                {/* Header for content */}
+                <div className="flex justify-between items-center mb-10 pb-8 border-b border-gray-100">
+                   <div>
+                      <span className="text-[10px] font-black text-[#FF6F61] uppercase tracking-[0.3em] mb-2 block">Tổng quan Chi tiết</span>
+                      <div className="flex items-center gap-3">
+                         <div className="w-2 h-8 bg-[#FF6F61] rounded-full" />
+                         <span className="text-sm font-bold text-gray-400 uppercase tracking-widest italic">{modal.field || modal.tag || "Nghề nghiệp"}</span>
+                      </div>
+                   </div>
+                   {modal.xp && (
+                      <div className="bg-[#FFF9E5] px-6 py-3 rounded-2xl border border-[#FFEAA7] flex flex-col items-end">
+                        <span className="text-[9px] font-black text-[#D35400] uppercase tracking-tighter mb-1">Thưởng</span>
+                        <span className="font-black text-2xl text-[#D35400]">✨ {modal.xp} XP</span>
+                      </div>
+                   )}
                 </div>
 
-                <div className="space-y-8 max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar">
+                <div className="space-y-12">
                   {modal.status ? (
                     // COMPETITION MODAL CONTENT
                     <>
-                      <div className="grid grid-cols-2 gap-6 bg-gray-50 p-6 rounded-[2rem]">
-                        <div>
-                          <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Đơn vị tổ chức</h4>
-                          <p className="font-black text-lg text-gray-900">{modal.host}</p>
+                      <div className="grid grid-cols-2 gap-8 bg-gray-50/50 p-8 rounded-[2.5rem] border border-gray-100 shadow-inner">
+                        <div className="space-y-2">
+                          <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Đơn vị tổ chức</h4>
+                          <p className="font-black text-2xl text-gray-900 leading-none">{modal.host}</p>
+                          <p className="text-[10px] text-gray-400 font-bold italic">Bảo trợ bởi Chạm Nghề Network</p>
                         </div>
                         {modal.status !== 'suggested' && (
-                          <div>
-                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Tiến độ</h4>
-                            <p className="font-black text-lg text-[#FF6F61]">{modal.progress}%</p>
+                          <div className="space-y-2">
+                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tiến độ hiện tại</h4>
+                            <div className="flex items-center gap-3">
+                               <p className="font-black text-3xl text-[#FF6F61] leading-none">{modal.progress}%</p>
+                               <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                  <div className="bg-[#FF6F61] h-full" style={{ width: `${modal.progress}%` }} />
+                               </div>
+                            </div>
                           </div>
                         )}
                       </div>
+                      {modal.status !== 'suggested' && modal.xp && (
+                         <div className="bg-[#FFF9E5] p-4 rounded-2xl border border-[#FFEAA7] flex items-center justify-between">
+                            <span className="text-[10px] font-black text-[#D35400] uppercase tracking-widest">Phần thưởng XP hoàn thành</span>
+                            <span className="font-black text-[#D35400]">✨ {modal.xp} XP</span>
+                         </div>
+                      )}
 
                       <section className="space-y-4">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-[#FF6F61] text-white flex items-center justify-center font-black text-xs">01</div>
                           <h4 className="text-sm font-black text-gray-900 uppercase tracking-widest">Mô tả cuộc thi</h4>
                         </div>
-                        <p className="text-gray-600 leading-relaxed font-bold bg-gray-50 p-8 rounded-[2rem] border-2 border-dashed border-gray-200">
-                          {modal.details}
-                        </p>
+                        <div className="space-y-6">
+                           <p className="text-gray-600 leading-relaxed font-bold bg-gray-50 p-8 rounded-[2rem] border-2 border-dashed border-gray-200">
+                             {modal.details}
+                           </p>
+
+                           {/* COMPETITION SKILLS */}
+                           <div className="space-y-3 px-2">
+                              <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Kỹ năng rèn luyện</h4>
+                              <div className="flex flex-wrap gap-2">
+                                 {["Teamwork", "Public Speaking", "Strategic Planning", "Networking"].map((skill, i) => (
+                                    <span key={i} className="px-3 py-1.5 bg-[#FF6F61]/5 text-[#FF6F61] rounded-lg text-xs font-bold border border-[#FF6F61]/10 uppercase tracking-tighter">
+                                      {skill}
+                                    </span>
+                                 ))}
+                              </div>
+                           </div>
+                        </div>
                       </section>
 
                       {modal.roadmap && (
@@ -684,16 +948,97 @@ export default function Certificates() {
                       <div className="bg-gray-50 p-6 rounded-[2rem] border border-gray-100 space-y-6">
                         <div>
                           <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nhà cung cấp</h4>
-                          <p className="font-black text-lg text-gray-900">{modal.issuer}</p>
+                          <p className="font-black text-xl text-gray-900 leading-none">{modal.issuer}</p>
+                          <p className="text-[10px] text-gray-400 font-bold italic mt-1">Đối tác chiến lược Chạm Nghề</p>
                         </div>
                         
                         <div>
                           <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Giá trị thị trường</h4>
-                          <p className="text-gray-600 leading-relaxed italic font-medium">
-                            {modal.value || "Chứng chỉ này đang rất được săn đón bởi các nhà tuyển dụng hàng đầu trong năm 2026."}
-                          </p>
+                          <div className="bg-green-50/50 p-6 rounded-[2rem] border border-green-100/50 flex items-center gap-6">
+                             <div className="flex-1">
+                                <p className="text-gray-600 leading-relaxed italic font-medium text-sm mb-2">
+                                  {modal.value || "Chứng chỉ này đang rất được săn đón bởi các nhà tuyển dụng hàng đầu trong năm 2026."}
+                                </p>
+                                <div className="flex items-center gap-2">
+                                   <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                                      <div className="bg-[#8DB6A0] h-full w-[85%]" />
+                                   </div>
+                                   <span className="text-[10px] font-black text-[#8DB6A0]">CAO</span>
+                                </div>
+                             </div>
+                             <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                                <span className="text-3xl">📈</span>
+                             </div>
+                          </div>
                         </div>
+
+                        {/* SKILLS SECTION */}
+                        <div className="space-y-4">
+                           <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-[#8DB6A0]" />
+                              <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Kỹ năng cốt lõi nhận được</h4>
+                           </div>
+                           <div className="flex flex-wrap gap-2">
+                              {["Logic Thinking", "Problem Solving", "Professional Ethics", "Cloud Computing"].map((skill, i) => (
+                                 <span key={i} className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-xs font-bold text-gray-600 shadow-sm hover:border-[#8DB6A0] hover:text-[#8DB6A0] transition-colors cursor-default">
+                                   #{skill}
+                                 </span>
+                              ))}
+                           </div>
+                        </div>
+
+                        {modal.xp && (
+                          <div className="bg-[#FFF9E5] p-6 rounded-[2rem] border border-[#FFEAA7] flex items-center justify-between shadow-lg shadow-amber-900/5">
+                             <div className="flex flex-col">
+                               <span className="text-[10px] font-black text-[#D35400] uppercase tracking-widest mb-1">Tổng điểm kinh nghiệm</span>
+                               <p className="text-xs text-[#D35400]/70 font-bold">Dùng để thăng hạng profile Chạm Nghề.</p>
+                             </div>
+                             <span className="font-black text-3xl text-[#D35400] whitespace-nowrap">✨ {modal.xp} <span className="text-sm">XP</span></span>
+                          </div>
+                        )}
                       </div>
+
+                      {modal.roadmap && (
+                        <section className="mt-12 space-y-8">
+                           <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-2xl bg-[#8DB6A0] text-white flex items-center justify-center font-black text-sm shadow-lg shadow-[#8DB6A0]/20">TASKS</div>
+                                <h4 className="text-lg font-black text-gray-900 uppercase tracking-widest">Lộ trình hoàn thành</h4>
+                              </div>
+                              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{modal.roadmap.length} GIAI ĐOẠN</span>
+                           </div>
+                          <div className="grid sm:grid-cols-2 gap-4">
+                            {modal.roadmap.map((step: RoadmapStep, i: number) => (
+                              <div key={i} className="group/task bg-white border border-gray-100 rounded-[2rem] p-6 hover:border-[#8DB6A0] hover:shadow-2xl hover:shadow-[#8DB6A0]/10 transition-all duration-500 relative overflow-hidden">
+                                <div className="flex gap-5">
+                                  {step.image && (
+                                    <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-md border border-gray-50 bg-gray-50">
+                                      <img src={step.image} className="w-full h-full object-cover grayscale-[40%] group-hover/task:grayscale-0 group-hover/task:scale-110 transition-all duration-700" alt={step.title} />
+                                    </div>
+                                  )}
+                                  <div className="flex-1 flex flex-col justify-center">
+                                    <div className="flex justify-between items-start mb-2">
+                                      <h5 className="font-black text-gray-900 group-hover/task:text-[#8DB6A0] transition-colors text-base">{step.title}</h5>
+                                      {step.xp && (
+                                        <span className="bg-[#FFF9E5] text-[#D35400] px-3 py-1 rounded-xl text-[10px] font-black border border-[#FFEAA7] shadow-sm">+{step.xp} XP</span>
+                                      )}
+                                    </div>
+                                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-4">{step.desc}</p>
+                                    <div className="flex items-center gap-3">
+                                      <div className={`h-2 flex-1 rounded-full overflow-hidden ${step.status === 'completed' ? 'bg-[#8DB6A0]' : 'bg-gray-100 shadow-inner'}`}>
+                                        <div className={`h-full ${step.status === 'active' ? 'bg-[#8DB6A0] w-1/2 animate-pulse' : step.status === 'completed' ? 'w-full' : 'w-0'}`} />
+                                      </div>
+                                      <span className={`text-[10px] font-black uppercase tracking-tighter shrink-0 ${step.status === 'active' ? 'text-[#8DB6A0]' : step.status === 'completed' ? 'text-gray-400' : 'text-gray-300'}`}>
+                                        {step.status === 'active' ? 'Đang chạy' : step.status === 'completed' ? 'Xong' : 'Chưa mở'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
 
                       <div className="pt-6">
                         <button
