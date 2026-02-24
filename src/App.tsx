@@ -12,7 +12,7 @@ import CareerExploration, { Footer } from "./components/CareerExploration";
 import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
 
-type View = 'home' | 'quiz' | 'careers' | 'cases';
+type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
@@ -20,6 +20,7 @@ export default function App() {
   const [mbtiResult, setMbtiResult] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +50,7 @@ export default function App() {
     { id: 'quiz', label: 'Trắc nghiệm MBTI' },
     { id: 'careers', label: 'Khám phá ngành nghề' },
     { id: 'cases', label: 'Thi đấu giải Case & BXH' },
+    { id: 'certificates', label: 'Certificates' },
   ];
 
   const navigate = (target: View) => {
@@ -93,9 +95,35 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="hidden sm:block px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
-              Đăng nhập
-            </button>
+            <div className="hidden sm:flex items-center gap-3">
+              {!isLoggedIn ? (
+                <>
+                  <button
+                    onClick={() => setIsLoggedIn(true)}
+                    className="px-6 py-2.5 rounded-full border-2 border-primary text-primary text-sm font-bold hover:bg-primary/10 transition-all"
+                  >
+                    Đăng ký
+                  </button>
+                  <button
+                    onClick={() => setIsLoggedIn(true)}
+                    className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
+                  >
+                    Đăng nhập
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => navigate('profile')}
+                  className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary"
+                >
+                  <img
+                    src="https://i.pravatar.cc/100"
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              )}
+            </div>
             <button 
               className="lg:hidden p-2 text-primary"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -123,7 +151,7 @@ export default function App() {
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-accent z-50 lg:hidden shadow-2xl flex flex-col p-8"
+                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-background/95 backdrop-blur-xl z-50 lg:hidden shadow-2xl flex flex-col p-8"
               >
                 <div className="flex justify-between items-center mb-12">
                   <Logo />
@@ -150,9 +178,34 @@ export default function App() {
                 </div>
 
                 <div className="mt-auto pt-8 border-t border-primary/10">
-                  <button className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20">
-                    Đăng nhập
-                  </button>
+                  {!isLoggedIn ? (
+                    <>
+                      <button
+                        onClick={() => setIsLoggedIn(true)}
+                        className="w-full py-4 border-2 border-primary text-primary rounded-2xl font-bold"
+                      >
+                        Đăng ký
+                      </button>
+                      <button
+                        onClick={() => setIsLoggedIn(true)}
+                        className="w-full py-4 bg-primary text-white rounded-2xl font-bold"
+                      >
+                        Đăng nhập
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => navigate('profile')}
+                      className="flex items-center gap-3"
+                    >
+                      <img
+                        src="https://i.pravatar.cc/100"
+                        alt="avatar"
+                        className="w-12 h-12 rounded-full border-2 border-primary"
+                      />
+                      <span className="font-bold text-primary">Tài khoản của tôi</span>
+                    </button>
+                  )}
                   <p className="text-center text-sm text-text-muted mt-6">
                     Hỗ trợ: hotro@chamnghe.vn
                   </p>
@@ -334,6 +387,39 @@ export default function App() {
               className="py-12"
             >
               <CaseStudy />
+            </motion.section>
+          )}
+
+          {view === 'certificates' && (
+            <motion.section
+              key="certificates"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="py-12 text-center"
+            >
+              <h2 className="text-4xl font-bold mb-4">Certificates</h2>
+              <p className="text-text-muted">
+                Chứng chỉ và thành tích của bạn sẽ hiển thị tại đây.
+              </p>
+            </motion.section>
+          )}
+
+          {view === 'profile' && (
+            <motion.section
+              key="profile"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="py-12 text-center"
+            >
+              <h2 className="text-4xl font-bold mb-4">Tài khoản cá nhân</h2>
+              <button
+                onClick={() => setIsLoggedIn(false)}
+                className="px-6 py-3 bg-red-500 text-white rounded-full font-bold"
+              >
+                Đăng xuất
+              </button>
             </motion.section>
           )}
         </AnimatePresence>
