@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Sparkles, 
-  ArrowRight, 
+import {
+  Sparkles,
+  ArrowRight,
   BrainCircuit,
   Menu,
   X
 } from "lucide-react";
 import MBTIQuiz from "./components/MBTIQuiz";
-import CareerExploration, { Footer } from "./components/CareerExploration";
+import CareerExploration from "./components/CareerExploration";
+import { Footer } from "./components/Footer";
+import Policy from "./components/Policy";
+import Terms from "./components/Terms";
+import Contact from "./components/Contact";
 import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
 
-type View = 'home' | 'quiz' | 'careers' | 'cases';
+type View = 'home' | 'quiz' | 'careers' | 'cases' | 'policy' | 'terms' | 'contact';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
@@ -60,11 +64,10 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background selection:bg-secondary/30">
       {/* Navigation Bar */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 ${
-        scrolled ? "bg-surface/95 backdrop-blur-md shadow-md py-2" : "bg-transparent py-3"
-      }`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 ${scrolled ? "bg-surface/95 backdrop-blur-md shadow-md py-2" : "bg-transparent py-3"
+        }`}>
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div 
+          <div
             className="cursor-pointer"
             onClick={() => navigate('home')}
           >
@@ -77,13 +80,12 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => navigate(item.id as View)}
-                className={`transition-all hover:text-primary relative py-2 ${
-                  view === item.id ? "text-primary" : "text-text-muted"
-                }`}
+                className={`transition-all hover:text-primary relative py-2 ${view === item.id ? "text-primary" : "text-text-muted"
+                  }`}
               >
                 {item.label}
                 {view === item.id && (
-                  <motion.div 
+                  <motion.div
                     layoutId="nav-underline"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
                   />
@@ -96,7 +98,7 @@ export default function App() {
             <button className="hidden sm:block px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
               Đăng nhập
             </button>
-            <button 
+            <button
               className="lg:hidden p-2 text-primary"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -127,7 +129,7 @@ export default function App() {
               >
                 <div className="flex justify-between items-center mb-12">
                   <Logo />
-                  <button 
+                  <button
                     onClick={() => setIsMenuOpen(false)}
                     className="p-2 text-primary"
                   >
@@ -140,9 +142,8 @@ export default function App() {
                     <button
                       key={item.id}
                       onClick={() => navigate(item.id as View)}
-                      className={`text-left text-xl font-bold py-2 transition-colors ${
-                        view === item.id ? "text-primary" : "text-text-dark"
-                      }`}
+                      className={`text-left text-xl font-bold py-2 transition-colors ${view === item.id ? "text-primary" : "text-text-dark"
+                        }`}
                     >
                       {item.label}
                     </button>
@@ -181,26 +182,26 @@ export default function App() {
 
                 <div className="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-12 md:pb-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                   {/* Right Column (Image) - Appears first on Mobile */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="relative order-1 lg:order-2"
                   >
                     <div className="relative z-10 rounded-[24px] overflow-hidden shadow-2xl border-4 border-accent/30 p-2 bg-surface">
-                      <img 
-                        src="https://picsum.photos/seed/genz-work/800/1000" 
-                        alt="Gen Z Creative Team" 
+                      <img
+                        src="https://picsum.photos/seed/genz-work/800/1000"
+                        alt="Gen Z Creative Team"
                         className="w-full h-auto object-cover aspect-[4/5] rounded-[18px]"
                         referrerPolicy="no-referrer"
                       />
                     </div>
-                    
-                    
+
+
                   </motion.div>
 
                   {/* Left Column (Content) */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
@@ -210,9 +211,9 @@ export default function App() {
                       <Sparkles size={14} />
                       <span>Khám phá bản thân, chạm tới tương lai</span>
                     </div>
-                    
+
                     <h1 className="text-5xl md:text-7xl font-serif text-text-dark leading-[1.3] mb-6 tracking-tight text-shadow-soft-3d">
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -223,8 +224,7 @@ export default function App() {
                           bản sắc
                         </span>
                       </motion.div>
-                      
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
@@ -237,14 +237,14 @@ export default function App() {
                         </span>
                       </motion.div>
                     </h1>
-                    
+
                     <p className="text-lg md:text-xl text-text-muted font-light mb-8 max-w-lg leading-relaxed">
                       Đừng chỉ chọn nghề, <span className="font-medium text-text-dark">Hãy chọn đam mê</span>. <br />
                       Hành trình thấu hiểu bản thân bắt đầu từ một lần chạm.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <motion.button 
+                      <motion.button
                         whileHover={{ y: -4, filter: "brightness(1.1)" }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => navigate('quiz')}
@@ -253,8 +253,8 @@ export default function App() {
                         Làm trắc nghiệm ngay
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </motion.button>
-                      
-                      <motion.button 
+
+                      <motion.button
                         whileHover={{ y: -4, filter: "brightness(1.1)" }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => navigate('careers')}
@@ -267,10 +267,10 @@ export default function App() {
                     <div className="mt-8 flex items-center gap-4">
                       <div className="flex -space-x-3">
                         {[1, 2, 3, 4].map((i) => (
-                          <img 
+                          <img
                             key={i}
-                            src={`https://picsum.photos/seed/${i + 10}/100/100`} 
-                            alt="User" 
+                            src={`https://picsum.photos/seed/${i + 10}/100/100`}
+                            alt="User"
                             className="w-10 h-10 rounded-full border-2 border-surface object-cover"
                             referrerPolicy="no-referrer"
                           />
@@ -285,16 +285,16 @@ export default function App() {
               </section>
 
               {/* Quick Preview of Careers */}
-              <CareerExploration 
-                hasTested={hasTested} 
+              <CareerExploration
+                hasTested={hasTested}
                 mbtiResult={mbtiResult}
-                onStartQuiz={() => navigate('quiz')} 
+                onStartQuiz={() => navigate('quiz')}
               />
             </motion.div>
           )}
 
           {view === 'quiz' && (
-            <motion.section 
+            <motion.section
               key="quiz"
               id="quiz"
               initial={{ opacity: 0, y: 20 }}
@@ -302,15 +302,15 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="py-12"
             >
-              <MBTIQuiz 
-                onComplete={handleQuizComplete} 
+              <MBTIQuiz
+                onComplete={handleQuizComplete}
                 onExploreCareers={() => navigate('careers')}
               />
             </motion.section>
           )}
 
           {view === 'careers' && (
-            <motion.section 
+            <motion.section
               key="careers"
               id="careers"
               initial={{ opacity: 0 }}
@@ -318,16 +318,16 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="py-12"
             >
-              <CareerExploration 
-                hasTested={hasTested} 
+              <CareerExploration
+                hasTested={hasTested}
                 mbtiResult={mbtiResult}
-                onStartQuiz={() => navigate('quiz')} 
+                onStartQuiz={() => navigate('quiz')}
               />
             </motion.section>
           )}
 
           {view === 'cases' && (
-            <motion.section 
+            <motion.section
               key="cases"
               id="cases"
               initial={{ opacity: 0 }}
@@ -338,14 +338,55 @@ export default function App() {
               <CaseStudy />
             </motion.section>
           )}
+
+          {view === 'policy' && (
+            <motion.section
+              key="policy"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="py-12"
+            >
+              <Policy />
+            </motion.section>
+          )}
+
+          {view === 'terms' && (
+            <motion.section
+              key="terms"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="py-12"
+            >
+              <Terms />
+            </motion.section>
+          )}
+
+          {view === 'contact' && (
+            <motion.section
+              key="contact"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="py-12"
+            >
+              <Contact />
+            </motion.section>
+          )}
         </AnimatePresence>
       </div>
 
-      <Footer />
+      <Footer navigate={navigate} />
 
       {/* Subtle background texture */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233E2C2C' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} />
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233E2C2C' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
+      />
     </div>
   );
 }
