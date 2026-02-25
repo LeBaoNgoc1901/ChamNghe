@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Sparkles, 
@@ -12,6 +13,8 @@ import CareerExploration, { Footer } from "./components/CareerExploration";
 import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
 import Certificates from "./components/Certificates";
+import AuthSystem from "./components/AuthSystem";
+import UserProfile from "./components/UserProfile";
 
 type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile';
 
@@ -22,6 +25,9 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +41,6 @@ export default function App() {
     setHasTested(true);
     setMbtiResult(result);
     localStorage.setItem('mbti-result', result);
-    // No immediate redirect, let user see results
   };
 
   useEffect(() => {
@@ -43,6 +48,19 @@ export default function App() {
     if (savedResult) {
       setHasTested(true);
       setMbtiResult(savedResult);
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedUser = Cookies.get('user_account');
+    if (savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        setIsLoggedIn(true);
+      } catch (e) {
+        console.error("Failed to parse user cookie", e);
+      }
     }
   }, []);
 
@@ -58,6 +76,26 @@ export default function App() {
     setView(target);
     setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const openAuth = (mode: "login" | "register") => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleLoginSuccess = (userData: any) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+    // Persist login state
+    Cookies.set('user_account', JSON.stringify(userData), { expires: 7 });
+  };
+
+  const logout = () => {
+    Cookies.remove('user_account');
+    setUser(null);
+    setIsLoggedIn(false);
+    navigate('home');
   };
 
   return (
@@ -100,13 +138,13 @@ export default function App() {
               {!isLoggedIn ? (
                 <>
                   <button
-                    onClick={() => setIsLoggedIn(true)}
+                    onClick={() => openAuth('register')}
                     className="px-6 py-2.5 rounded-full border-2 border-primary text-primary text-sm font-bold hover:bg-primary/10 transition-all"
                   >
                     Đăng ký
                   </button>
                   <button
-                    onClick={() => setIsLoggedIn(true)}
+                    onClick={() => openAuth('login')}
                     className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
                   >
                     Đăng nhập
@@ -115,13 +153,21 @@ export default function App() {
               ) : (
                 <button
                   onClick={() => navigate('profile')}
-                  className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary"
+                  className={`flex items-center gap-3 px-4 py-2 rounded-full border-2 transition-all group ${
+                    view === 'profile' ? "border-primary bg-primary/5" : "border-transparent hover:bg-gray-50"
+                  }`}
                 >
-                  <img
-                    src="https://i.pravatar.cc/100"
-                    alt="avatar"
-                    className="w-full h-full object-cover"
-                  />
+                  <span className="text-sm font-bold text-text-dark hidden md:inline">
+                    <span className="text-text-muted font-medium">Xin chào</span> {user?.name}
+                  </span>
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary relative">
+                    <img
+                      src={user?.avatar || "https://i.pravatar.cc/100"}
+                      alt="avatar"
+                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
                 </button>
               )}
             </div>
@@ -182,30 +228,41 @@ export default function App() {
                   {!isLoggedIn ? (
                     <>
                       <button
-                        onClick={() => setIsLoggedIn(true)}
+                        onClick={() => openAuth('register')}
                         className="w-full py-4 border-2 border-primary text-primary rounded-2xl font-bold"
                       >
                         Đăng ký
                       </button>
                       <button
-                        onClick={() => setIsLoggedIn(true)}
+                        onClick={() => openAuth('login')}
                         className="w-full py-4 bg-primary text-white rounded-2xl font-bold"
                       >
                         Đăng nhập
                       </button>
                     </>
                   ) : (
-                    <button
-                      onClick={() => navigate('profile')}
-                      className="flex items-center gap-3"
-                    >
-                      <img
-                        src="https://i.pravatar.cc/100"
-                        alt="avatar"
-                        className="w-12 h-12 rounded-full border-2 border-primary"
-                      />
-                      <span className="font-bold text-primary">Tài khoản của tôi</span>
-                    </button>
+                    <div className="flex flex-col gap-4 w-full">
+                      <button
+                        onClick={() => navigate('profile')}
+                        className="flex items-center gap-4 w-full p-4 bg-primary/5 rounded-2xl border-2 border-primary/20"
+                      >
+                        <img
+                          src={user?.avatar || "https://i.pravatar.cc/100"}
+                          alt="avatar"
+                          className="w-14 h-14 rounded-full border-2 border-primary"
+                        />
+                        <div className="text-left">
+                          <span className="font-black text-text-dark block text-lg leading-tight">Xin chào {user?.name || "Thành viên"}</span>
+                        </div>
+                      </button>
+                      <button
+                        onClick={logout}
+                        className="w-full py-4 bg-white text-text-muted border-2 border-gray-100 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all"
+                      >
+                        <X size={18} />
+                        Đăng xuất
+                      </button>
+                    </div>
                   )}
                   <p className="text-center text-sm text-text-muted mt-6">
                     Hỗ trợ: hotro@chamnghe.vn
@@ -543,27 +600,26 @@ export default function App() {
             </motion.section>
           )}
 
-          {view === 'profile' && (
-            <motion.section
-              key="profile"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="py-12 text-center"
-            >
-              <h2 className="text-4xl font-bold mb-4">Tài khoản cá nhân</h2>
-              <button
-                onClick={() => setIsLoggedIn(false)}
-                className="px-6 py-3 bg-red-500 text-white rounded-full font-bold"
-              >
-                Đăng xuất
-              </button>
-            </motion.section>
+          {view === 'profile' && isLoggedIn && (
+            <UserProfile 
+              user={user} 
+              mbtiResult={mbtiResult} 
+              navigate={navigate} 
+              logout={logout} 
+            />
           )}
+创新创业
         </AnimatePresence>
       </div>
 
       <Footer />
+
+      <AuthSystem 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        onSuccess={handleLoginSuccess}
+        initialView={authMode}
+      />
 
       {/* Subtle background texture */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" 
