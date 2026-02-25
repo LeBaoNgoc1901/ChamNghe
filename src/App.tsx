@@ -9,14 +9,19 @@ import {
   X
 } from "lucide-react";
 import MBTIQuiz from "./components/MBTIQuiz";
-import CareerExploration, { Footer } from "./components/CareerExploration";
+import CareerExploration from "./components/CareerExploration";
+import { Footer } from "./components/Footer";
 import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
 import Certificates from "./components/Certificates";
 import AuthSystem from "./components/AuthSystem";
 import UserProfile from "./components/UserProfile";
+import TermsOfService from "./components/TermsOfService";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import HelpCenter from "./components/HelpCenter";
+import CommunityRules from "./components/CommunityRules";
 
-type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile';
+type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile' | 'terms' | 'privacy' | 'help' | 'community';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
@@ -608,11 +613,54 @@ export default function App() {
               logout={logout} 
             />
           )}
-创新创业
+
+          {view === 'terms' && (
+            <motion.section
+              key="terms"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <TermsOfService onBack={() => navigate('home')} />
+            </motion.section>
+          )}
+
+          {view === 'privacy' && (
+            <motion.section
+              key="privacy"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <PrivacyPolicy onBack={() => navigate('home')} />
+            </motion.section>
+          )}
+
+          {view === 'help' && (
+            <motion.section
+              key="help"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <HelpCenter onBack={() => navigate('home')} />
+            </motion.section>
+          )}
+
+          {view === 'community' && (
+            <motion.section
+              key="community"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <CommunityRules onBack={() => navigate('home')} />
+            </motion.section>
+          )}
         </AnimatePresence>
       </div>
 
-      <Footer />
+      <Footer onNavigate={navigate} />
 
       <AuthSystem 
         isOpen={isAuthModalOpen} 
