@@ -211,6 +211,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     host: "Eco Connect",
     image: "https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=800",
     progress: 30, 
+    tag: "HÀNH TRÌNH",
     ranking: "Hạng 12/200 (Vòng loại)",
     details: "Tìm kiếm các chiến dịch Marketing sáng tạo thúc đẩy lối sống bền vững và bảo vệ môi trường.",
     xp: 2850,
@@ -227,6 +228,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     host: "Logistics Hub",
     image: "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&q=80&w=800",
     progress: 75,
+    tag: "HÀNH TRÌNH",
     ranking: "Hạng 2/50 (Bán kết)",
     details: "Tối ưu hóa chuỗi cung ứng thực tế cho doanh nghiệp xuất khẩu.",
     xp: 3200,
@@ -244,6 +246,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     host: "EdTech Vietnam",
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800",
     progress: 10,
+    tag: "HÀNH TRÌNH",
     ranking: "Chưa cập nhật",
     details: "Kiến tạo các giải pháp công nghệ giáo dục đột phá cho tương lai giáo dục Việt Nam.",
     xp: 4800,
@@ -262,6 +265,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     host: "FTU Innovation Club",
     image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=800",
     progress: 100, 
+    tag: "DẤU ẤN",
     ranking: "Hạng 1 - Quán quân",
     details: "Cuộc thi giải quyết các bài toán vận hành thực tế của các startup công nghệ. Bạn đã xuất sắc vượt qua 4 vòng thi nghẹt thở.",
     xp: 10000,
@@ -279,12 +283,13 @@ const MOCK_COMPETITIONS: Competition[] = [
     host: "FinEdu League",
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
     progress: 100, 
+    tag: "DẤU ẤN",
     ranking: "Hạng 5 - Giải khuyến khích",
     details: "Đối đầu trực tiếp trong việc xây dựng kế hoạch tài chính cho các gia đình trẻ Việt Nam.",
     xp: 4500,
     roadmap: [
       { step: "01", title: "Khai Mạc", date: "01/12/2025", status: "completed", desc: "Phổ biến luật chơi và công bố đề bài chính thức." },
-      { step: "02", title: "Lập Kế Hoạch", date: "05/12/2025", status: "completed", desc: "Xây dựng chiến lược phân bổ tài sản và quản trị rủi ro." },
+      { step: "02", title: "Lập Kế Hoạch", date: "05/12/2025", status: "completed", desc: "Xây dựng chiến lược phân bỏ tài sản và quản trị rủi ro." },
       { step: "03", title: "Thuyết Trình", date: "10/12/2025", status: "completed", desc: "Bảo vệ phương án trước hội đồng tài chính chuyên nghiệp." },
     ]
   },
@@ -295,6 +300,7 @@ const MOCK_COMPETITIONS: Competition[] = [
     host: "Hanoi Business School",
     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
     progress: 100, 
+    tag: "DẤU ẤN",
     ranking: "Top 10 - Finalist",
     details: "Thử thách giải quyết 5 case study kinh điển trong vòng 24h liên tục. Kiểm tra sức bền và tư duy phân tích sắc bén.",
     xp: 3500,
@@ -652,8 +658,8 @@ export default function Certificates() {
                           <div className="relative h-40 -mx-8 -mt-8 mb-6 overflow-hidden">
                             <img src={comp.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={comp.title} />
                             <div className="absolute top-4 right-4">
-                              <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-black text-[#FF6F61] shadow-lg uppercase tracking-widest">
-                                {comp.status === 'active' ? 'LIVE' : comp.status === 'completed' ? 'DONE' : 'NEW'}
+                              <span className={`bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest ${comp.tag === 'DẤU ẤN' ? 'text-green-600' : 'text-[#FF6F61]'}`}>
+                                {comp.tag || (comp.status === 'active' ? 'LIVE' : comp.status === 'completed' ? 'DONE' : 'NEW')}
                               </span>
                             </div>
                           </div>
