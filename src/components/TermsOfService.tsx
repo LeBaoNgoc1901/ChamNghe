@@ -1,14 +1,14 @@
 import React from "react";
 import { motion } from "motion/react";
-import { 
-  ShieldCheck, 
-  Award, 
-  Users, 
-  AlertCircle, 
-  ArrowLeft, 
-  BookOpen, 
-  UserCheck, 
-  Globe, 
+import {
+  ShieldCheck,
+  Award,
+  Users,
+  AlertCircle,
+  ArrowLeft,
+  BookOpen,
+  UserCheck,
+  Globe,
   Scale,
   Handshake,
   FileLock
@@ -59,13 +59,13 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
   ];
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen bg-surface/50 pb-24"
     >
       <div className="max-w-5xl mx-auto px-6 pt-16">
-        <button 
+        <button
           onClick={onBack}
           className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-12 group"
         >
@@ -101,7 +101,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
                   {section.id}
                 </span>
               </div>
-              
+
               <div className="relative z-10">
                 <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mb-8 group-hover:bg-white group-hover:shadow-xl transition-all duration-500 group-hover:-translate-y-2">
                   {section.icon}

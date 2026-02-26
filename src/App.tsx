@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Sparkles, 
-  ArrowRight, 
+import {
+  Sparkles,
+  ArrowRight,
   BrainCircuit,
   Menu,
   X,
@@ -15,7 +15,6 @@ import {
 import MBTIQuiz from "./components/MBTIQuiz";
 import CareerExploration from "./components/CareerExploration";
 import { Footer } from "./components/Footer";
-import CaseStudy from "./components/CaseStudy";
 import { Logo } from "./components/Logo";
 import Certificates from "./components/Certificates";
 import AuthSystem from "./components/AuthSystem";
@@ -25,7 +24,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import HelpCenter from "./components/HelpCenter";
 import CommunityRules from "./components/CommunityRules";
 
-type View = 'home' | 'quiz' | 'careers' | 'cases' | 'certificates' | 'profile' | 'terms' | 'privacy' | 'help' | 'community';
+type View = 'home' | 'quiz' | 'careers' | 'certificates' | 'profile' | 'terms' | 'privacy' | 'help' | 'community';
 
 function useCountUp(target: number, start: boolean, duration = 1200) {
   const [value, setValue] = useState(0);
@@ -71,7 +70,7 @@ export default function App() {
   const testimonials = [
     {
       name: "Minh Anh",
-      role: "Quán quân Case Study 2025",
+      role: "Sáng lập cộng đồng định hướng",
       quote:
         "Chạm Nghề giống như một chiếc gương soi lại bản sắc của mình, rồi nhẹ nhàng đẩy mình bước tới những trải nghiệm lớn hơn.",
       avatar: "https://i.pravatar.cc/150?u=chamnghe1",
@@ -158,7 +157,6 @@ export default function App() {
     { id: 'home', label: 'Trang chủ' },
     { id: 'quiz', label: 'Trắc nghiệm MBTI' },
     { id: 'careers', label: 'Khám phá ngành nghề' },
-    { id: 'cases', label: 'Thi đấu giải Case & BXH' },
     { id: 'certificates', label: 'Dấu ấn bản sắc' },
   ];
 
@@ -191,11 +189,10 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background selection:bg-secondary/30">
       {/* Navigation Bar */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 ${
-        scrolled ? "bg-surface/95 backdrop-blur-md shadow-md py-2" : "bg-transparent py-3"
-      }`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 ${scrolled ? "bg-surface/95 backdrop-blur-md shadow-md py-2" : "bg-transparent py-3"
+        }`}>
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div 
+          <div
             className="cursor-pointer"
             onClick={() => navigate('home')}
           >
@@ -208,13 +205,12 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => navigate(item.id as View)}
-                className={`transition-all hover:text-primary relative py-2 ${
-                  view === item.id ? "text-primary" : "text-text-muted"
-                }`}
+                className={`transition-all hover:text-primary relative py-2 ${view === item.id ? "text-primary" : "text-text-muted"
+                  }`}
               >
                 {item.label}
                 {view === item.id && (
-                  <motion.div 
+                  <motion.div
                     layoutId="nav-underline"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
                   />
@@ -243,9 +239,8 @@ export default function App() {
               ) : (
                 <button
                   onClick={() => navigate('profile')}
-                  className={`flex items-center gap-3 px-4 py-2 rounded-full border-2 transition-all group ${
-                    view === 'profile' ? "border-primary bg-primary/5" : "border-transparent hover:bg-gray-50"
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-2 rounded-full border-2 transition-all group ${view === 'profile' ? "border-primary bg-primary/5" : "border-transparent hover:bg-gray-50"
+                    }`}
                 >
                   <span className="text-sm font-bold text-text-dark hidden md:inline">
                     <span className="text-text-muted font-medium">Xin chào</span> {user?.name}
@@ -261,7 +256,7 @@ export default function App() {
                 </button>
               )}
             </div>
-            <button 
+            <button
               className="lg:hidden p-2 text-primary"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -292,7 +287,7 @@ export default function App() {
               >
                 <div className="flex justify-between items-center mb-12">
                   <Logo />
-                  <button 
+                  <button
                     onClick={() => setIsMenuOpen(false)}
                     className="p-2 text-primary"
                   >
@@ -305,9 +300,8 @@ export default function App() {
                     <button
                       key={item.id}
                       onClick={() => navigate(item.id as View)}
-                      className={`text-left text-xl font-bold py-2 transition-colors ${
-                        view === item.id ? "text-primary" : "text-text-dark"
-                      }`}
+                      className={`text-left text-xl font-bold py-2 transition-colors ${view === item.id ? "text-primary" : "text-text-dark"
+                        }`}
                     >
                       {item.label}
                     </button>
@@ -382,16 +376,16 @@ export default function App() {
 
                 <div className="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-12 md:pb-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                   {/* Right Column (Image) - Appears first on Mobile */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="relative order-1 lg:order-2"
                   >
                     <div className="relative z-10 rounded-[24px] overflow-hidden shadow-2xl border-4 border-accent/30 p-2 bg-surface">
-                      <img 
-                        src="/hero.png" 
-                        alt="Gen Z Creative Team" 
+                      <img
+                        src="/hero.png"
+                        alt="Gen Z Creative Team"
                         className="w-full h-auto object-cover aspect-[4/5] rounded-[18px]"
                         referrerPolicy="no-referrer"
                       />
@@ -399,7 +393,7 @@ export default function App() {
                   </motion.div>
 
                   {/* Left Column (Content) */}
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
@@ -409,9 +403,9 @@ export default function App() {
                       <Sparkles size={14} />
                       <span>Khám phá bản thân, chạm tới tương lai</span>
                     </div>
-                    
+
                     <h1 className="text-5xl md:text-7xl font-serif text-text-dark leading-[1.3] mb-6 tracking-tight text-shadow-soft-3d">
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -422,8 +416,8 @@ export default function App() {
                           bản sắc
                         </span>
                       </motion.div>
-                      
-                      <motion.div 
+
+                      <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
@@ -436,14 +430,14 @@ export default function App() {
                         </span>
                       </motion.div>
                     </h1>
-                    
+
                     <p className="text-lg md:text-xl text-text-muted font-light mb-8 max-w-lg leading-relaxed">
                       Đừng chỉ chọn nghề, <span className="font-medium text-text-dark">Hãy chọn đam mê</span>. <br />
                       Hành trình thấu hiểu bản thân bắt đầu từ một lần chạm.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <motion.button 
+                      <motion.button
                         whileHover={{ y: -4, filter: "brightness(1.1)" }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => navigate('quiz')}
@@ -452,8 +446,8 @@ export default function App() {
                         Làm trắc nghiệm MBTI ngay
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </motion.button>
-                      
-                      <motion.button 
+
+                      <motion.button
                         whileHover={{ y: -4, filter: "brightness(1.1)" }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => navigate('careers')}
@@ -466,10 +460,10 @@ export default function App() {
                     <div className="mt-8 flex items-center gap-4">
                       <div className="flex -space-x-3">
                         {[1, 2, 3, 4].map((i) => (
-                          <img 
+                          <img
                             key={i}
-                            src={`https://picsum.photos/seed/${i + 10}/100/100`} 
-                            alt="User" 
+                            src={`https://picsum.photos/seed/${i + 10}/100/100`}
+                            alt="User"
                             className="w-10 h-10 rounded-full border-2 border-surface object-cover"
                             referrerPolicy="no-referrer"
                           />
@@ -482,7 +476,7 @@ export default function App() {
                   </motion.div>
                 </div>
               </section>
-              
+
               {/* About Us Section - The Human Behind the Craft */}
               <section className="relative max-w-7xl mx-auto px-6 py-28 overflow-hidden bg-background">
                 {/* Background Watercolor Effects */}
@@ -499,9 +493,9 @@ export default function App() {
                     className="space-y-8"
                   >
                     <div>
-                      <h2 
+                      <h2
                         className="text-[6rem] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-none mb-4 pb-4 md:pb-8"
-                        style={{ 
+                        style={{
                           backgroundImage: "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop')",
                           backgroundPosition: "center",
                           backgroundSize: "cover",
@@ -540,11 +534,11 @@ export default function App() {
                           Phần "Người" nhất tại Chạm Nghề chính là đội ngũ dẫn dắt. Họ không chỉ là những chuyên gia có 10+ năm kinh nghiệm tại các tập đoàn lớn (VinFast, Shopee, FPT...), mà còn là những người thấu hiểu tâm lý Gen Z.
                         </p>
                       </div>
-                      
+
                       {/* Bold Highlight Quote */}
                       <div className="pt-4 px-2">
-                        <h3 
-                          className="text-2xl md:text-3xl font-serif font-black leading-tight text-secondary drop-shadow-sm" 
+                        <h3
+                          className="text-2xl md:text-3xl font-serif font-black leading-tight text-secondary drop-shadow-sm"
                           style={{ fontFamily: "'Playfair Display', serif" }}
                         >
                           Chúng tôi không chỉ xây dựng công cụ, chúng tôi xây dựng sự thấu cảm.
@@ -567,9 +561,9 @@ export default function App() {
                         {/* Mentor 1 - Top Left */}
                         <div className="flex flex-col relative group z-20">
                           <div className="aspect-[4/5] mx-auto w-full md:w-[90%] rounded-[32px] overflow-hidden relative shadow-xl transform transition-transform duration-500 group-hover:-translate-y-2 border-4 border-white">
-                            <img 
-                              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" 
-                              alt="Mentor Coach" 
+                            <img
+                              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop"
+                              alt="Mentor Coach"
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -587,9 +581,9 @@ export default function App() {
                         {/* Mentor 3 - Overlaying Center Bottom */}
                         <div className="flex flex-col relative group z-30">
                           <div className="aspect-[16/10] w-full rounded-[32px] overflow-hidden relative shadow-2xl border-[6px] border-background transform transition-transform duration-500 group-hover:scale-105">
-                            <img 
-                              src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop" 
-                              alt="Cộng đồng Mentor" 
+                            <img
+                              src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop"
+                              alt="Cộng đồng Mentor"
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
@@ -605,9 +599,9 @@ export default function App() {
                         {/* Mentor 2 - Bottom Right */}
                         <div className="flex flex-col relative group z-10">
                           <div className="aspect-[3/4] mx-auto w-full md:w-[90%] rounded-[32px] overflow-hidden relative shadow-xl transform transition-transform duration-500 group-hover:-translate-y-2 border-4 border-[#C1D8C3]/50">
-                            <img 
-                              src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" 
-                              alt="Mentor Marketing" 
+                            <img
+                              src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop"
+                              alt="Mentor Marketing"
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -773,9 +767,8 @@ export default function App() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.5 }}
                             transition={{ duration: 0.5, delay: index * 0.12 }}
-                            className={`absolute right-0 left-6 rounded-3xl bg-background border border-primary/10 shadow-xl p-5 flex gap-4 items-start ${
-                              index === 0 ? "-top-4" : index === 1 ? "top-20" : "top-44"
-                            }`}
+                            className={`absolute right-0 left-6 rounded-3xl bg-background border border-primary/10 shadow-xl p-5 flex gap-4 items-start ${index === 0 ? "-top-4" : index === 1 ? "top-20" : "top-44"
+                              }`}
                           >
                             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-md">
                               {card.icon}
@@ -866,12 +859,6 @@ export default function App() {
                           },
                           {
                             step: "03",
-                            title: "Trải nghiệm thực chiến",
-                            desc: "Tham gia Case Study, project mô phỏng do doanh nghiệp & mentor thiết kế.",
-                            action: () => navigate('cases'),
-                          },
-                          {
-                            step: "04",
                             title: "Nhận chứng chỉ Bloom",
                             desc: "Tích lũy chứng chỉ & câu chuyện thật để đưa vào CV, portfolio, phỏng vấn.",
                             action: () => navigate('certificates'),
@@ -925,13 +912,6 @@ export default function App() {
                         },
                         {
                           step: "03",
-                          title: "Trải nghiệm thực chiến",
-                          desc: "Tham gia Case Study, project mô phỏng do doanh nghiệp & mentor thiết kế.",
-                          cta: "Xem các Case Study",
-                          action: () => navigate('cases'),
-                        },
-                        {
-                          step: "04",
                           title: "Nhận chứng chỉ Bloom",
                           desc: "Tích lũy chứng chỉ & câu chuyện thật để đưa vào CV, portfolio, phỏng vấn.",
                           cta: "Xem bộ chứng chỉ",
@@ -1014,47 +994,6 @@ export default function App() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* Hot competition spotlight */}
-                      <motion.article
-                        whileHover={{ y: -8 }}
-                        transition={{ type: "spring", stiffness: 220, damping: 22 }}
-                        className="md:col-span-2 relative overflow-hidden rounded-[32px] bg-gradient-to-br from-text-dark/90 to-text-dark shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer"
-                      >
-                        <div
-                          className="absolute inset-0 opacity-60"
-                          style={{
-                            backgroundImage:
-                              "url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1800&auto=format&fit=crop')",
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/20" />
-                        <div className="relative z-10 p-8 md:p-10 flex flex-col h-full justify-between text-white">
-                          <div className="flex items-center gap-3 mb-4">
-                            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-secondary text-white tracking-[0.16em] uppercase">
-                              Hot
-                            </span>
-                            <span className="text-xs text-white/70">
-                              Cuộc thi Case Study tháng này
-                            </span>
-                          </div>
-                          <div className="space-y-4 max-w-xl">
-                            <h4 className="text-2xl md:text-3xl font-serif font-bold">
-                              Bloom Branding Challenge 2026
-                            </h4>
-                            <p className="text-sm md:text-base text-white/80">
-                              Định vị lại thương hiệu cho một startup Việt Nam, cùng mentor từ các agency hàng đầu.
-                            </p>
-                          </div>
-                          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-white/75">
-                            <span className="px-3 py-1 rounded-full border border-white/30 bg-white/10">
-                              Creative & Marketing
-                            </span>
-                            <span>⏱ Đăng ký đến: 30/03/2026</span>
-                          </div>
-                        </div>
-                      </motion.article>
 
                       {/* New certificates & combined card */}
                       {[
@@ -1147,15 +1086,6 @@ export default function App() {
                           detail:
                             "Từ góc nhìn HR và mentor doanh nghiệp, bài viết mổ xẻ sự khác nhau giữa “bằng cấp đẹp” và “năng lực thực tế”, đi kèm các gợi ý cụ thể để bạn cân bằng cả hai trên CV.",
                         },
-                        {
-                          title: "Hành trình từ sinh viên đến quán quân",
-                          excerpt: "Case study một chặng đường đổi hướng đầy bất ngờ.",
-                          tag: "Câu chuyện thật",
-                          image:
-                            "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
-                          detail:
-                            "Nhân vật chính xuất phát là một sinh viên “mơ hồ”, từng muốn bỏ cuộc giữa chừng. Nhờ thử sức với các mini case trên Chạm Nghề, bạn ấy dần tích lũy kinh nghiệm và cuối cùng giành quán quân tại một cuộc thi toàn quốc.",
-                        },
                       ].map((post, index) => (
                         <article
                           key={post.title}
@@ -1245,13 +1175,12 @@ export default function App() {
                           <div className="relative flex flex-col gap-5">
                             <div className="flex items-center gap-4">
                               <div
-                                className={`h-14 w-14 rounded-full border-2 ${
-                                  t.accent === "primary"
+                                className={`h-14 w-14 rounded-full border-2 ${t.accent === "primary"
                                     ? "border-primary"
                                     : t.accent === "secondary"
-                                    ? "border-secondary"
-                                    : "border-accent"
-                                } overflow-hidden`}
+                                      ? "border-secondary"
+                                      : "border-accent"
+                                  } overflow-hidden`}
                               >
                                 <img src={t.avatar} alt={t.name} className="h-full w-full object-cover" />
                               </div>
@@ -1284,13 +1213,12 @@ export default function App() {
                           <div className="relative flex flex-col gap-4">
                             <div className="flex items-center gap-4">
                               <div
-                                className={`h-12 w-12 rounded-full border-2 ${
-                                  t.accent === "primary"
+                                className={`h-12 w-12 rounded-full border-2 ${t.accent === "primary"
                                     ? "border-primary"
                                     : t.accent === "secondary"
-                                    ? "border-secondary"
-                                    : "border-accent"
-                                } overflow-hidden`}
+                                      ? "border-secondary"
+                                      : "border-accent"
+                                  } overflow-hidden`}
                               >
                                 <img src={t.avatar} alt={t.name} className="h-full w-full object-cover" />
                               </div>
@@ -1321,7 +1249,7 @@ export default function App() {
           )}
 
           {view === 'quiz' && (
-            <motion.section 
+            <motion.section
               key="quiz"
               id="quiz"
               initial={{ opacity: 0, y: 20 }}
@@ -1329,15 +1257,15 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="py-12"
             >
-              <MBTIQuiz 
-                onComplete={handleQuizComplete} 
+              <MBTIQuiz
+                onComplete={handleQuizComplete}
                 onExploreCareers={() => navigate('careers')}
               />
             </motion.section>
           )}
 
           {view === 'careers' && (
-            <motion.section 
+            <motion.section
               key="careers"
               id="careers"
               initial={{ opacity: 0 }}
@@ -1345,26 +1273,14 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="py-12"
             >
-              <CareerExploration 
-                hasTested={hasTested} 
+              <CareerExploration
+                hasTested={hasTested}
                 mbtiResult={mbtiResult}
-                onStartQuiz={() => navigate('quiz')} 
+                onStartQuiz={() => navigate('quiz')}
               />
             </motion.section>
           )}
 
-          {view === 'cases' && (
-            <motion.section 
-              key="cases"
-              id="cases"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="py-12"
-            >
-              <CaseStudy />
-            </motion.section>
-          )}
 
           {view === 'certificates' && (
             <motion.section
@@ -1379,11 +1295,11 @@ export default function App() {
           )}
 
           {view === 'profile' && isLoggedIn && (
-            <UserProfile 
-              user={user} 
-              mbtiResult={mbtiResult} 
-              navigate={navigate} 
-              logout={logout} 
+            <UserProfile
+              user={user}
+              mbtiResult={mbtiResult}
+              navigate={navigate}
+              logout={logout}
             />
           )}
 
@@ -1435,16 +1351,16 @@ export default function App() {
 
       <Footer onNavigate={navigate} />
 
-      <AuthSystem 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+      <AuthSystem
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
         onSuccess={handleLoginSuccess}
         initialView={authMode}
       />
 
       {/* Subtle background texture */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233E2C2C' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} />
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233E2C2C' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} />
     </div>
   );
 }
