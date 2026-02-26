@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Search, 
-  ChevronDown, 
-  MessageCircle, 
-  Mail, 
-  ArrowLeft, 
-  HelpCircle, 
-  Award, 
-  Briefcase, 
+import {
+  Search,
+  ChevronDown,
+  MessageCircle,
+  Mail,
+  ArrowLeft,
+  HelpCircle,
+  Award,
+  Briefcase,
   Trophy,
   Sparkles,
   Zap,
@@ -27,7 +27,7 @@ interface FAQItemProps {
 
 const FAQCard: React.FC<FAQItemProps> = ({ question, answer, isOpen, onClick }) => (
   <div className={`mb-6 rounded-[2.5rem] border transition-all duration-500 overflow-hidden ${isOpen ? 'bg-primary/5 border-primary/30 shadow-2xl shadow-primary/10' : 'bg-white border-gray-100 hover:border-primary/20 hover:shadow-xl'}`}>
-    <button 
+    <button
       onClick={onClick}
       className="w-full py-8 px-10 flex items-center justify-between gap-6 text-left group"
     >
@@ -113,13 +113,13 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
     }
   ];
 
-  const filteredFaqs = faqs.filter(faq => 
-    faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredFaqs = faqs.filter(faq =>
+    faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
     faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen bg-surface/50 pb-24"
@@ -128,9 +128,9 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
       <div className="bg-[#0A2E1F] pt-20 pb-40 px-6 relative overflow-hidden">
         <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
-        
+
         <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <button 
+          <button
             onClick={onBack}
             className="inline-flex items-center gap-2 text-white/40 hover:text-primary transition-colors mb-16 group mx-auto"
           >
@@ -144,15 +144,15 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
 
           <div className="relative max-w-2xl mx-auto shadow-3xl">
             <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-primary" size={28} />
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Nhập từ khóa về MBTI, Chứng chỉ, Cuộc thi..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white rounded-[3rem] py-8 pl-20 pr-10 text-xl focus:outline-none focus:ring-8 focus:ring-primary/10 transition-all text-text-dark shadow-2xl border-2 border-primary/20"
             />
           </div>
-          
+
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-white/40 text-sm">
             <span>Tìm kiếm phổ biến:</span>
             {['In chứng chỉ', 'LinkedIn', 'MBTI thay đổi', 'Hủy tài khoản'].map(tag => (
@@ -198,7 +198,7 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
           <div className="space-y-2">
             {filteredFaqs.length > 0 ? (
               filteredFaqs.map((faq, index) => (
-                <FAQCard 
+                <FAQCard
                   key={index}
                   question={faq.question}
                   answer={faq.answer}
@@ -210,7 +210,7 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
               <div className="text-center py-32 bg-white rounded-[4rem] border-2 border-dashed border-gray-200 shadow-inner">
                 <Search size={64} className="mx-auto text-text-muted mb-6 opacity-10" />
                 <p className="text-text-muted text-2xl font-serif italic">Rất tiếc, chúng mình không tìm thấy nội dung cần tìm...</p>
-                <button 
+                <button
                   onClick={() => setSearchQuery("")}
                   className="mt-6 text-primary font-black hover:underline underline-offset-4"
                 >
@@ -257,7 +257,7 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
           <div className="absolute bottom-0 left-0 p-20 opacity-10 text-emerald-500 pointer-events-none">
             <Zap size={250} />
           </div>
-          
+
           <div className="relative z-10 max-w-xl text-center lg:text-left">
             <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/20 text-primary text-sm font-black mb-8 border border-primary/30 uppercase tracking-widest">
               <UserPlus size={18} />
@@ -266,7 +266,7 @@ const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
             <h3 className="text-5xl md:text-7xl font-serif font-black text-white mb-8 tracking-tighter leading-[1.1]">Vẫn còn băn khoăn?</h3>
             <p className="text-white/50 text-2xl mb-0 italic font-light leading-relaxed">Đội ngũ Mentor và Tutor của chúng mình luôn trực tuyến 20/7 để lắng nghe mọi câu chuyện của bạn.</p>
           </div>
-          
+
           <div className="relative z-10 flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
             <motion.button
               whileHover={{ scale: 1.05, y: -5 }}

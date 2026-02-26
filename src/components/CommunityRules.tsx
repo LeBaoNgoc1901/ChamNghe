@@ -1,15 +1,15 @@
 import React from "react";
 import { motion } from "motion/react";
-import { 
-  Users, 
-  Heart, 
-  ShieldCheck, 
-  ArrowLeft, 
-  Sparkles, 
-  Scale, 
-  MessageSquareOff, 
-  HandHeart, 
-  CheckCircle2, 
+import {
+  Users,
+  Heart,
+  ShieldCheck,
+  ArrowLeft,
+  Sparkles,
+  Scale,
+  MessageSquareOff,
+  HandHeart,
+  CheckCircle2,
   Flag,
   UserPlus
 } from "lucide-react";
@@ -47,13 +47,13 @@ const CommunityRules: React.FC<CommunityRulesProps> = ({ onBack }) => {
   ];
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen bg-surface/50 pb-24"
     >
       <div className="max-w-5xl mx-auto px-6 pt-16">
-        <button 
+        <button
           onClick={onBack}
           className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-16 group"
         >
@@ -107,7 +107,7 @@ const CommunityRules: React.FC<CommunityRulesProps> = ({ onBack }) => {
           <div className="absolute top-0 right-0 p-16 opacity-[0.03]">
             <Flag size={200} />
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-20 items-center">
             <div className="flex-1">
               <h3 className="text-4xl font-serif font-black text-text-dark mb-8 tracking-tighter">Hệ thống báo cáo & Giám sát</h3>
@@ -120,7 +120,7 @@ const CommunityRules: React.FC<CommunityRulesProps> = ({ onBack }) => {
                 <span className="px-4 py-2 bg-gray-50 rounded-full text-xs font-black uppercase text-text-muted border border-gray-100">Quyền kháng nghị</span>
               </div>
             </div>
-            
+
             <div className="w-full md:w-auto">
               <div className="bg-primary p-12 rounded-[4rem] text-white shadow-2xl shadow-primary/30 relative group overflow-hidden">
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
