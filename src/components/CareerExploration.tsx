@@ -20,8 +20,27 @@ import {
   Factory,
   Scale,
   Zap,
-  Search
+  Search,
+  X,
+  DollarSign,
+  ClipboardList,
+  CheckCircle2,
+  ListTodo,
+  Briefcase,
+  MapPin,
+  Sun,
+  Brain,
+  BookMarked,
+  TrendingDown,
+  ThumbsUp,
+  ThumbsDown,
+  AlertCircle,
+  GraduationCap as GradCap2,
+  Building2,
+  BarChart3,
+  Clock
 } from "lucide-react";
+import { CAREER_DETAILS, CareerDetail } from "../data/careerDetails";
 
 // --- DATA STRUCTURE ---
 
@@ -165,6 +184,11 @@ interface CareerExplorationProps {
 
 export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }: CareerExplorationProps) {
   const [activeBlockId, setActiveBlockId] = useState("economic");
+  const [selectedCareerId, setSelectedCareerId] = useState<string | null>(null);
+
+  const selectedCareerInfo = useMemo(() => {
+    return selectedCareerId ? CAREER_DETAILS[selectedCareerId] : null;
+  }, [selectedCareerId]);
 
   const currentBlock = useMemo(() => BLOCKS.find(b => b.id === activeBlockId)!, [activeBlockId]);
 
@@ -293,9 +317,26 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {filteredData.map((career, idx) => (
-              <CareerCard key={career.id} career={career} color={currentBlock.color} index={idx} />
+              <CareerCard
+                key={career.id}
+                career={career}
+                color={currentBlock.color}
+                index={idx}
+                onClick={() => setSelectedCareerId(career.id)}
+              />
             ))}
           </motion.div>
+        </AnimatePresence>
+
+        {/* CAREER DETAIL MODAL */}
+        <AnimatePresence>
+          {selectedCareerId && selectedCareerInfo && (
+            <CareerDetailModal
+              career={selectedCareerInfo}
+              onClose={() => setSelectedCareerId(null)}
+              color={currentBlock.color}
+            />
+          )}
         </AnimatePresence>
 
         {filteredData.length === 0 && (
@@ -354,15 +395,17 @@ interface CareerCardProps {
   career: Career;
   color: string;
   index: number;
+  onClick: () => void;
   key?: any;
 }
 
-function CareerCard({ career, color, index }: CareerCardProps) {
+function CareerCard({ career, color, index, onClick }: CareerCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
+      onClick={onClick}
       className="group relative bg-white rounded-[40px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] transition-all duration-500 border border-gray-100 overflow-hidden cursor-pointer"
     >
       {/* Background Decoration */}
@@ -404,21 +447,259 @@ function CareerCard({ career, color, index }: CareerCardProps) {
   );
 }
 
-function StatCard({ label, sub, icon: Icon, color }: { label: string, sub: string, icon: any, color: string }) {
-  const colorClasses: Record<string, string> = {
-    primary: "bg-primary text-white shadow-primary/20",
-    secondary: "bg-secondary text-white shadow-secondary/20",
-    accent: "bg-accent text-white shadow-accent/20",
-    cyan: "bg-cyan-500 text-white shadow-cyan-500/20"
-  };
+type IconComponent = (props: { size?: number; className?: string }) => ReturnType<typeof TrendingUp>;
 
+interface StatCardProps {
+  label: string;
+  sub: string;
+  icon: IconComponent;
+  color: string;
+}
+
+function StatCard({ label, sub, icon: Icon, color }: StatCardProps) {
+  const colorMap: Record<string, string> = {
+    primary: "bg-[#8DB6A0]/10 text-[#8DB6A0] border-[#8DB6A0]/20",
+    secondary: "bg-purple-50 text-purple-500 border-purple-100",
+    accent: "bg-amber-50 text-amber-500 border-amber-100",
+    cyan: "bg-cyan-50 text-cyan-500 border-cyan-100",
+  };
   return (
-    <div className="bg-white p-8 rounded-[35px] shadow-xl border border-gray-50 hover:scale-105 transition-transform">
-      <div className={`w-12 h-12 rounded-2xl ${colorClasses[color]} flex items-center justify-center mb-4 shadow-lg`}>
-        <Icon size={24} />
+    <div className={`p-6 rounded-3xl border ${colorMap[color] ?? colorMap.primary} flex flex-col gap-3`}>
+      <Icon size={28} />
+      <p className="text-3xl font-black">{label}</p>
+      <p className="text-xs font-bold uppercase tracking-widest opacity-70">{sub}</p>
+    </div>
+  );
+}
+
+
+interface CareerDetailModalProps {
+  career: CareerDetail;
+  onClose: () => void;
+  color: string;
+}
+
+function CareerDetailModal({ career, onClose, color }: CareerDetailModalProps) {
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+      />
+
+      {/* Panel */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        className="relative w-full max-w-5xl max-h-[92vh] bg-[#FDFAF6] rounded-[50px] shadow-2xl overflow-hidden flex flex-col"
+      >
+        {/* ── HEADER ── */}
+        <div className={`p-8 md:p-12 bg-gradient-to-br ${color} text-white relative shrink-0`}>
+          <button
+            onClick={onClose}
+            className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center transition-all group"
+          >
+            <X size={24} className="group-hover:rotate-90 transition-transform" />
+          </button>
+
+          {/* MBTI badges */}
+          <div className="flex flex-wrap gap-2 mb-5">
+            {career.mbtiMatch.map((m, i) => (
+              <span key={i} className="px-3 py-1 bg-white/25 rounded-lg text-[11px] font-black uppercase tracking-widest backdrop-blur-md border border-white/20">
+                {m}
+              </span>
+            ))}
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-serif font-black mb-3 leading-tight">{career.name}</h2>
+
+        </div>
+
+        {/* ── SCROLLABLE BODY ── */}
+        <div className="flex-1 overflow-y-auto p-8 md:p-12 space-y-14">
+
+          {/* ① TỔNG QUAN */}
+          <section className="space-y-4">
+            <SectionHeader icon={Sparkles} label="Tổng quan về ngành" />
+            <p className="text-base text-gray-700 font-medium leading-relaxed bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+              {career.overview}
+            </p>
+            <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-600 font-medium">
+              <MapPin size={15} className="text-gray-400 shrink-0" />
+              {career.workEnvironment}
+            </div>
+          </section>
+
+          {/* ② CÔNG VIỆC CỤ THỂ */}
+          <section className="space-y-6">
+            <SectionHeader icon={ClipboardList} label="Công việc cụ thể" />
+            <div className="grid md:grid-cols-2 gap-4">
+              {career.responsibilities.map((res, i) => (
+                <div key={i} className="p-5 bg-white rounded-3xl border border-gray-100 shadow-sm flex gap-4 items-start">
+                  <div className="w-8 h-8 rounded-xl bg-[#C1D8C3] flex items-center justify-center text-white shrink-0 font-black text-sm">
+                    {i + 1}
+                  </div>
+                  <p className="text-sm font-medium text-gray-700 leading-relaxed">{res}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ③ NĂNG LỰC – PHẨM CHẤT */}
+          <section className="space-y-6">
+            <SectionHeader icon={Brain} label="Yêu cầu năng lực – Phẩm chất" />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-3">
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#8DB6A0]">🛠 Kỹ năng cần có</p>
+                <div className="flex flex-wrap gap-2">
+                  {career.skills.map((s, i) => (
+                    <span key={i} className="px-3 py-1 bg-[#8DB6A0]/10 text-[#8DB6A0] border border-[#8DB6A0]/20 rounded-full text-xs font-bold">{s}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-3">
+                <p className="text-[10px] font-black uppercase tracking-widest text-indigo-500">📚 Cần giỏi môn</p>
+                <div className="flex flex-wrap gap-2">
+                  {career.subjectStrengths.map((s, i) => (
+                    <span key={i} className="px-3 py-1 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full text-xs font-bold">{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {career.healthRequirements && (
+              <div className="flex items-start gap-3 p-5 bg-rose-50 border border-rose-100 rounded-2xl text-sm text-rose-700 font-medium">
+                <AlertCircle size={18} className="shrink-0 mt-0.5 text-rose-400" />
+                <span><strong>Sức khỏe:</strong> {career.healthRequirements}</span>
+              </div>
+            )}
+          </section>
+
+          {/* ④ CON ĐƯỜNG HỌC TẬP */}
+          <section className="space-y-6">
+            <SectionHeader icon={BookMarked} label="Con đường học tập" />
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-3">
+                <p className="text-[10px] font-black uppercase tracking-widest text-blue-500">🎓 Ngành học ĐH / CĐ</p>
+                <ul className="space-y-2">
+                  {career.educationPath.majors.map((m, i) => (
+                    <li key={i} className="text-sm font-medium text-gray-700 flex gap-2">
+                      <span className="text-blue-400">▸</span>{m}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-3">
+                <p className="text-[10px] font-black uppercase tracking-widest text-teal-500">📝 Tổ hợp thi</p>
+                <div className="flex flex-wrap gap-2">
+                  {career.educationPath.examGroups.map((g, i) => (
+                    <span key={i} className="px-3 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-lg text-xs font-black">{g}</span>
+                  ))}
+                </div>
+              </div>
+              {career.educationPath.studyAbroad && (
+                <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-3">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-orange-500">✈️ Du học</p>
+                  <p className="text-sm font-medium text-gray-700 leading-relaxed">{career.educationPath.studyAbroad}</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* ⑤ CƠ HỘI VIỆC LÀM & XU HƯỚNG */}
+          <section className="space-y-6">
+            <SectionHeader icon={BarChart3} label="Cơ hội việc làm & Xu hướng" />
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                { label: "Khả năng xin việc", value: career.jobMarket.employmentRate, emoji: "💼", bg: "bg-green-50 border-green-100 text-green-700" },
+                { label: "Mức độ cạnh tranh", value: career.jobMarket.competition, emoji: "⚔️", bg: "bg-orange-50 border-orange-100 text-orange-700" },
+                { label: "Xu hướng 5–10 năm tới", value: career.jobMarket.trend5to10years, emoji: "🚀", bg: "bg-blue-50 border-blue-100 text-blue-700" },
+              ].map((item, i) => (
+                <div key={i} className={`p-6 rounded-3xl border ${item.bg} space-y-2`}>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-70">{item.emoji} {item.label}</p>
+                  <p className="text-sm font-semibold leading-relaxed">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ⑥ THU NHẬP & THĂNG TIẾN */}
+          <section className="space-y-6">
+            <SectionHeader icon={DollarSign} label="Thu nhập & Thăng tiến" />
+            <div className="grid gap-4">
+              {[
+                { label: "Khởi điểm", amount: career.salaryBreakdown.entry, icon: "🌱" },
+                { label: "Sau 3–5 năm", amount: career.salaryBreakdown.afterThreeToFiveYears, icon: "🚀" },
+                { label: "Cấp chuyên sâu / Quản lý", amount: career.salaryBreakdown.senior, icon: "👑" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center justify-between p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{item.icon}</span>
+                    <span className="text-sm font-bold text-gray-400 uppercase tracking-tight">{item.label}</span>
+                  </div>
+                  <span className="font-black text-text-dark text-base">{item.amount}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ⑦ ƯU – NHƯỢC ĐIỂM */}
+          <section className="space-y-6">
+            <SectionHeader icon={CheckCircle2} label="Ưu điểm – Nhược điểm thật sự" />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-3xl p-6 border border-green-100 shadow-sm space-y-4">
+                <div className="flex items-center gap-2 text-green-600 font-black text-xs uppercase tracking-widest">
+                  <ThumbsUp size={16} />
+                  Ưu điểm
+                </div>
+                <ul className="space-y-3">
+                  {career.pros.map((p, i) => (
+                    <li key={i} className="flex gap-3 items-start text-sm text-gray-700 font-medium">
+                      <span className="text-green-500 mt-0.5 shrink-0">✓</span>{p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-white rounded-3xl p-6 border border-rose-100 shadow-sm space-y-4">
+                <div className="flex items-center gap-2 text-rose-500 font-black text-xs uppercase tracking-widest">
+                  <ThumbsDown size={16} />
+                  Nhược điểm
+                </div>
+                <ul className="space-y-3">
+                  {career.cons.map((c, i) => (
+                    <li key={i} className="flex gap-3 items-start text-sm text-gray-700 font-medium">
+                      <span className="text-rose-400 mt-0.5 shrink-0">✗</span>{c}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-6 bg-gray-50 border border-gray-200 rounded-3xl">
+              <AlertCircle size={20} className="text-gray-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Điều khiến nhiều người bỏ nghề</p>
+                <p className="text-sm text-gray-700 font-medium leading-relaxed">{career.reasonsPeopleQuit}</p>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function SectionHeader({ icon: Icon, label }: { icon: typeof Sparkles; label: string }) {
+  return (
+    <div className="flex items-center gap-3 text-[#8DB6A0]">
+      <div className="w-8 h-8 rounded-xl bg-[#8DB6A0]/10 flex items-center justify-center">
+        <Icon size={18} strokeWidth={2.5} />
       </div>
-      <p className="text-2xl font-black text-text-dark leading-none mb-1">{label}</p>
-      <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{sub}</p>
+      <h3 className="text-base font-black uppercase tracking-widest text-gray-700">{label}</h3>
     </div>
   );
 }
