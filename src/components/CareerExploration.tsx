@@ -185,6 +185,24 @@ interface CareerExplorationProps {
 export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }: CareerExplorationProps) {
   const [activeBlockId, setActiveBlockId] = useState("economic");
   const [selectedCareerId, setSelectedCareerId] = useState<string | null>(null);
+  const [interestedCareers, setInterestedCareers] = useState<string[]>(() => {
+    const saved = localStorage.getItem("interestedCareers");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const toggleInterest = (careerId: string) => {
+    setInterestedCareers((prev) => {
+      let updated;
+      if (prev.includes(careerId)) {
+        updated = prev.filter((id) => id !== careerId);
+      } else {
+        updated = [...prev, careerId];
+      }
+
+      localStorage.setItem("interestedCareers", JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   const selectedCareerInfo = useMemo(() => {
     return selectedCareerId ? CAREER_DETAILS[selectedCareerId] : null;
@@ -323,6 +341,9 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
                 color={currentBlock.color}
                 index={idx}
                 onClick={() => setSelectedCareerId(career.id)}
+                isInterested={interestedCareers.includes(career.id)}
+                onToggleInterest={() => toggleInterest(career.id)}
+                mbtiResult={hasTested ? mbtiResult : null}
               />
             ))}
           </motion.div>
@@ -396,10 +417,16 @@ interface CareerCardProps {
   color: string;
   index: number;
   onClick: () => void;
+  isInterested: boolean;
+  onToggleInterest: () => void;
+  mbtiResult?: string | null;
   key?: any;
 }
 
-function CareerCard({ career, color, index, onClick }: CareerCardProps) {
+function CareerCard({ career, color, index, onClick, isInterested, onToggleInterest, mbtiResult }: CareerCardProps) {
+  const mbtiList = CAREER_DETAILS[career.id]?.mbtiMatch || [];
+  const isMbtiMatch = mbtiResult && mbtiList.includes(mbtiResult);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -408,14 +435,36 @@ function CareerCard({ career, color, index, onClick }: CareerCardProps) {
       onClick={onClick}
       className="group relative bg-white rounded-[40px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] transition-all duration-500 border border-gray-100 overflow-hidden cursor-pointer"
     >
+      {/* Nút Quan tâm */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleInterest();
+        }}
+        className="absolute top-6 right-6 z-20"
+      >
+        <Heart
+          size={22}
+          className={`transition-all duration-300 ${isInterested ? "text-rose-500 fill-rose-500 scale-110" : "text-gray-300 hover:text-rose-400"}`}
+        />
+      </button>
+
       {/* Background Decoration */}
       <div className={`absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 rounded-full transition-opacity duration-700 blur-2xl`} />
 
       <div className="relative z-10 flex flex-col h-full">
         <div className="flex justify-between items-start mb-6">
-          <span className="px-4 py-1.5 bg-gray-50 rounded-full text-[10px] font-black text-gray-400 uppercase tracking-widest border border-gray-100">
-            {career.category}
-          </span>
+          <div className="flex gap-2 items-center flex-wrap">
+            <span className="px-4 py-1.5 bg-gray-50 rounded-full text-[10px] font-black text-gray-400 uppercase tracking-widest border border-gray-100">
+              {career.category}
+            </span>
+            {isMbtiMatch && (
+              <span className={`px-3 py-1 bg-rose-400 rounded-full text-[10px] font-black text-white uppercase tracking-widest shadow-sm flex items-center gap-1`}>
+                <Sparkles size={12} />
+                Dành cho bạn
+              </span>
+            )}
+          </div>
           <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-white opacity-20 group-hover:opacity-100 transition-all duration-500 shadow-lg`}>
             <ArrowRight size={20} className="-rotate-45 group-hover:rotate-0 transition-transform" />
           </div>

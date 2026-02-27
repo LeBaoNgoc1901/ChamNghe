@@ -133,6 +133,8 @@ export default function App() {
   };
 
   useEffect(() => {
+    // Only load if logged in, but we can't do it right here since isLoggedIn might be false initially.
+    // We will load it here, but clear it if user not logged in after cookie check.
     const savedResult = localStorage.getItem('mbti-result');
     if (savedResult) {
       setHasTested(true);
@@ -147,9 +149,19 @@ export default function App() {
         const userData = JSON.parse(savedUser);
         setUser(userData);
         setIsLoggedIn(true);
+        const savedResult = localStorage.getItem('mbti-result');
+        if (savedResult) {
+          setHasTested(true);
+          setMbtiResult(savedResult);
+        }
       } catch (e) {
         console.error("Failed to parse user cookie", e);
       }
+    } else {
+      // If no valid user, clear MBTI test state
+      localStorage.removeItem('mbti-result');
+      setHasTested(false);
+      setMbtiResult(null);
     }
   }, []);
 
@@ -161,6 +173,10 @@ export default function App() {
   ];
 
   const navigate = (target: View) => {
+    if (!isLoggedIn && (target === 'quiz' || target === 'careers' || target === 'certificates')) {
+      openAuth('login');
+      return;
+    }
     setView(target);
     setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -182,8 +198,11 @@ export default function App() {
 
   const logout = () => {
     Cookies.remove('user_account');
+    localStorage.removeItem('mbti-result');
     setUser(null);
     setIsLoggedIn(false);
+    setHasTested(false);
+    setMbtiResult(null);
     navigate('home');
   };
 
