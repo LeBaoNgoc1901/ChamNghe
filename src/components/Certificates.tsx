@@ -384,10 +384,10 @@ export const MOCK_COMPETITIONS: Competition[] = [
 ];
 
 export default function Certificates() {
-  const [tab, setTab] = useState("certificates");
+  const [tab, setTab] = useState(() => localStorage.getItem("certTab") || "certificates");
   const [certSubTab, setCertSubTab] = useState("achieved");
   const [courseSubTab, setCourseSubTab] = useState("achieved");
-  const [compSubTab, setCompSubTab] = useState("active"); // 'completed', 'active', 'suggested'
+  const [compSubTab, setCompSubTab] = useState(() => localStorage.getItem("compSubTab") || "active");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
   const [modal, setModal] = useState<any>(null); // Changed to any to support competition objects
@@ -406,12 +406,15 @@ export default function Certificates() {
   useEffect(() => {
     const result = localStorage.getItem("mbti_result");
     if (result) {
-      // Logic to categorize MBTI (simplified)
       if (result.includes("N") && result.includes("F")) setMbti("NF");
       else if (result.includes("N") && result.includes("T")) setMbti("NT");
       else if (result.includes("S") && result.includes("J")) setMbti("SJ");
       else if (result.includes("S") && result.includes("P")) setMbti("SP");
     }
+
+    // Clear the deep link state so it doesn't get stuck on refresh
+    localStorage.removeItem("certTab");
+    localStorage.removeItem("compSubTab");
   }, []);
 
   const toggleExpand = (id: number) => {
