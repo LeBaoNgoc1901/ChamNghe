@@ -366,7 +366,7 @@ export const MOCK_COMPETITIONS: Competition[] = [
   },
   {
     id: "s4",
-    title: "UX Design Challenge",
+    title: "UX/UI Design Challenge",
     status: "suggested",
     host: "Product Designers VN",
     image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=800",
