@@ -24,6 +24,8 @@ type Cert = {
   value?: string;
   xp?: number;
   roadmap?: RoadmapStep[];
+  lessons?: number;
+  duration?: string;
 };
 
 type Competition = {
@@ -392,6 +394,7 @@ export default function Certificates() {
   const [expandedComp, setExpandedComp] = useState<number | null>(null);
   const [mbti, setMbti] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showRanking, setShowRanking] = useState(false);
 
   const filterOptions = [
     { value: "All", label: "Tất cả lĩnh vực" },
@@ -462,8 +465,7 @@ export default function Certificates() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex w-full items-end">
           {[
-            { key: "certificates", label: "Certificates", color: "bg-[#FF6F61]", textColor: "text-white" },
-            { key: "courses", label: "Khoá học", color: "bg-[#60A5FA]", textColor: "text-white" },
+            { key: "certificates", label: "Chứng chỉ", color: "bg-[#FF6F61]", textColor: "text-white" },
             { key: "competition", label: "Cuộc thi", color: "bg-[#8DB6A0]", textColor: "text-white" },
           ].map((t) => (
             <button
@@ -750,13 +752,44 @@ export default function Certificates() {
                           </h3>
 
                           {cert.date && (
-                            <div className="flex flex-col gap-2 mb-8">
+                            <div className="flex flex-col gap-2 mb-6">
                               <p className="text-sm text-gray-500 flex items-center gap-2 font-medium">
                                 <span className="w-2.5 h-2.5 rounded-full bg-[#8DB6A0] shadow-[0_0_8px_rgba(141,182,160,0.6)] animate-pulse"></span>
                                 Đã xác thực: {cert.date}
                               </p>
+                              <div className="flex gap-4 text-xs font-bold text-gray-500 mt-1">
+                                <div className="flex items-center gap-1.5">
+                                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                                  {cert.lessons || 12} bài giảng
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                  {cert.duration || "24h học"}
+                                </div>
+                              </div>
                               {cert.xp && (
-                                <div className="flex items-center gap-1.5 mt-1">
+                                <div className="flex items-center gap-1.5 mt-2">
+                                  <div className="flex items-center gap-1.5 bg-[#FFF9E5] text-[#D35400] px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm border border-[#FFEAA7] group-hover:scale-105 transition-transform duration-300">
+                                    <span className="text-sm">✨</span> THƯỞNG {cert.xp} XP
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          {!cert.date && (
+                            <div className="flex flex-col gap-2 mb-6">
+                              <div className="flex gap-4 text-xs font-bold text-gray-500 mt-1">
+                                <div className="flex items-center gap-1.5">
+                                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                                  {cert.lessons || 12} bài giảng
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                  {cert.duration || "24h học"}
+                                </div>
+                              </div>
+                              {cert.xp && (
+                                <div className="flex items-center gap-1.5 mt-2">
                                   <div className="flex items-center gap-1.5 bg-[#FFF9E5] text-[#D35400] px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm border border-[#FFEAA7] group-hover:scale-105 transition-transform duration-300">
                                     <span className="text-sm">✨</span> THƯỞNG {cert.xp} XP
                                   </div>
@@ -793,7 +826,7 @@ export default function Certificates() {
         <div className="fixed inset-0 bg-[#F6E7D8]/90 backdrop-blur-3xl flex items-center justify-center z-50 p-4 md:p-8 animate-fadeIn overflow-y-auto">
           <div className="bg-white rounded-[40px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] max-w-6xl w-full overflow-hidden relative border-8 border-white/50 transition-all duration-500 my-auto">
             <button
-              onClick={() => setModal(null)}
+              onClick={() => { setModal(null); setShowRanking(false); }}
               className="absolute top-8 right-8 z-20 p-4 bg-white/60 hover:bg-white backdrop-blur-md rounded-full text-gray-400 hover:text-black hover:rotate-90 transition-all duration-500 shadow-xl"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -874,6 +907,42 @@ export default function Certificates() {
                         </div>
                       )}
 
+                      {showRanking && (
+                        <div className="bg-white p-6 rounded-3xl border-2 border-[#8DB6A0] shadow-xl animate-fadeIn mb-8 relative overflow-hidden">
+                          <div className="absolute top-0 left-0 w-2 h-full bg-[#8DB6A0]" />
+                          <h4 className="text-xl font-black text-[#8DB6A0] uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <span>🏆</span> BẢNG XẾP HẠNG
+                          </h4>
+                          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex justify-between items-center mb-4">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-black text-gray-400">Hạng của bạn</span>
+                              <span className="font-black text-[#FF6F61]">{modal.ranking || "Chưa có"}</span>
+                            </div>
+                            {modal.xp && (
+                              <div className="flex flex-col items-end">
+                                <span className="text-[10px] uppercase font-black text-gray-400">Phần thưởng (Dự kiến)</span>
+                                <span className="font-black text-[#D35400]">✨ {modal.xp} XP</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="space-y-3">
+                            {[
+                              { rank: 1, name: "Nguyễn Văn A", score: "98/100" },
+                              { rank: 2, name: "Trần Thị B", score: "95/100" },
+                              { rank: 3, name: "Lê Văn C", score: "92/100" },
+                            ].map((user) => (
+                              <div key={user.rank} className="flex justify-between items-center p-3 rounded-xl bg-white border border-gray-100 shadow-sm">
+                                <div className="flex flex-row items-center gap-3">
+                                  <span className={`w-8 h-8 flex items-center justify-center rounded-full font-black text-sm ${user.rank === 1 ? 'bg-yellow-100 text-yellow-600' : user.rank === 2 ? 'bg-gray-100 text-gray-500' : 'bg-orange-50 text-orange-400'}`}>{user.rank}</span>
+                                  <span className="font-bold text-gray-700">{user.name}</span>
+                                </div>
+                                <span className="font-black text-gray-400">{user.score}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       <section className="space-y-4">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-[#FF6F61] text-white flex items-center justify-center font-black text-xs">01</div>
@@ -928,13 +997,23 @@ export default function Certificates() {
                         {modal.status === 'completed' && (
                           <>
                             <button className="flex-1 py-4 bg-[#FF6F61] text-white font-black rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">Certificates</button>
-                            <button className="flex-1 py-4 bg-white border-2 border-[#FF6F61] text-[#FF6F61] font-black rounded-2xl hover:bg-[#FF6F61]/5 transition-all active:scale-95">Ranking</button>
+                            <button
+                              onClick={() => setShowRanking(!showRanking)}
+                              className="flex-1 py-4 bg-white border-2 border-[#FF6F61] text-[#FF6F61] font-black rounded-2xl hover:bg-[#FF6F61]/5 transition-all active:scale-95"
+                            >
+                              {showRanking ? "Ẩn Ranking" : "Ranking"}
+                            </button>
                           </>
                         )}
                         {modal.status === 'active' && (
                           <>
                             <button className="flex-1 py-4 bg-[#FF6F61] text-white font-black rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">Tiếp tục</button>
-                            <button className="flex-1 py-4 bg-white border-2 border-[#FF6F61] text-[#FF6F61] font-black rounded-2xl hover:bg-[#FF6F61]/5 transition-all active:scale-95">Ranking</button>
+                            <button
+                              onClick={() => setShowRanking(!showRanking)}
+                              className="flex-1 py-4 bg-white border-2 border-[#FF6F61] text-[#FF6F61] font-black rounded-2xl hover:bg-[#FF6F61]/5 transition-all active:scale-95"
+                            >
+                              {showRanking ? "Ẩn Ranking" : "Ranking"}
+                            </button>
                           </>
                         )}
                         {modal.status === 'suggested' && (
