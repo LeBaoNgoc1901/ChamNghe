@@ -123,7 +123,7 @@ const MOCK_SUGGESTED: Record<string, Cert[]> = {
       title: "UX/UI Design Fundamentals",
       field: "IT",
       issuer: "Google",
-      image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4b?auto=format&fit=crop&q=80&w=600",
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600",
       value: "Sáng tạo trải nghiệm người dùng linh hoạt và bắt mắt.",
       xp: 500,
       roadmap: [
@@ -140,7 +140,7 @@ const MOCK_SUGGESTED: Record<string, Cert[]> = {
       title: "Critical Thinking",
       field: "Kinh tế",
       issuer: "University of Sydney",
-      image: "https://images.unsplash.com/photo-1700000837284-3b3c9e2ca4dc?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
       value: "Kỹ năng nền tảng cho mọi ngành nghề trong tương lai.",
       xp: 300,
       roadmap: [
@@ -366,10 +366,10 @@ export const MOCK_COMPETITIONS: Competition[] = [
   },
   {
     id: "s4",
-    title: "UX Design Challenge",
+    title: "UX/UI Design Challenge",
     status: "suggested",
     host: "Product Designers VN",
-    image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
     tag: "Thiết kế",
     category: ["NF", "NT"],
     progress: 0,
