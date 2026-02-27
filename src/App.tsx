@@ -16,7 +16,7 @@ import MBTIQuiz from "./components/MBTIQuiz";
 import CareerExploration from "./components/CareerExploration";
 import { Footer } from "./components/Footer";
 import { Logo } from "./components/Logo";
-import Certificates from "./components/Certificates";
+import Certificates, { MOCK_COMPETITIONS } from "./components/Certificates";
 import AuthSystem from "./components/AuthSystem";
 import UserProfile from "./components/UserProfile";
 import TermsOfService from "./components/TermsOfService";
@@ -566,9 +566,9 @@ export default function App() {
                               alt="Mentor Coach"
                               className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 pb-16 md:pb-20">
                               <span className="text-secondary font-bold text-sm tracking-wider uppercase mb-1">ENFJ</span>
-                              <span className="text-white font-medium">Mentor Lan - Chuyên gia Hướng nghiệp</span>
+                              <span className="text-white font-medium block">Mentor Lan - Chuyên gia Hướng nghiệp</span>
                             </div>
                           </div>
                           <div className="absolute -bottom-8 right-0 z-30 bg-[#FDF6EC]/95 backdrop-blur-sm p-4 md:p-5 rounded-2xl shadow-xl border border-primary/10 w-[90%] rotate-3 group-hover:rotate-0 transition-transform">
@@ -604,9 +604,9 @@ export default function App() {
                               alt="Mentor Marketing"
                               className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <div className="absolute inset-0 bg-gradient-to-t from-text-dark/90 via-text-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 pb-16 md:pb-20">
                               <span className="text-accent font-bold text-sm tracking-wider uppercase mb-1">ENTP</span>
-                              <span className="text-white font-medium">Mentor Nam - Người truyền lửa Marketing</span>
+                              <span className="text-white font-medium block">Mentor Nam - Người truyền lửa Marketing</span>
                             </div>
                           </div>
                           <div className="absolute -bottom-8 left-0 z-30 bg-[#C1D8C3]/95 backdrop-blur-sm p-4 md:p-5 rounded-2xl shadow-xl border border-primary/10 w-[90%] -rotate-6 group-hover:rotate-0 transition-transform">
@@ -842,8 +842,8 @@ export default function App() {
 
                     {/* Desktop: Horizontal timeline */}
                     <div className="hidden md:block relative">
-                      <div className="absolute left-4 right-4 top-1/2 border-t border-dashed border-primary/30 -z-10" />
-                      <div className="flex justify-between gap-4">
+                      <div className="absolute left-8 right-8 top-1/2 border-t border-dashed border-primary/30 -z-10" />
+                      <div className="flex gap-8 lg:gap-12">
                         {[
                           {
                             step: "01",
@@ -868,25 +868,26 @@ export default function App() {
                             key={item.step}
                             whileHover={{ scale: 1.03, translateY: -6 }}
                             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                            className="flex-1 max-w-[260px] rounded-3xl bg-surface border border-primary/15 px-5 py-6 cursor-default hover:bg-primary/10 transition-colors"
+                            className="flex-1 rounded-[32px] bg-white border border-primary/10 shadow-xl px-6 py-8 md:px-8 cursor-default group transition-all relative overflow-hidden flex flex-col items-center text-center"
                           >
-                            <div className="mb-3 flex items-center gap-2">
-                              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="mb-5 flex flex-col items-center gap-2 relative z-10">
+                              <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-lg font-black text-primary group-hover:bg-primary group-hover:text-white group-hover:shadow-lg transition-all duration-300">
                                 {item.step}
                               </div>
-                              <span className="text-[11px] uppercase tracking-[0.18em] text-text-muted">
+                              <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-primary/60 group-hover:text-primary transition-colors">
                                 Bước {index + 1}
                               </span>
                             </div>
-                            <p className="text-sm font-semibold text-text-dark mb-1">{item.title}</p>
-                            <p className="text-xs text-text-muted leading-relaxed">{item.desc}</p>
+                            <p className="text-lg font-bold text-text-dark mb-3 relative z-10">{item.title}</p>
+                            <p className="text-sm text-text-muted leading-relaxed relative z-10 flex-1">{item.desc}</p>
                             <button
                               type="button"
                               onClick={item.action}
-                              className="mt-3 inline-flex items-center gap-1 rounded-full bg-primary/90 text-white px-4 py-1.5 text-[11px] font-semibold glow-hover"
+                              className="mt-6 inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary/20 bg-transparent text-primary px-6 py-2.5 text-sm font-bold group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 relative z-10 shadow-sm"
                             >
                               Thử ngay
-                              <ArrowRight size={14} />
+                              <ArrowRight size={16} />
                             </button>
                           </motion.div>
                         ))}
@@ -993,60 +994,101 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                      {/* New certificates & combined card */}
-                      {[
-                        {
-                          title: "Bloom Certificate: Creative Thinking",
-                          desc: "Chứng nhận khả năng tư duy sáng tạo & giải quyết vấn đề qua các bài tập thực chiến.",
-                          image:
-                            "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop",
-                        },
-                        {
-                          title: "Bloom Certificate: Career Explorer",
-                          desc: "Dành cho những bạn đã hoàn thành hành trình khám phá ngành nghề cùng Chạm Nghề.",
-                          image:
-                            "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1200&auto=format&fit=crop",
-                        },
-                        {
-                          title: "Track cuộc thi & chứng chỉ",
-                          desc: "Xem nhanh những cuộc thi đang mở và chứng chỉ bạn đã tích lũy trong một bảng điều khiển trực quan.",
-                          image:
-                            "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop",
-                        },
-                      ].map((item) => (
-                        <motion.article
-                          key={item.title}
-                          whileHover={{ y: -8 }}
-                          transition={{ type: "spring", stiffness: 220, damping: 22 }}
-                          className="rounded-[28px] bg-white/90 border border-primary/15 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all flex flex-col overflow-hidden"
-                        >
-                          <div className="aspect-[4/3] w-full overflow-hidden">
-                            <img
-                              src={item.image}
-                              alt={item.title}
-                              className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                            />
-                          </div>
-                          <div className="p-5 flex flex-col gap-3 flex-1">
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="h-9 w-9 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                                <Layers size={20} />
+                      {/* Left side: Large featured competition (7 cols) */}
+                      {(() => {
+                        const featuredCompetition = MOCK_COMPETITIONS.find(c => c.id === 'o1') || MOCK_COMPETITIONS[0];
+                        return (
+                          <motion.article
+                            whileHover={{ y: -6 }}
+                            transition={{ type: "spring", stiffness: 220, damping: 22 }}
+                            className="lg:col-span-7 rounded-[32px] bg-white border border-primary/10 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col relative group cursor-pointer"
+                            onClick={() => navigate('certificates')}
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10 pointer-events-none" />
+                            <div className="relative h-[300px] lg:h-full w-full overflow-hidden shrink-0">
+                              <img
+                                src={featuredCompetition.image}
+                                alt={featuredCompetition.title}
+                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              />
+                              <div className="absolute top-6 left-6 z-20">
+                                <span className="bg-[#FF6F61] text-white px-4 py-1.5 rounded-full text-xs font-black shadow-lg uppercase tracking-widest">
+                                  CUỘC THI NỔI BẬT
+                                </span>
                               </div>
-                              <span className="text-[11px] font-semibold text-primary uppercase tracking-[0.18em]">
-                                Chứng chỉ & hành trình
-                              </span>
                             </div>
-                            <h4 className="text-sm md:text-base font-semibold text-text-dark">
-                              {item.title}
-                            </h4>
-                            <p className="text-xs text-text-muted leading-relaxed flex-1">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </motion.article>
-                      ))}
+                            <div className="relative z-20 p-8 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:text-white mt-auto bg-white lg:bg-transparent">
+                              <h4 className="text-2xl md:text-3xl font-serif font-black mb-3 text-text-dark lg:text-white">
+                                {featuredCompetition.title}
+                              </h4>
+                              <p className="text-sm text-text-muted lg:text-white/80 leading-relaxed max-w-2xl mb-6">
+                                {featuredCompetition.details} Đơn vị tổ chức: {featuredCompetition.host}.
+                              </p>
+                              <div className="flex flex-wrap items-center gap-3">
+                                <span className="px-3 py-1.5 bg-green-100 lg:bg-green-500/20 text-green-700 lg:text-green-300 rounded-lg text-xs font-bold uppercase">
+                                  {featuredCompetition.status === 'active' ? 'Đang mở đăng ký' : featuredCompetition.status === 'completed' ? 'Đã kết thúc' : 'Sắp diễn ra'}
+                                </span>
+                                {featuredCompetition.xp && (
+                                  <span className="flex items-center gap-1.5 text-secondary lg:text-[#FFEAA7] text-sm font-bold">
+                                    ✨ Thưởng {featuredCompetition.xp} XP
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </motion.article>
+                        );
+                      })()}
+
+                      {/* Right side: 3 smaller vertically stacked cards (5 cols) */}
+                      <div className="lg:col-span-5 flex flex-col gap-6">
+                        {[
+                          {
+                            title: "Bloom Certificate: Creative Thinking",
+                            desc: "Chứng nhận khả năng tư duy sáng tạo & giải quyết bài toán thực tế.",
+                            tag: "CHỨNG CHỈ",
+                            image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop",
+                          },
+                          {
+                            title: "Bloom Certificate: Career Explorer",
+                            desc: "Hoàn thành xuất sắc hành trình định vị nghề nghiệp trên Chạm Nghề.",
+                            tag: "HÀNH TRÌNH",
+                            image: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1200&auto=format&fit=crop",
+                          },
+                        ].map((item, index) => (
+                          <motion.article
+                            key={item.title}
+                            whileHover={{ y: -6 }}
+                            transition={{ type: "spring", stiffness: 220, damping: 22 }}
+                            className="rounded-[24px] bg-white border border-primary/15 shadow-sm hover:shadow-xl transition-all flex flex-col overflow-hidden h-full flex-1"
+                          >
+                            <div className="h-32 xl:h-40 w-full overflow-hidden shrink-0 relative">
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                              />
+                              <div className="absolute top-3 right-3">
+                                <span className={`bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-black shadow-lg uppercase tracking-widest ${index === 0 ? 'text-primary' : 'text-secondary'}`}>
+                                  {item.tag}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="p-4 flex flex-col gap-2 flex-1">
+                              <h4 className="text-sm xl:text-base font-bold text-text-dark line-clamp-1">
+                                {item.title}
+                              </h4>
+                              <p className="text-xs text-text-muted leading-relaxed flex-1 line-clamp-3 md:line-clamp-2">
+                                {item.desc}
+                              </p>
+                              <div className="mt-1 flex items-center gap-1.5 text-[10px] font-bold text-primary hover:text-primary/70 cursor-pointer">
+                                Xem ngay <ArrowRight size={12} />
+                              </div>
+                            </div>
+                          </motion.article>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -1066,7 +1108,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-8 md:overflow-visible pb-2">
+                    <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-8 md:items-start md:overflow-visible pb-2">
                       {[
                         {
                           title: "Bản sắc cá nhân trong kỷ nguyên AI",
@@ -1176,10 +1218,10 @@ export default function App() {
                             <div className="flex items-center gap-4">
                               <div
                                 className={`h-14 w-14 rounded-full border-2 ${t.accent === "primary"
-                                    ? "border-primary"
-                                    : t.accent === "secondary"
-                                      ? "border-secondary"
-                                      : "border-accent"
+                                  ? "border-primary"
+                                  : t.accent === "secondary"
+                                    ? "border-secondary"
+                                    : "border-accent"
                                   } overflow-hidden`}
                               >
                                 <img src={t.avatar} alt={t.name} className="h-full w-full object-cover" />
@@ -1214,10 +1256,10 @@ export default function App() {
                             <div className="flex items-center gap-4">
                               <div
                                 className={`h-12 w-12 rounded-full border-2 ${t.accent === "primary"
-                                    ? "border-primary"
-                                    : t.accent === "secondary"
-                                      ? "border-secondary"
-                                      : "border-accent"
+                                  ? "border-primary"
+                                  : t.accent === "secondary"
+                                    ? "border-secondary"
+                                    : "border-accent"
                                   } overflow-hidden`}
                               >
                                 <img src={t.avatar} alt={t.name} className="h-full w-full object-cover" />

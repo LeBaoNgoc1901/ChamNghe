@@ -140,7 +140,7 @@ const MOCK_SUGGESTED: Record<string, Cert[]> = {
       title: "Critical Thinking",
       field: "Kinh tế",
       issuer: "University of Sydney",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b2?auto=format&fit=crop&q=80&w=600",
+      image: "https://images.unsplash.com/photo-1700000837284-3b3c9e2ca4dc?auto=format&fit=crop&w=1200&q=80",
       value: "Kỹ năng nền tảng cho mọi ngành nghề trong tương lai.",
       xp: 300,
       roadmap: [
@@ -149,7 +149,7 @@ const MOCK_SUGGESTED: Record<string, Cert[]> = {
         { step: "03", title: "Decision Making", status: "upcoming", desc: "Quy trình đưa ra quyết định dựa trên bằng chứng.", xp: 100, image: "https://images.unsplash.com/photo-1454165833767-027ffea1e45a?auto=format&fit=crop&q=80&w=300" },
       ]
     },
-    { id: 502, title: "AI Basics for Everyone", field: "IT", issuer: "IBM", image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595d?auto=format&fit=crop&q=80&w=600", value: "Hiểu về AI để không bị tụt hậu trong cuộc cách mạng 4.0.", xp: 200 },
+    { id: 502, title: "AI Basics for Everyone", field: "IT", issuer: "IBM", image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80", value: "Hiểu về AI để không bị tụt hậu trong cuộc cách mạng 4.0.", xp: 200 },
   ]
 };
 
@@ -204,14 +204,14 @@ const MOCK_COURSES_SUGGESTED: Record<string, Cert[]> = {
   ]
 };
 
-const MOCK_COMPETITIONS: Competition[] = [
+export const MOCK_COMPETITIONS: Competition[] = [
   // ĐANG THAM GIA (Active / Ongoing)
   {
     id: "o1",
     title: "Green Marketing Awards",
     status: "active",
     host: "Eco Connect",
-    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=1200&q=80",
     progress: 30,
     tag: "HÀNH TRÌNH",
     ranking: "Hạng 12/200 (Vòng loại)",
