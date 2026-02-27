@@ -17,7 +17,7 @@ import CareerExploration from "./components/CareerExploration";
 import { Footer } from "./components/Footer";
 import { Logo } from "./components/Logo";
 import Certificates, { MOCK_COMPETITIONS } from "./components/Certificates";
-import AuthSystem from "./components/AuthSystem";
+import Auth from "./components/Auth";
 import UserProfile from "./components/UserProfile";
 import TermsOfService from "./components/TermsOfService";
 import PrivacyPolicy from "./components/PrivacyPolicy";
@@ -175,6 +175,7 @@ export default function App() {
   const handleLoginSuccess = (userData: any) => {
     setUser(userData);
     setIsLoggedIn(true);
+    setIsAuthModalOpen(false);
     // Persist login state
     Cookies.set('user_account', JSON.stringify(userData), { expires: 7 });
   };
@@ -222,20 +223,12 @@ export default function App() {
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-3">
               {!isLoggedIn ? (
-                <>
-                  <button
-                    onClick={() => openAuth('register')}
-                    className="px-6 py-2.5 rounded-full border-2 border-primary text-primary text-sm font-bold hover:bg-primary/10 transition-all"
-                  >
-                    Đăng ký
-                  </button>
                   <button
                     onClick={() => openAuth('login')}
                     className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
                   >
                     Đăng nhập
                   </button>
-                </>
               ) : (
                 <button
                   onClick={() => navigate('profile')}
@@ -310,20 +303,12 @@ export default function App() {
 
                 <div className="mt-auto pt-8 border-t border-primary/10">
                   {!isLoggedIn ? (
-                    <>
-                      <button
-                        onClick={() => openAuth('register')}
-                        className="w-full py-4 border-2 border-primary text-primary rounded-2xl font-bold"
-                      >
-                        Đăng ký
-                      </button>
                       <button
                         onClick={() => openAuth('login')}
                         className="w-full py-4 bg-primary text-white rounded-2xl font-bold"
                       >
                         Đăng nhập
                       </button>
-                    </>
                   ) : (
                     <div className="flex flex-col gap-4 w-full">
                       <button
@@ -1393,11 +1378,11 @@ export default function App() {
 
       <Footer onNavigate={navigate} />
 
-      <AuthSystem
+      <Auth
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onSuccess={handleLoginSuccess}
-        initialView={authMode}
+        initialMode={authMode}
       />
 
       {/* Subtle background texture */}
