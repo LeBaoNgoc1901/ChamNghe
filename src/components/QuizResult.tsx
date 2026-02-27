@@ -1,21 +1,25 @@
 import { useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Download, 
-  Share2, 
-  Sparkles, 
-  Zap, 
-  Compass, 
-  Palette, 
-  Cpu, 
+import {
+  Download,
+  Share2,
+  Sparkles,
+  Zap,
+  Compass,
+  Palette,
+  Cpu,
   ShieldCheck,
   Heart,
   Lightbulb,
   Target,
   Users,
-  ArrowRight
+  ArrowRight,
+  TrendingUp,
+  Briefcase
 } from "lucide-react";
+import { CAREER_DATA, BLOCKS, CareerCard, CareerDetailModal } from "./CareerExploration";
+import { CAREER_DETAILS } from "../data/careerDetails";
 
 interface QuizResultProps {
   result: string;
@@ -42,9 +46,9 @@ const GROUP_CONTENT: Record<string, GroupData> = {
     strengths: ['Thấu cảm sâu sắc', 'Sáng tạo không giới hạn', 'Truyền cảm hứng'],
     weaknesses: ['Dễ bị quá tải cảm xúc', 'Khó từ chối người khác', 'Hay lý tưởng hóa quá mức'],
     careers: [
-      { icon: Heart, label: 'Tâm lý học' },
-      { icon: Palette, label: 'Nghệ thuật' },
-      { icon: Users, label: 'Giáo dục' }
+      { icon: Heart, label: 'Tâm lý – Công tác xã hội' },
+      { icon: Users, label: 'Giáo dục – Đào tạo' },
+      { icon: Palette, label: 'Nghệ thuật – Sáng tạo' }
     ],
     colorClass: 'bg-accent/20 text-accent-foreground',
     accentClass: 'text-accent'
@@ -56,9 +60,9 @@ const GROUP_CONTENT: Record<string, GroupData> = {
     strengths: ['Tư duy logic', 'Độc lập & Quyết đoán', 'Giải quyết vấn đề'],
     weaknesses: ['Đôi khi quá khắt khe', 'Khó bày tỏ cảm xúc', 'Dễ sa vào chi tiết'],
     careers: [
-      { icon: Cpu, label: 'Công nghệ' },
-      { icon: Target, label: 'Chiến lược' },
-      { icon: Lightbulb, label: 'Nghiên cứu' }
+      { icon: Cpu, label: 'Công nghệ thông tin' },
+      { icon: Target, label: 'Kinh doanh – Quản trị' },
+      { icon: Lightbulb, label: 'Marketing – Truyền thông' }
     ],
     colorClass: 'bg-primary/20 text-primary-foreground',
     accentClass: 'text-primary'
@@ -70,9 +74,9 @@ const GROUP_CONTENT: Record<string, GroupData> = {
     strengths: ['Trách nhiệm cao', 'Tổ chức tốt', 'Đáng tin cậy'],
     weaknesses: ['Ngại thay đổi đột ngột', 'Dễ bị stress vì công việc', 'Quá cầu toàn'],
     careers: [
-      { icon: ShieldCheck, label: 'Quản lý' },
-      { icon: Target, label: 'Tài chính' },
-      { icon: Users, label: 'Dịch vụ' }
+      { icon: ShieldCheck, label: 'Kế toán – Kiểm toán – Thuế' },
+      { icon: TrendingUp, label: 'Tài chính – Ngân hàng – Bảo hiểm' },
+      { icon: Briefcase, label: 'Luật – Pháp lý' }
     ],
     colorClass: 'bg-primary/10 text-text-dark',
     accentClass: 'text-primary'
@@ -84,52 +88,37 @@ const GROUP_CONTENT: Record<string, GroupData> = {
     strengths: ['Thích nghi nhanh', 'Óc thẩm mỹ tốt', 'Thực tế & Năng động'],
     weaknesses: ['Dễ nhanh chán', 'Khó tập trung dài hạn', 'Hay trì hoãn'],
     careers: [
-      { icon: Palette, label: 'Thiết kế' },
-      { icon: Compass, label: 'Du lịch' },
-      { icon: Zap, label: 'Sự kiện' }
+      { icon: Palette, label: 'Nghệ thuật – Sáng tạo' },
+      { icon: Compass, label: 'Du lịch – Khách sạn' },
+      { icon: Zap, label: 'Nhà hàng – Ẩm thực' }
     ],
     colorClass: 'bg-secondary/20 text-secondary-foreground',
     accentClass: 'text-secondary'
   }
 };
 
-interface CareerDetail {
-  title: string;
-  fact: string;
-  match: number;
-}
-
-const DETAILED_CAREERS: Record<string, CareerDetail[]> = {
-  'NF': [
-    { title: 'Tâm lý học', fact: 'Thấu hiểu những góc khuất tâm hồn để chữa lành.', match: 95 },
-    { title: 'Biên kịch', fact: 'Dùng ngòi bút vẽ nên những thế giới đầy cảm hứng.', match: 90 },
-    { title: 'Quản lý NGO', fact: 'Kiến tạo giá trị bền vững cho cộng đồng.', match: 88 },
-    { title: 'Content Creator', fact: 'Lan tỏa thông điệp tích cực qua lăng kính cá nhân.', match: 92 },
-  ],
-  'SJ': [
-    { title: 'Kiểm toán', fact: 'Người gác cổng sự minh bạch và trật tự.', match: 94 },
-    { title: 'Quản lý dự án', fact: 'Nhạc trưởng điều phối mọi nguồn lực về đích.', match: 91 },
-    { title: 'Luật sư', fact: 'Bảo vệ công lý bằng tư duy sắc bén và trách nhiệm.', match: 89 },
-    { title: 'Logistics', fact: 'Mạch máu vận hành dòng chảy của thế giới.', match: 87 },
-  ],
-  'SP': [
-    { title: 'Thiết kế thời trang', fact: 'Biến vải vóc thành ngôn ngữ của cái tôi.', match: 93 },
-    { title: 'Đầu bếp', fact: 'Nghệ sĩ sáng tạo trên từng hương vị thực tế.', match: 89 },
-    { title: 'Nhiếp ảnh gia', fact: 'Bắt trọn khoảnh khắc bằng con mắt tinh tường.', match: 91 },
-    { title: 'Kỹ sư hiện trường', fact: 'Làm chủ không gian và những cỗ máy khổng lồ.', match: 86 },
-  ],
-  'NT': [
-    { title: 'Lập trình viên AI', fact: 'Không chỉ là code, mà là dạy máy tính cách tư duy.', match: 96 },
-    { title: 'Chuyên gia bảo mật', fact: 'Lá chắn thép trong kỷ nguyên số.', match: 92 },
-    { title: 'Phân tích dữ liệu', fact: 'Giải mã những "lời thì thầm" của con số.', match: 94 },
-    { title: 'Tư vấn chiến lược', fact: 'Kiến trúc sư cho những bước đi vĩ đại.', match: 90 },
-  ],
-};
-
 export default function QuizResult({ result, onRestart, onExploreCareers }: QuizResultProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [selectedCareerId, setSelectedCareerId] = useState<string | null>(null);
+  const [interestedCareers, setInterestedCareers] = useState<string[]>(() => {
+    const saved = localStorage.getItem("interestedCareers");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const toggleInterest = (careerId: string) => {
+    setInterestedCareers((prev) => {
+      let updated;
+      if (prev.includes(careerId)) {
+        updated = prev.filter((id) => id !== careerId);
+      } else {
+        updated = [...prev, careerId];
+      }
+      localStorage.setItem("interestedCareers", JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   const handleSave = async () => {
     if (!cardRef.current || isSaving) return;
@@ -138,18 +127,20 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
       const canvas = await html2canvas(cardRef.current, {
         scale: 2,
         useCORS: true,
-        allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        // Bỏ qua phần tử blur vì html2canvas không render được
-        ignoreElements: (el) => el.classList.contains('blur-3xl'),
       });
-      const link = document.createElement('a');
-      link.download = `MBTI-${result}.png`;
-      link.href = canvas.toDataURL('image/png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      canvas.toBlob((blob) => {
+        if (!blob) throw new Error("Canvas is empty");
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `MBTI-${result}.png`;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, 'image/png');
     } catch (err) {
       console.error('Lỗi khi lưu ảnh:', err);
       alert('Không thể lưu ảnh. Vui lòng thử lại!');
@@ -173,18 +164,24 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
 
   const groupKey = getGroup(result);
   const data = GROUP_CONTENT[groupKey];
-  const detailedCareers = DETAILED_CAREERS[groupKey];
+
+  const recommendedCareers = CAREER_DATA.filter(c =>
+    CAREER_DETAILS[c.id]?.mbtiMatch?.includes(result)
+  ).slice(0, 4);
+
+  const selectedCareerInfo = selectedCareerId ? CAREER_DETAILS[selectedCareerId] : null;
+  const activeColor = selectedCareerInfo ? BLOCKS.find(b => b.title === CAREER_DATA.find(c => c.id === selectedCareerId)?.block)?.color || "from-primary to-accent" : "";
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto px-4 py-8"
     >
       <div ref={cardRef} id="result-card" className="bg-surface rounded-[3rem] overflow-hidden shadow-2xl border border-primary/10 relative isolate">
         {/* Header Background Decoration */}
-        <div className={`absolute top-0 left-0 w-full h-48 ${data.colorClass} opacity-50 blur-3xl -z-[1]`} />
-        
+        <div data-html2canvas-ignore="true" className={`absolute top-0 left-0 w-full h-48 ${data.colorClass} opacity-50 blur-3xl -z-[1]`} />
+
         <div className="p-8 md:p-12">
           {/* Top Section */}
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
@@ -256,7 +253,7 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
                 <Compass size={20} className={data.accentClass} />
                 Định hướng nghề nghiệp
               </h3>
-              <button 
+              <button
                 onClick={() => setShowDetails(true)}
                 className={`text-sm font-bold ${data.accentClass} hover:underline flex items-center gap-1`}
               >
@@ -277,7 +274,7 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
 
           {/* Footer Actions */}
           <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-primary/10">
-            <button 
+            <button
               onClick={handleSave}
               disabled={isSaving}
               className="flex-1 px-5 py-2.5 bg-text-dark text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-black transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
@@ -297,27 +294,27 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
               )}
             </button>
 
-          <div className="flex gap-3 flex-1">
-            <button 
-              onClick={onExploreCareers}
-              className={`flex-1 px-4 py-2.5 ${data.colorClass} ${data.accentClass} rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-80 transition-all`}
-            >
-              Khám phá
-              <ArrowRight size={16} />
-            </button>
+            <div className="flex gap-3 flex-1">
+              <button
+                onClick={onExploreCareers}
+                className={`flex-1 px-4 py-2.5 ${data.colorClass} ${data.accentClass} rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-80 transition-all`}
+              >
+                Khám phá
+                <ArrowRight size={16} />
+              </button>
 
-            <button 
-              className="px-4 py-2.5 bg-white border border-primary/10 text-text-dark rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-background transition-colors"
-            >
-              <Share2 size={16} />
-            </button>
+              <button
+                className="px-4 py-2.5 bg-white border border-primary/10 text-text-dark rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-background transition-colors"
+              >
+                <Share2 size={16} />
+              </button>
 
-            <button 
-              onClick={onRestart}
-              className="px-4 py-2.5 bg-background text-primary rounded-xl text-sm font-semibold hover:bg-primary/5 transition-colors"
-            >
-              Làm lại
-            </button>
+              <button
+                onClick={onRestart}
+                className="px-4 py-2.5 bg-background text-primary rounded-xl text-sm font-semibold hover:bg-primary/5 transition-colors"
+              >
+                Làm lại
+              </button>
             </div>
           </div>
         </div>
@@ -328,7 +325,7 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
         {showDetails && (
           <>
             {/* Backdrop */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -336,7 +333,7 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
               className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
             />
             {/* Sheet */}
-            <motion.div 
+            <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -350,7 +347,7 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
                   </div>
                   <h3 className="text-xl font-serif font-bold text-text-dark">Lộ trình chi tiết cho {result}</h3>
                 </div>
-                <button 
+                <button
                   onClick={() => setShowDetails(false)}
                   className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/10 transition-colors"
                 >
@@ -358,44 +355,26 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
                 </button>
               </div>
 
-              <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {detailedCareers.map((career, i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white p-6 rounded-[2rem] border border-primary/5 shadow-sm hover:shadow-md transition-all group"
-                  >
-                    <h4 className="text-xl font-bold text-text-dark mb-2 group-hover:text-primary transition-colors">
-                      {career.title}
-                    </h4>
-                    <p className="text-sm text-text-muted italic mb-6">
-                      "{career.fact}"
-                    </p>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-text-muted">
-                        <span>Độ phù hợp</span>
-                        <span className={data.accentClass}>{career.match}%</span>
-                      </div>
-                      <div className="h-1.5 w-full bg-background rounded-full overflow-hidden">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: `${career.match}%` }}
-                          transition={{ duration: 1, delay: 0.2 }}
-                          className="h-full bg-accent"
-                        />
-                      </div>
-                    </div>
-
-                    <button className="mt-6 text-xs font-bold text-text-dark underline underline-offset-4 hover:text-primary transition-colors flex items-center gap-1">
-                      Tìm hiểu lộ trình <ArrowRight size={12} />
-                    </button>
-                  </motion.div>
-                ))}
+              <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                {recommendedCareers.map((career, i) => {
+                  const blockInfo = BLOCKS.find(b => b.title === career.block);
+                  return (
+                    <CareerCard
+                      key={career.id}
+                      career={career}
+                      color={blockInfo?.color || "from-gray-500 to-gray-400"}
+                      index={i}
+                      onClick={() => setSelectedCareerId(career.id)}
+                      isInterested={interestedCareers.includes(career.id)}
+                      onToggleInterest={() => toggleInterest(career.id)}
+                      mbtiResult={result}
+                    />
+                  );
+                })}
               </div>
-              
+
               <div className="p-8 pt-0 text-center">
-                <p className="text-sm text-text-muted mb-8">
+                <p className="text-sm text-text-muted mb-8 mt-4">
                   Bạn muốn tìm hiểu kỹ hơn về cách bắt đầu với những ngành này?
                 </p>
                 <button className="px-8 py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20">
@@ -406,8 +385,21 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
           </>
         )}
       </AnimatePresence>
-      
-      <p className="text-center mt-8 text-text-muted text-sm">
+
+      {/* Career Detail Modal */}
+      <AnimatePresence>
+        {selectedCareerId && selectedCareerInfo && (
+          <div className="z-[60] relative">
+            <CareerDetailModal
+              career={selectedCareerInfo}
+              onClose={() => setSelectedCareerId(null)}
+              color={activeColor}
+            />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <p className="text-center mt-8 text-text-muted text-sm relative z-0">
         Kết quả này chỉ mang tính chất tham khảo. Hãy lắng nghe bản thân mình nhiều hơn nhé! ✨
       </p>
     </motion.div>

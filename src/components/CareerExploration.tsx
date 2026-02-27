@@ -44,7 +44,7 @@ import { CAREER_DETAILS, CareerDetail } from "../data/careerDetails";
 
 // --- DATA STRUCTURE ---
 
-interface Career {
+export interface Career {
   id: string;
   name: string;
   category: string;
@@ -54,7 +54,7 @@ interface Career {
   tags: string[];
 }
 
-const CAREER_DATA: Career[] = [
+export const CAREER_DATA: Career[] = [
   // KINH TẾ – QUẢN LÝ
   { id: "1-1", block: "Kinh tế – Quản lý", category: "Kinh doanh – Quản trị", name: "Quản trị doanh nghiệp", description: "Điều hành và hoạch định chiến lược phát triển cho tổ chức.", salary: "20 - 50tr", tags: ["Strategy", "Leadership"] },
   { id: "1-2", block: "Kinh tế – Quản lý", category: "Kinh doanh – Quản trị", name: "Quản trị nhân sự (HR)", description: "Quản lý nguồn nhân lực, tuyển dụng và phát triển văn hóa công ty.", salary: "15 - 35tr", tags: ["Recruitment", "Culture"] },
@@ -164,7 +164,7 @@ const CAREER_DATA: Career[] = [
   { id: "20-3", block: "Nông nghiệp – Tài nguyên", category: "Thủy sản – Lâm nghiệp", name: "Chuyên viên bảo tồn", description: "Nghiên cứu và bảo vệ các loài động thực vật quý hiếm.", salary: "10 - 30tr", tags: ["Wildlife", "Protect"] },
 ];
 
-const BLOCKS = [
+export const BLOCKS = [
   { id: "economic", title: "Kinh tế – Quản lý", icon: TrendingUp, color: "from-blue-500 to-amber-400", bg: "bg-blue-50" },
   { id: "tech", title: "Công nghệ – Kỹ thuật", icon: Cpu, color: "from-indigo-600 to-cyan-400", bg: "bg-indigo-50" },
   { id: "care", title: "Chăm sóc – Xã hội", icon: Heart, color: "from-rose-500 to-purple-500", bg: "bg-rose-50" },
@@ -423,7 +423,7 @@ interface CareerCardProps {
   key?: any;
 }
 
-function CareerCard({ career, color, index, onClick, isInterested, onToggleInterest, mbtiResult }: CareerCardProps) {
+export function CareerCard({ career, color, index, onClick, isInterested, onToggleInterest, mbtiResult }: CareerCardProps) {
   const mbtiList = CAREER_DETAILS[career.id]?.mbtiMatch || [];
   const isMbtiMatch = mbtiResult && mbtiList.includes(mbtiResult);
 
@@ -528,7 +528,7 @@ interface CareerDetailModalProps {
   color: string;
 }
 
-function CareerDetailModal({ career, onClose, color }: CareerDetailModalProps) {
+export function CareerDetailModal({ career, onClose, color }: CareerDetailModalProps) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
       {/* Backdrop */}
