@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import html2canvas from "html2canvas";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Download, 
@@ -127,6 +128,35 @@ const DETAILED_CAREERS: Record<string, CareerDetail[]> = {
 
 export default function QuizResult({ result, onRestart, onExploreCareers }: QuizResultProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleSave = async () => {
+    if (!cardRef.current || isSaving) return;
+    setIsSaving(true);
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        // Bỏ qua phần tử blur vì html2canvas không render được
+        ignoreElements: (el) => el.classList.contains('blur-3xl'),
+      });
+      const link = document.createElement('a');
+      link.download = `MBTI-${result}.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Lỗi khi lưu ảnh:', err);
+      alert('Không thể lưu ảnh. Vui lòng thử lại!');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const getGroup = (type: string) => {
     if (type.includes('NF')) return 'NF';
@@ -151,9 +181,9 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto px-4 py-8"
     >
-      <div id="result-card" className="bg-surface rounded-[3rem] overflow-hidden shadow-2xl border border-primary/10 relative">
+      <div ref={cardRef} id="result-card" className="bg-surface rounded-[3rem] overflow-hidden shadow-2xl border border-primary/10 relative isolate">
         {/* Header Background Decoration */}
-        <div className={`absolute top-0 left-0 w-full h-48 ${data.colorClass} opacity-50 blur-3xl -z-10`} />
+        <div className={`absolute top-0 left-0 w-full h-48 ${data.colorClass} opacity-50 blur-3xl -z-[1]`} />
         
         <div className="p-8 md:p-12">
           {/* Top Section */}
@@ -248,11 +278,23 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
           {/* Footer Actions */}
           <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-primary/10">
             <button 
-              onClick={() => window.print()}
-              className="flex-1 px-5 py-2.5 bg-text-dark text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-black transition-colors"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex-1 px-5 py-2.5 bg-text-dark text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-black transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <Download size={16} />
-              Lưu kết quả
+              {isSaving ? (
+                <>
+                  <svg className="animate-spin" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
+                  </svg>
+                  Đang lưu...
+                </>
+              ) : (
+                <>
+                  <Download size={16} />
+                  Lưu kết quả
+                </>
+              )}
             </button>
 
           <div className="flex gap-3 flex-1">
