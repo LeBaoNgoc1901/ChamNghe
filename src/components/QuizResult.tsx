@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Download,
@@ -124,23 +124,25 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
     if (!cardRef.current || isSaving) return;
     setIsSaving(true);
     try {
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
+      // Wait a tiny bit for UI updates if any
+      await new Promise(resolve => setTimeout(resolve, 50));
+      const dataUrl = await toPng(cardRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
         backgroundColor: '#ffffff',
-        logging: false,
+        filter: (node) => {
+          if (node instanceof HTMLElement) {
+            return node.getAttribute('data-html2canvas-ignore') !== 'true';
+          }
+          return true;
+        }
       });
-      canvas.toBlob((blob) => {
-        if (!blob) throw new Error("Canvas is empty");
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = `MBTI-${result}.png`;
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 'image/png');
+      const link = document.createElement('a');
+      link.download = `MBTI-${result}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (err) {
       console.error('Lỗi khi lưu ảnh:', err);
       alert('Không thể lưu ảnh. Vui lòng thử lại!');
@@ -186,9 +188,14 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
           {/* Top Section */}
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
             <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-primary/10 text-xs font-bold uppercase tracking-widest text-text-muted mb-4">
-                <Sparkles size={14} className={data.accentClass} />
-                <span>{data.groupName}</span>
+              <div className="flex flex-wrap items-center gap-6 mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-primary/10 text-xs font-bold uppercase tracking-widest text-text-muted">
+                  <Sparkles size={14} className={data.accentClass} />
+                  <span>{data.groupName}</span>
+                </div>
+                <span className="text-2xl md:text-4xl font-sans font-black text-primary uppercase tracking-widest">
+                  Chạm Nghề
+                </span>
               </div>
               <h1 className="text-6xl md:text-8xl font-serif font-black text-text-dark mb-2 tracking-tighter">
                 {result}
