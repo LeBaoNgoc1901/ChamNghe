@@ -10,7 +10,11 @@ import {
   AlertTriangle,
   Compass,
   Layers,
-  ChevronDown
+  ChevronDown,
+  Rocket,
+  Award,
+  Target,
+  Users
 } from "lucide-react";
 import MBTIQuiz, { MBTIScores } from "./components/MBTIQuiz";
 import CareerExploration from "./components/CareerExploration";
@@ -1001,6 +1005,166 @@ export default function App() {
                           </div>
                         );
                       })}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* User Guide & Feature Introduction Section */}
+              <section className="py-24 relative overflow-hidden bg-surface">
+                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10" />
+                <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[100px] -z-10" />
+                
+                <div className="max-w-7xl mx-auto px-6">
+                  <div className="text-center mb-20 space-y-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider shadow-sm"
+                    >
+                      <Rocket size={14} />
+                      <span>Hướng dẫn & Khám phá</span>
+                    </motion.div>
+                    <h2 className="text-4xl md:text-6xl font-serif font-black text-text-dark leading-tight tracking-tight text-shadow-soft-3d">
+                      Làm chủ hành trình <span className="text-secondary italic font-bold">chạm</span> tới đam mê
+                    </h2>
+                    <p className="text-text-muted max-w-2xl mx-auto text-lg leading-relaxed">
+                      Tối ưu hóa hành trình của bạn với bộ công cụ toàn diện giúp thấu hiểu bản sắc và bứt phá sự nghiệp.
+                    </p>
+                  </div>
+
+                  {/* Usage Steps - Visual Roadmap */}
+                  <div className="relative mb-24">
+                    {/* Connection Line (Desktop) */}
+                    <div className="hidden md:block absolute top-[60px] left-[10%] right-[10%] h-0.5 border-t-2 border-dashed border-primary/20 -z-0" />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
+                      {[
+                        { title: "Chạm bản sắc", desc: "Hoàn thành bài trắc nghiệm MBTI chuẩn 4.0 để bóc tách các lớp tính cách.", icon: <BrainCircuit size={32} />, color: "bg-primary" },
+                        { title: "Hiểu hướng đi", desc: "Khám phá bản đồ 500+ nghề nghiệp được AI gợi ý riêng cho hồ sơ của bạn.", icon: <Compass size={32} />, color: "bg-secondary" },
+                        { title: "Thử thực tế", desc: "Tham gia các thử thách, cuộc thi giả lập để trải nghiệm môi trường làm việc.", icon: <Layers size={32} />, color: "bg-accent" },
+                        { title: "Khắc dấu ấn", desc: "Nhận chứng chỉ Bloom và tự tin xây dựng bản sắc nghề nghiệp cá nhân.", icon: <Award size={32} />, color: "bg-[#8DB6A0]" },
+                      ].map((step, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.15, type: "spring" }}
+                          className="flex flex-col items-center text-center group"
+                        >
+                          <div className={`w-28 h-28 rounded-[38px] ${step.color} text-white flex items-center justify-center mb-8 shadow-2xl shadow-black/10 group-hover:rotate-6 transition-transform duration-500 relative border-4 border-white`}>
+                            {step.icon}
+                            <div className="absolute -top-3 -right-3 w-10 h-10 rounded-2xl bg-white text-text-dark text-lg font-black flex items-center justify-center shadow-lg border border-primary/10">
+                              {idx + 1}
+                            </div>
+                          </div>
+                          <h3 className="text-xl font-bold text-text-dark mb-3 lg:text-2xl font-serif">{step.title}</h3>
+                          <p className="text-sm text-text-muted leading-relaxed font-medium">{step.desc}</p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Feature Spotlight */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    {/* Main Feature Card */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -40 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      className="lg:col-span-7 rounded-[48px] bg-white border border-primary/10 shadow-xl p-10 md:p-14 relative overflow-hidden group"
+                    >
+                      <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+                      
+                      <div className="relative z-10 flex flex-col h-full space-y-8">
+                        <div className="flex items-center gap-5">
+                          <div className="w-16 h-16 rounded-3xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                            <Target size={32} />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">Tính năng tiêu biểu</p>
+                            <h3 className="text-2xl md:text-3xl font-serif font-black text-text-dark">Hệ thống Trắc nghiệm Cá nhân hóa</h3>
+                          </div>
+                        </div>
+
+                        <p className="text-text-muted leading-relaxed text-lg md:text-xl">
+                          Sử dụng thuật toán AI kết hợp với mô hình MBTI khoa học, chúng tôi không chỉ đưa ra kết quả 4 chữ cái, mà còn bóc tách 
+                          <span className="text-text-dark font-bold"> thế mạnh cốt lõi</span> và 
+                          <span className="text-secondary font-bold italic"> môi trường làm việc lý tưởng</span> riêng biệt cho bạn.
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {[
+                            "80 câu hỏi phân tích đa chiều",
+                            "Dữ liệu nghề nghiệp cập nhật 2026",
+                            "Gợi ý Mentor theo nhóm tính cách",
+                            "Báo cáo chi tiết dạng Dashboard"
+                          ].map((item, i) => (
+                            <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-surface border border-primary/5 text-sm font-bold text-text-dark shadow-sm hover:shadow-md transition-shadow">
+                              <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <ArrowRight size={14} className="text-primary" />
+                              </div>
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="pt-6 mt-auto">
+                          <button 
+                            onClick={() => navigate('quiz')}
+                            className="bg-secondary text-white px-10 py-4 rounded-full font-bold flex items-center gap-3 hover:scale-105 transition-all shadow-lg shadow-secondary/20"
+                          >
+                            Trải nghiệm ngay <ArrowRight size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Secondary Feature Cards Grid */}
+                    <div className="lg:col-span-5 grid grid-cols-1 gap-6">
+                      {[
+                        { 
+                          title: "Thư viện nghề nghiệp 4.0", 
+                          icon: <Layers className="text-secondary" size={24} />, 
+                          desc: "Tra cứu 500+ ngành nghề với mô tả chi tiết từ thu nhập đến lộ trình thăng tiến.",
+                          accent: "bg-secondary/10"
+                        },
+                        { 
+                          title: "Dấu ấn Bloom (Chứng chỉ)", 
+                          icon: <Award className="text-accent" size={24} />, 
+                          desc: "Chứng nhận năng lực qua các thử thách thực tiễn, giúp làm đẹp Portfolio của bạn.",
+                          accent: "bg-accent/10"
+                        },
+                        { 
+                          title: "Cộng đồng Mentor", 
+                          icon: <Users className="text-primary" size={24} />, 
+                          desc: "Kết nối và nhận lời khuyên trực tiếp từ các anh chị đi trước giàu kinh nghiệm.",
+                          accent: "bg-primary/10"
+                        }
+                      ].map((f, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className={`p-8 rounded-[40px] bg-white border border-primary/10 hover:shadow-2xl transition-all group cursor-pointer flex flex-col justify-center relative overflow-hidden`}
+                          onClick={() => navigate(i === 0 ? 'careers' : i === 1 ? 'certificates' : 'help')}
+                        >
+                          <div className={`absolute top-0 right-0 w-32 h-32 ${f.accent} rounded-bl-full -z-0 opacity-20 group-hover:opacity-40 transition-opacity`} />
+                          <div className="flex items-start gap-6 relative z-10">
+                            <div className="w-14 h-14 rounded-2xl bg-surface shadow-md flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                              {f.icon}
+                            </div>
+                            <div>
+                              <h4 className="text-xl font-bold text-text-dark mb-2 group-hover:text-primary transition-colors font-serif">{f.title}</h4>
+                              <p className="text-sm text-text-muted leading-relaxed font-medium">{f.desc}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
                 </div>
