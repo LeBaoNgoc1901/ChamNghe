@@ -450,4 +450,3 @@ export default function QuizResult({ result, scores, onRestart, onExploreCareers
     </motion.div>
   );
 }
-

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   TrendingUp,
@@ -203,6 +203,22 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
       return updated;
     });
   };
+
+  useEffect(() => {
+    const autoOpenId = localStorage.getItem("autoOpenCareerId");
+    if (autoOpenId) {
+      const career = CAREER_DATA.find(c => c.id === autoOpenId);
+      if (career) {
+        const block = BLOCKS.find(b => b.title === career.block);
+        if (block) {
+          setActiveBlockId(block.id);
+          setActiveCategory(career.category);
+        }
+        setSelectedCareerId(autoOpenId);
+      }
+      localStorage.removeItem("autoOpenCareerId");
+    }
+  }, []);
 
   const selectedCareerInfo = useMemo(() => {
     return selectedCareerId ? CAREER_DETAILS[selectedCareerId] : null;

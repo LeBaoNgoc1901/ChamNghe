@@ -204,7 +204,15 @@ export default function UserProfile({ user, mbtiResult, mbtiScores, navigate, lo
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
             <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary to-accent shadow-lg shrink-0">
-              <img crossOrigin="anonymous" src={user?.avatar || "https://i.pravatar.cc/100"} alt="Avatar" className="w-full h-full rounded-full border-4 border-white object-cover" />
+              <img 
+                crossOrigin="anonymous" 
+                src={user?.avatar || "https://i.pravatar.cc/100"} 
+                alt="Avatar" 
+                className="w-full h-full rounded-full border-4 border-white object-cover" 
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "https://i.pravatar.cc/100?u=fallback_profile";
+                }}
+              />
             </div>
 
             <div className="flex-1 text-center md:text-left">
@@ -340,7 +348,15 @@ export default function UserProfile({ user, mbtiResult, mbtiScores, navigate, lo
 
                 <div className="flex gap-6 items-start z-10 w-full relative">
                   <div className="relative">
-                    <img crossOrigin="anonymous" src={user?.avatar || "https://i.pravatar.cc/100"} alt="Avatar" className="w-24 h-24 rounded-2xl border-4 border-[#3A4350] object-cover shadow-lg" />
+                    <img 
+                      crossOrigin="anonymous" 
+                      src={user?.avatar || "https://i.pravatar.cc/100"} 
+                      alt="Avatar" 
+                      className="w-24 h-24 rounded-2xl border-4 border-[#3A4350] object-cover shadow-lg" 
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://i.pravatar.cc/100?u=fallback_passport";
+                      }}
+                    />
                     <div className="absolute -bottom-3 -right-3 w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xs ring-4 ring-[#1C2025]">
                       {mbtiResult}
                     </div>
@@ -481,7 +497,10 @@ export default function UserProfile({ user, mbtiResult, mbtiScores, navigate, lo
               {wishlistCareers.map((c, idx) => {
                 const blockInfo = BLOCKS.find(b => b.title === c.block);
                 return (
-                  <div key={idx} onClick={() => navigate('careers')} className="cursor-pointer group">
+                  <div key={idx} onClick={() => {
+                    localStorage.setItem("autoOpenCareerId", c.id);
+                    navigate('careers');
+                  }} className="cursor-pointer group">
                     <div className="p-5 bg-white rounded-2xl border border-primary/10 hover:border-primary/30 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${blockInfo?.color || "from-gray-300 to-gray-400"} flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform shadow-inner`}>
                         {c.name.charAt(0)}
@@ -523,7 +542,14 @@ export default function UserProfile({ user, mbtiResult, mbtiScores, navigate, lo
                   <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Ảnh đại diện</label>
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20 bg-gray-50 shrink-0">
-                      <img src={editAvatar || "https://i.pravatar.cc/100"} alt="Preview" className="w-full h-full object-cover" />
+                      <img
+                        src={editAvatar || "https://i.pravatar.cc/100"}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://i.pravatar.cc/100?u=fallback";
+                        }}
+                      />
                     </div>
                     <label className="flex-1 flex flex-col items-center justify-center px-4 py-4 bg-gray-50 text-primary rounded-xl border-2 border-dashed border-primary/20 cursor-pointer hover:bg-primary/5 transition-all">
                       <Upload size={20} className="mb-1" />
