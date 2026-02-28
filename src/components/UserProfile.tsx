@@ -20,7 +20,8 @@ import {
   ArrowRight,
   Download,
   Mail,
-  User as UserIcon
+  User as UserIcon,
+  Upload
 } from "lucide-react";
 import {
   Radar,
@@ -33,15 +34,28 @@ import {
 } from 'recharts';
 import { CAREER_DATA, BLOCKS } from "./CareerExploration";
 import QuizResult from "./QuizResult";
+import { MBTIScores } from "./MBTIQuiz";
 
 interface UserProfileProps {
   user: any;
   mbtiResult: string | null;
+  mbtiScores: MBTIScores | null;
   navigate: (view: string) => void;
   logout: () => void;
+  onUpdateUser: (user: any) => void;
 }
 
-const getMbtiTraits = (mbti: string) => {
+const getMbtiTraits = (mbti: string, scores: MBTIScores | null) => {
+  if (scores) {
+    return [
+      { subject: 'Hướng ngoại', A: scores.EI.E, fullMark: 100 },
+      { subject: 'Sáng tạo', A: scores.SN.N, fullMark: 100 },
+      { subject: 'Lý trí', A: scores.TF.T, fullMark: 100 },
+      { subject: 'Nguyên tắc', A: scores.JP.J, fullMark: 100 },
+      { subject: 'Thích nghi', A: scores.JP.P, fullMark: 100 },
+    ];
+  }
+
   const isE = mbti.includes('E');
   const isN = mbti.includes('N');
   const isT = mbti.includes('T');
@@ -56,6 +70,25 @@ const getMbtiTraits = (mbti: string) => {
   ];
 };
 
+const DimensionBar = ({ labelL, labelR, pL, pR, activeL }: any) => (
+  <div className="space-y-2">
+    <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-gray-400">
+      <span className={activeL ? "text-[#8DB6A0]" : ""}>{labelL} {pL}%</span>
+      <span className={!activeL ? "text-[#8DB6A0]" : ""}>{pR}% {labelR}</span>
+    </div>
+    <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex border border-white/5">
+      <div
+        style={{ width: `${pL}%` }}
+        className={`h-full transition-all duration-1000 ${activeL ? 'bg-[#8DB6A0]' : 'bg-[#8DB6A0]/20'}`}
+      />
+      <div
+        style={{ width: `${pR}%` }}
+        className={`h-full transition-all duration-1000 ${!activeL ? 'bg-[#8DB6A0]' : 'bg-[#8DB6A0]/20'}`}
+      />
+    </div>
+  </div>
+);
+
 const getMascotInfo = (mbti: string) => {
   if (mbti.includes('NF')) return { group: 'Nhóm Người Lý Tưởng', icon: '✨', mood: 'Trái tim ấm áp' };
   if (mbti.includes('NT')) return { group: 'Nhóm Người Lý Luận', icon: '🧠', mood: 'Trí tuệ sắc bén' };
@@ -64,15 +97,13 @@ const getMascotInfo = (mbti: string) => {
   return { group: 'Nhóm Tiên Phong', icon: '🌟', mood: 'Năng động' };
 };
 
-export default function UserProfile({ user: initialUser, mbtiResult, navigate, logout }: UserProfileProps) {
-  // Update state for user local modifications
-  const [user, setUser] = useState(initialUser || { name: "Người dùng", email: "user@chamnghe.vn", avatar: "https://i.pravatar.cc/100", bio: "Đang trên hành trình khám phá bản thân." });
+export default function UserProfile({ user, mbtiResult, mbtiScores, navigate, logout, onUpdateUser }: UserProfileProps) {
 
-  // EP Points (Mocked logic based on actions)
-  const baseEP = 500;
+  // EP Points (Logic based on actions)
+  const baseEP = 0;
   const mbtiEP = mbtiResult ? 300 : 0;
-  const certsEP = 200 * 2; // 2 mock certs
-  const compEP = 300 * 3; // 3 mock comps
+  const certsEP = 0;
+  const compEP = 0;
   const totalEP = baseEP + mbtiEP + certsEP + compEP;
 
   // Edit Modal State
@@ -100,15 +131,24 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
 
   const handleSaveProfile = () => {
     const updatedUser = { ...user, name: editName, email: editEmail, avatar: editAvatar, bio: editBio };
-    setUser(updatedUser);
-    Cookies.set('user_account', JSON.stringify(updatedUser), { expires: 7 });
+    onUpdateUser(updatedUser);
     setIsEditModalOpen(false);
     showToast("Đã lưu hồ sơ thành công!");
   };
 
-  const handleShareProfile = () => {
-    const profileLink = `${window.location.origin}/profile/${encodeURIComponent(user.name.trim().replace(/\s+/g, '-').toLowerCase() || 'me')}`;
-    window.prompt("Sao chép đường link này để chia sẻ trang cá nhân của bạn:", profileLink);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        showToast("Dung lượng ảnh quá lớn (tối đa 2MB)");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditAvatar(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const showToast = (msg: string) => {
@@ -189,9 +229,6 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
               <button onClick={() => setIsEditModalOpen(true)} className="px-5 py-2.5 bg-primary text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-md shadow-primary/20">
                 <Edit size={16} /> Sửa
               </button>
-              <button onClick={handleShareProfile} className="px-5 py-2.5 bg-white text-text-dark border-2 border-gray-100 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-all">
-                <Share2 size={16} /> Share
-              </button>
               <button onClick={logout} className="px-5 py-2.5 bg-red-50 text-red-500 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-red-100 transition-all">
                 Đăng xuất
               </button>
@@ -221,7 +258,7 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
               </div>
               <div>
                 <p className="text-xs font-bold text-blue-600/80 uppercase">Số chứng chỉ đã có</p>
-                <p className="text-lg font-black text-blue-900">2 Chứng chỉ</p>
+                <p className="text-lg font-black text-blue-900">0 Chứng chỉ</p>
               </div>
             </button>
 
@@ -236,7 +273,7 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
               </div>
               <div>
                 <p className="text-xs font-bold text-green-600/80 uppercase">Cuộc thi tham gia</p>
-                <p className="text-lg font-black text-green-900">3 Cuộc thi</p>
+                <p className="text-lg font-black text-green-900">0 Cuộc thi</p>
               </div>
             </button>
           </div>
@@ -257,12 +294,12 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
                 <p className="text-[10px] text-text-muted mt-1 uppercase">Hoàn thành MBTI</p>
               </div>
             )}
-            <div className="bg-white p-5 rounded-[1.5rem] border-2 border-secondary/20 flex flex-col items-center text-center group hover:border-secondary transition-colors">
-              <div className="w-14 h-14 bg-secondary/10 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                <Award size={28} className="text-secondary" />
+            <div className="bg-gray-50 p-5 rounded-[1.5rem] border-2 border-gray-100 flex flex-col items-center text-center opacity-60 grayscale cursor-not-allowed text-gray-400">
+              <div className="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center mb-3">
+                <Award size={28} />
               </div>
-              <h4 className="font-bold text-sm text-text-dark">Kẻ chinh phục</h4>
-              <p className="text-[10px] text-text-muted mt-1 uppercase">Tham gia 3 cuộc thi</p>
+              <h4 className="font-bold text-sm">Kẻ chinh phục</h4>
+              <p className="text-[10px] mt-1 uppercase">Tham gia cuộc thi đầu tiên</p>
             </div>
             {/* Locked Badges */}
             <div className="bg-gray-50 p-5 rounded-[1.5rem] border-2 border-gray-100 flex flex-col items-center text-center opacity-60 grayscale cursor-not-allowed text-gray-400">
@@ -380,7 +417,7 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
                       <div className="w-full md:w-1/2 h-[250px]">
                         <ResponsiveContainer width="100%" height="100%">
                           {/* Key is used to fore re-render if needed, but not necessary here */}
-                          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={getMbtiTraits(mbtiResult)}>
+                          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={getMbtiTraits(mbtiResult, mbtiScores)}>
                             <PolarGrid stroke="#ffffff30" />
                             <PolarAngleAxis dataKey="subject" tick={{ fill: '#A3B0C1', fontSize: 12, fontWeight: 'bold' }} />
                             <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
@@ -389,10 +426,31 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
                           </RadarChart>
                         </ResponsiveContainer>
                       </div>
+
                       <div className="w-full md:w-1/2 space-y-4 text-gray-300">
                         <p className="text-sm leading-relaxed border-l-2 border-[#8DB6A0] pl-4">
-                          Dựa trên phân tích MBTI, bạn có thiên hướng mạnh mẽ về <strong>{getMbtiTraits(mbtiResult).reduce((prev, current) => (prev.A > current.A) ? prev : current).subject}</strong>. Điều này cho thấy bạn xử lý thông tin và ra quyết định một cách rất đặc trưng và khác biệt so với số đông.
+                          Dựa trên phân tích MBTI, bạn có thiên hướng mạnh mẽ về <strong>{getMbtiTraits(mbtiResult, mbtiScores).reduce((prev, current) => (prev.A > current.A) ? prev : current).subject}</strong>. Điều này cho thấy bạn xử lý thông tin và ra quyết định một cách rất đặc trưng và khác biệt so với số đông.
                         </p>
+                        {mbtiScores && (
+                          <div className="space-y-4 pt-4">
+                            <DimensionBar
+                              labelL="E" labelR="I" pL={mbtiScores.EI.E} pR={mbtiScores.EI.I}
+                              activeL={mbtiResult.includes('E')}
+                            />
+                            <DimensionBar
+                              labelL="S" labelR="N" pL={mbtiScores.SN.S} pR={mbtiScores.SN.N}
+                              activeL={mbtiResult.includes('S')}
+                            />
+                            <DimensionBar
+                              labelL="T" labelR="F" pL={mbtiScores.TF.T} pR={mbtiScores.TF.F}
+                              activeL={mbtiResult.includes('T')}
+                            />
+                            <DimensionBar
+                              labelL="J" labelR="P" pL={mbtiScores.JP.J} pR={mbtiScores.JP.P}
+                              activeL={mbtiResult.includes('J')}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -419,12 +477,11 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
             <h2 className="text-xl font-bold text-text-dark mb-4 drop-shadow-sm flex items-center gap-2">
               <Heart className="text-red-400 fill-red-400" /> Nghề nghiệp quan tâm
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {wishlistCareers.map((c, idx) => {
                 const blockInfo = BLOCKS.find(b => b.title === c.block);
                 return (
                   <div key={idx} onClick={() => navigate('careers')} className="cursor-pointer group">
-                    {/* Simplified Card version linking to Careers Page */}
                     <div className="p-5 bg-white rounded-2xl border border-primary/10 hover:border-primary/30 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${blockInfo?.color || "from-gray-300 to-gray-400"} flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform shadow-inner`}>
                         {c.name.charAt(0)}
@@ -463,8 +520,17 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
                   <input type="email" value={editEmail} onChange={e => setEditEmail(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white font-medium text-text-dark transition-all text-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Avatar URL</label>
-                  <input type="text" value={editAvatar} onChange={e => setEditAvatar(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white font-medium text-text-dark transition-all text-sm" />
+                  <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Ảnh đại diện</label>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20 bg-gray-50 shrink-0">
+                      <img src={editAvatar || "https://i.pravatar.cc/100"} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                    <label className="flex-1 flex flex-col items-center justify-center px-4 py-4 bg-gray-50 text-primary rounded-xl border-2 border-dashed border-primary/20 cursor-pointer hover:bg-primary/5 transition-all">
+                      <Upload size={20} className="mb-1" />
+                      <span className="text-xs font-bold uppercase tracking-wider">Tải ảnh lên</span>
+                      <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                    </label>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Vài dòng giới thiệu (Bio)</label>
@@ -487,7 +553,7 @@ export default function UserProfile({ user: initialUser, mbtiResult, navigate, l
           <div className="fixed inset-0 z-[110] bg-black/60 overflow-y-auto flex justify-center p-4 pt-20">
             <button onClick={() => setShowQuizResultModal(false)} className="fixed top-6 right-6 lg:top-8 lg:right-8 text-white bg-white/20 p-3 rounded-full hover:bg-white/40 z-[120] shadow-lg"><X size={28} /></button>
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 50, opacity: 0 }} className="relative w-full max-w-4xl h-fit pb-20">
-              <QuizResult result={mbtiResult} onRestart={() => navigate('quiz')} onExploreCareers={() => navigate('careers')} />
+              <QuizResult result={mbtiResult} scores={mbtiScores || undefined} onRestart={() => navigate('quiz')} onExploreCareers={() => navigate('careers')} />
             </motion.div>
           </div>
         )}

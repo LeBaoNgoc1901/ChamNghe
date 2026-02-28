@@ -12,7 +12,7 @@ import {
   Layers,
   ChevronDown
 } from "lucide-react";
-import MBTIQuiz from "./components/MBTIQuiz";
+import MBTIQuiz, { MBTIScores } from "./components/MBTIQuiz";
 import CareerExploration from "./components/CareerExploration";
 import { Footer } from "./components/Footer";
 import { Logo } from "./components/Logo";
@@ -56,6 +56,7 @@ export default function App() {
   const [view, setView] = useState<View>('home');
   const [hasTested, setHasTested] = useState(false);
   const [mbtiResult, setMbtiResult] = useState<string | null>(null);
+  const [mbtiScores, setMbtiScores] = useState<MBTIScores | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -126,10 +127,17 @@ export default function App() {
     return () => observer.disconnect();
   }, [socialInView]);
 
-  const handleQuizComplete = (result: string) => {
+  const handleQuizComplete = (result: string, scores: MBTIScores) => {
     setHasTested(true);
     setMbtiResult(result);
     localStorage.setItem('mbti-result', result);
+    setMbtiScores(scores);
+    localStorage.setItem('mbti-scores', JSON.stringify(scores));
+  };
+
+  const handleUpdateUser = (updatedUser: any) => {
+    setUser(updatedUser);
+    Cookies.set('user_account', JSON.stringify(updatedUser), { expires: 7 });
   };
 
   useEffect(() => {
@@ -139,6 +147,14 @@ export default function App() {
     if (savedResult) {
       setHasTested(true);
       setMbtiResult(savedResult);
+    }
+    const savedScores = localStorage.getItem('mbti-scores');
+    if (savedScores) {
+      try {
+        setMbtiScores(JSON.parse(savedScores));
+      } catch (e) {
+        console.error("Failed to parse mbti-scores", e);
+      }
     }
   }, []);
 
@@ -154,14 +170,22 @@ export default function App() {
           setHasTested(true);
           setMbtiResult(savedResult);
         }
+        const savedScores = localStorage.getItem('mbti-scores');
+        if (savedScores) {
+          try {
+            setMbtiScores(JSON.parse(savedScores));
+          } catch (e) { }
+        }
       } catch (e) {
         console.error("Failed to parse user cookie", e);
       }
     } else {
       // If no valid user, clear MBTI test state
       localStorage.removeItem('mbti-result');
+      localStorage.removeItem('mbti-scores');
       setHasTested(false);
       setMbtiResult(null);
+      setMbtiScores(null);
     }
   }, []);
 
@@ -199,10 +223,12 @@ export default function App() {
   const logout = () => {
     Cookies.remove('user_account');
     localStorage.removeItem('mbti-result');
+    localStorage.removeItem('mbti-scores');
     setUser(null);
     setIsLoggedIn(false);
     setHasTested(false);
     setMbtiResult(null);
+    setMbtiScores(null);
     navigate('home');
   };
 
@@ -242,12 +268,12 @@ export default function App() {
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-3">
               {!isLoggedIn ? (
-                  <button
-                    onClick={() => openAuth('login')}
-                    className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
-                  >
-                    Đăng nhập
-                  </button>
+                <button
+                  onClick={() => openAuth('login')}
+                  className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
+                >
+                  Đăng nhập
+                </button>
               ) : (
                 <button
                   onClick={() => navigate('profile')}
@@ -322,12 +348,12 @@ export default function App() {
 
                 <div className="mt-auto pt-8 border-t border-primary/10">
                   {!isLoggedIn ? (
-                      <button
-                        onClick={() => openAuth('login')}
-                        className="w-full py-4 bg-primary text-white rounded-2xl font-bold"
-                      >
-                        Đăng nhập
-                      </button>
+                    <button
+                      onClick={() => openAuth('login')}
+                      className="w-full py-4 bg-primary text-white rounded-2xl font-bold"
+                    >
+                      Đăng nhập
+                    </button>
                   ) : (
                     <div className="flex flex-col gap-4 w-full">
                       <button
@@ -1344,8 +1370,10 @@ export default function App() {
             <UserProfile
               user={user}
               mbtiResult={mbtiResult}
+              mbtiScores={mbtiScores}
               navigate={navigate}
               logout={logout}
+              onUpdateUser={handleUpdateUser}
             />
           )}
 

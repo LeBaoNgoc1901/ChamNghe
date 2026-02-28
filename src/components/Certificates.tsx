@@ -53,29 +53,7 @@ const CARD_COLORS = [
   "bg-indigo-50",
 ];
 
-const MOCK_ACHIEVED: Cert[] = [
-  {
-    id: 1,
-    title: "Google Data Analytics Professional",
-    field: "IT",
-    issuer: "Google / Coursera",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600",
-    date: "15/02/2026",
-    hot: true,
-    value: "Chứng chỉ này chứng minh khả năng phân tích dữ liệu chuyên nghiệp, cực kỳ có giá trị cho các vị trí Data Analyst.",
-    xp: 1200
-  },
-  {
-    id: 2,
-    title: "Digital Marketing Specialization",
-    field: "Truyền thông",
-    issuer: "Hubspot / Meta",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600",
-    date: "20/01/2026",
-    value: "Nắm vững các công cụ quảng cáo số, chiến lược nội dung và tối ưu hóa chuyển đổi.",
-    xp: 800
-  },
-];
+const MOCK_ACHIEVED: Cert[] = [];
 
 const MOCK_SUGGESTED: Record<string, Cert[]> = {
   NF: [
@@ -150,31 +128,29 @@ const MOCK_SUGGESTED: Record<string, Cert[]> = {
       ]
     },
     { id: 502, title: "AI Basics for Everyone", field: "IT", issuer: "IBM", image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80", value: "Hiểu về AI để không bị tụt hậu trong cuộc cách mạng 4.0.", xp: 200 },
+    {
+      id: 503,
+      title: "Google Data Analytics Professional",
+      field: "IT",
+      issuer: "Google / Coursera",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600",
+      hot: true,
+      value: "Chứng chỉ này chứng minh khả năng phân tích dữ liệu chuyên nghiệp.",
+      xp: 1200
+    },
+    {
+      id: 504,
+      title: "Digital Marketing Specialization",
+      field: "Truyền thông",
+      issuer: "Hubspot / Meta",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600",
+      value: "Nắm vững các công cụ quảng cáo số.",
+      xp: 800
+    }
   ]
 };
 
-const MOCK_COURSES_ACHIEVED: Cert[] = [
-  {
-    id: 901,
-    title: "Fullstack Web Development",
-    field: "IT",
-    issuer: "Udemy / Chạm Nghề",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600",
-    date: "10/02/2026",
-    value: "Chương trình chuyên sâu về React, Node.js và SQL.",
-    xp: 2500
-  },
-  {
-    id: 902,
-    title: "Business Communication Expert",
-    field: "Kinh tế",
-    issuer: "Coursera",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=600",
-    date: "05/01/2026",
-    value: "Nâng tầm kỹ năng thuyết trình và đàm phán trong môi trường đa quốc gia.",
-    xp: 1500
-  }
-];
+const MOCK_COURSES_ACHIEVED: Cert[] = [];
 
 const MOCK_COURSES_SUGGESTED: Record<string, Cert[]> = {
   default: [
@@ -200,116 +176,126 @@ const MOCK_COURSES_SUGGESTED: Record<string, Cert[]> = {
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=600",
       value: "Phát triển tư duy đồng cảm và khả năng quản trị cảm xúc đỉnh cao.",
       xp: 1200
+    },
+    {
+      id: 953,
+      title: "Fullstack Web Development",
+      field: "IT",
+      issuer: "Udemy / Chạm Nghề",
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600",
+      value: "Chương trình chuyên sâu về React, Node.js và SQL.",
+      xp: 2500
+    },
+    {
+      id: 954,
+      title: "Business Communication Expert",
+      field: "Kinh tế",
+      issuer: "Coursera",
+      image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=600",
+      value: "Nâng tầm kỹ năng thuyết trình và đàm phán.",
+      xp: 1500
     }
   ]
 };
 
 export const MOCK_COMPETITIONS: Competition[] = [
-  // ĐANG THAM GIA (Active / Ongoing)
+  // TẤT CẢ ĐỀ XUẤT (Suggested)
   {
     id: "o1",
     title: "Green Marketing Awards",
-    status: "active",
+    status: "suggested",
     host: "Eco Connect",
     image: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=1200&q=80",
-    progress: 30,
-    tag: "HÀNH TRÌNH",
-    ranking: "Hạng 12/200 (Vòng loại)",
+    progress: 0,
+    tag: "Truyền thông",
     details: "Tìm kiếm các chiến dịch Marketing sáng tạo thúc đẩy lối sống bền vững và bảo vệ môi trường.",
     xp: 2850,
     roadmap: [
-      { step: "01", title: "Nộp Concept", date: "01/03", status: "completed", desc: "Ý tưởng chủ đạo cho chiến dịch truyền thông xanh." },
-      { step: "02", title: "Phát Triển", date: "10/03 - 20/03", status: "active", desc: "Xây dựng chi tiết các kênh và thông điệp truyền tải." },
+      { step: "01", title: "Nộp Concept", date: "01/03", status: "upcoming", desc: "Ý tưởng chủ đạo cho chiến dịch truyền thông xanh." },
+      { step: "02", title: "Phát Triển", date: "10/03 - 20/03", status: "upcoming", desc: "Xây dựng chi tiết các kênh và thông điệp truyền tải." },
       { step: "03", title: "Chung Cuộc", date: "30/03", status: "upcoming", desc: "Vinh danh các chiến dịch có sức lan tỏa nhất." },
     ]
   },
   {
     id: "o2",
     title: "Supply Chain Excellence",
-    status: "active",
+    status: "suggested",
     host: "Logistics Hub",
     image: "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&q=80&w=800",
-    progress: 75,
-    tag: "HÀNH TRÌNH",
-    ranking: "Hạng 2/50 (Bán kết)",
+    progress: 0,
+    tag: "Kinh tế",
     details: "Tối ưu hóa chuỗi cung ứng thực tế cho doanh nghiệp xuất khẩu.",
     xp: 3200,
     roadmap: [
-      { step: "01", title: "Vòng Sơ Tuyển", date: "15/02", status: "completed", desc: "Kiểm tra kiến thức Logistics cơ bản." },
-      { step: "02", title: "Phân Tích Cấu Trúc", date: "20/02", status: "completed", desc: "Xây dựng mô hình chuỗi hiện tại." },
-      { step: "03", title: "Đề Xuất Tối Ưu", date: "25/02", status: "active", desc: "Thiết kế hệ thống vận hành mới đột phá." },
+      { step: "01", title: "Vòng Sơ Tuyển", date: "15/02", status: "upcoming", desc: "Kiểm tra kiến thức Logistics cơ bản." },
+      { step: "02", title: "Phân Tích Cấu Trúc", date: "20/02", status: "upcoming", desc: "Xây dựng mô hình chuỗi hiện tại." },
+      { step: "03", title: "Đề Xuất Tối Ưu", date: "25/02", status: "upcoming", desc: "Thiết kế hệ thống vận hành mới đột phá." },
       { step: "04", title: "Pitching", date: "05/03", status: "upcoming", desc: "Bảo vệ giải pháp tối ưu trước hội đồng giám khảo." },
     ]
   },
   {
     id: "o3",
     title: "Hackathon: Smart Edu",
-    status: "active",
+    status: "suggested",
     host: "EdTech Vietnam",
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800",
-    progress: 10,
-    tag: "HÀNH TRÌNH",
-    ranking: "Chưa cập nhật",
+    progress: 0,
+    tag: "Công nghệ thông tin",
     details: "Kiến tạo các giải pháp công nghệ giáo dục đột phá cho tương lai giáo dục Việt Nam.",
     xp: 4800,
     roadmap: [
-      { step: "01", title: "Thành Lập Đội", date: "20/02", status: "completed", desc: "Tìm kiếm cộng sự và đăng ký ý tưởng ban đầu." },
+      { step: "01", title: "Thành Lập Đội", date: "20/02", status: "upcoming", desc: "Tìm kiếm cộng sự và đăng ký ý tưởng ban đầu." },
       { step: "02", title: "Coding Phase", date: "01/03 - 03/03", status: "upcoming", desc: "48h phát triển sản phẩm demo hoàn thiện." },
       { step: "03", title: "Final Pitch", date: "10/03", status: "upcoming", desc: "Thuyết trình trước các quỹ đầu tư EdTech hàng đầu." },
     ]
   },
-
-  // ĐÃ THAM GIA (Completed)
   {
     id: "c1",
     title: "Startup Challenge 2026",
-    status: "completed",
+    status: "suggested",
     host: "FTU Innovation Club",
     image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=800",
-    progress: 100,
-    tag: "DẤU ẤN",
-    ranking: "Hạng 1 - Quán quân",
-    details: "Cuộc thi giải quyết các bài toán vận hành thực tế của các startup công nghệ. Bạn đã xuất sắc vượt qua 4 vòng thi nghẹt thở.",
+    progress: 0,
+    tag: "Kinh tế",
+    details: "Cuộc thi giải quyết các bài toán vận hành thực tế của các startup công nghệ.",
     xp: 10000,
     roadmap: [
-      { step: "01", title: "Vòng Đơn", date: "01/02", status: "completed", desc: "Nộp ý tưởng kinh doanh sơ bộ và hồ sơ năng lực." },
-      { step: "02", title: "Vòng Loại", date: "10/02", status: "completed", desc: "Thuyết trình mô hình kinh doanh chi tiết." },
-      { step: "03", title: "Bán Kết", date: "15/02", status: "completed", desc: "Phát triển MVP và chạy thử nghiệm thực tế." },
-      { step: "04", title: "Chung Kết", date: "20/02", status: "completed", desc: "Pitching trực tiếp tại NIC và giành ngôi vị cao nhất." },
+      { step: "01", title: "Vòng Đơn", date: "01/02", status: "upcoming", desc: "Nộp ý tưởng kinh doanh sơ bộ và hồ sơ năng lực." },
+      { step: "02", title: "Vòng Loại", date: "10/02", status: "upcoming", desc: "Thuyết trình mô hình kinh doanh chi tiết." },
+      { step: "03", title: "Bán Kết", date: "15/02", status: "upcoming", desc: "Phát triển MVP và chạy thử nghiệm thực tế." },
+      { step: "04", title: "Chung Kết", date: "20/02", status: "upcoming", desc: "Pitching trực tiếp tại NIC và giành ngôi vị cao nhất." },
     ]
   },
   {
     id: "c2",
     title: "Financial Planning Duel",
-    status: "completed",
+    status: "suggested",
     host: "FinEdu League",
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
-    progress: 100,
-    tag: "DẤU ẤN",
-    ranking: "Hạng 5 - Giải khuyến khích",
+    progress: 0,
+    tag: "Kinh tế",
     details: "Đối đầu trực tiếp trong việc xây dựng kế hoạch tài chính cho các gia đình trẻ Việt Nam.",
     xp: 4500,
     roadmap: [
-      { step: "01", title: "Khai Mạc", date: "01/12/2025", status: "completed", desc: "Phổ biến luật chơi và công bố đề bài chính thức." },
-      { step: "02", title: "Lập Kế Hoạch", date: "05/12/2025", status: "completed", desc: "Xây dựng chiến lược phân bỏ tài sản và quản trị rủi ro." },
-      { step: "03", title: "Thuyết Trình", date: "10/12/2025", status: "completed", desc: "Bảo vệ phương án trước hội đồng tài chính chuyên nghiệp." },
+      { step: "01", title: "Khai Mạc", date: "01/12/2025", status: "upcoming", desc: "Phổ biến luật chơi và công bố đề bài chính thức." },
+      { step: "02", title: "Lập Kế Hoạch", date: "05/12/2025", status: "upcoming", desc: "Xây dựng chiến lược phân bỏ tài sản và quản trị rủi ro." },
+      { step: "03", title: "Thuyết Trình", date: "10/12/2025", status: "upcoming", desc: "Bảo vệ phương án trước hội đồng tài chính chuyên nghiệp." },
     ]
   },
   {
     id: "c3",
     title: "Case Study Marathon",
-    status: "completed",
+    status: "suggested",
     host: "Hanoi Business School",
     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
-    progress: 100,
-    tag: "DẤU ẤN",
-    ranking: "Top 10 - Finalist",
-    details: "Thử thách giải quyết 5 case study kinh điển trong vòng 24h liên tục. Kiểm tra sức bền và tư duy phân tích sắc bén.",
+    progress: 0,
+    tag: "Kinh tế",
+    details: "Thử thách giải quyết 5 case study kinh điển trong vòng 24h liên tục.",
     xp: 3500,
     roadmap: [
-      { step: "01", title: "Vòng Sơ Loại", date: "10/01", status: "completed", desc: "Bài test tư duy logic và phân tích dữ liệu cơ bản." },
-      { step: "02", title: "Vòng Marathon", date: "15/01", status: "completed", desc: "24h giải quyết tình huống kinh doanh đa ngành." },
-      { step: "03", title: "Chung Kết", date: "20/01", status: "completed", desc: "Tranh biện và bảo vệ giải pháp trước các CEO tập đoàn." },
+      { step: "01", title: "Vòng Sơ Loại", date: "10/01", status: "upcoming", desc: "Bài test tư duy logic và phân tích dữ liệu cơ bản." },
+      { step: "02", title: "Vòng Marathon", date: "15/01", status: "upcoming", desc: "24h giải quyết tình huống kinh doanh đa ngành." },
+      { step: "03", title: "Chung Kết", date: "20/01", status: "upcoming", desc: "Tranh biện và bảo vệ giải pháp trước các CEO tập đoàn." },
     ]
   },
 
