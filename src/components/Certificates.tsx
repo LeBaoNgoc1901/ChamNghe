@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 import {
@@ -15,6 +15,35 @@ import {
 } from "../data/certificatesData";
 
 
+const getAllSuggestedCerts = () => {
+  const all: Cert[] = [];
+  Object.values(MOCK_SUGGESTED).forEach(list => {
+    list.forEach(item => {
+      if (!all.find(a => a.id === item.id)) all.push(item);
+    });
+  });
+  return all;
+};
+
+const getAllSuggestedCourses = () => {
+  const all: any[] = [];
+  Object.values(MOCK_COURSES_SUGGESTED).forEach(list => {
+    list.forEach(item => {
+      if (!all.find(a => a.id === item.id)) all.push(item);
+    });
+  });
+  return all;
+};
+
+const getAllSuggestedCompetitions = () => {
+  const all: Competition[] = [];
+  Object.values(MOCK_COMPETITIONS).forEach(list => {
+    list.forEach(item => {
+      if (!all.find(a => a.id === item.id)) all.push(item);
+    });
+  });
+  return all;
+};
 
 export default function Certificates() {
   const [tab, setTab] = useState(() => localStorage.getItem("certTab") || "certificates");
@@ -29,15 +58,24 @@ export default function Certificates() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showRanking, setShowRanking] = useState(false);
 
+  // State for dynamic data
+  const [competitions, setCompetitions] = useState(getAllSuggestedCompetitions());
+  const [achievedCerts, setAchievedCerts] = useState(MOCK_ACHIEVED);
+  const [achievedCourses, setAchievedCourses] = useState(MOCK_COURSES_ACHIEVED);
+
   const filterOptions = [
     { value: "All", label: "Tất cả lĩnh vực" },
-    { value: "IT", label: "IT" },
-    { value: "Kinh tế", label: "Kinh tế" },
-    { value: "Truyền thông", label: "Truyền thông" },
+    { value: "KINH TẾ – QUẢN LÝ", label: "Kinh tế – Quản lý" },
+    { value: "CÔNG NGHỆ – KỸ THUẬT", label: "Công nghệ – Kỹ thuật" },
+    { value: "CHĂM SÓC – XÃ HỘI", label: "Chăm sóc – Xã hội" },
+    { value: "DỊCH VỤ – DU LỊCH – GIẢI TRÍ", label: "Dịch vụ – Du lịch" },
+    { value: "SẢN XUẤT – CÔNG NGHIỆP", label: "Sản xuất – Công nghiệp" },
+    { value: "PHÁP LÝ – HÀNH CHÍNH – CÔNG", label: "Pháp lý – Hành chính" },
+    { value: "NÔNG NGHIỆP – TÀI NGUYÊN", label: "Nông nghiệp – Tài nguyên" },
   ];
 
   useEffect(() => {
-    const result = localStorage.getItem("mbti_result");
+    const result = localStorage.getItem("mbti-result");
     if (result) {
       if (result.includes("N") && result.includes("F")) setMbti("NF");
       else if (result.includes("N") && result.includes("T")) setMbti("NT");
@@ -45,40 +83,51 @@ export default function Certificates() {
       else if (result.includes("S") && result.includes("P")) setMbti("SP");
     }
 
-    // Clear the deep link state so it doesn't get stuck on refresh
     localStorage.removeItem("certTab");
     localStorage.removeItem("compSubTab");
   }, []);
 
-  const toggleExpand = (id: number) => {
-    setExpandedComp(expandedComp === id ? null : id);
+  const handleJoinCompetition = (id: string | number) => {
+    setCompetitions(prev => prev.map(c => 
+      c.id === id ? { ...c, status: "active", progress: 0 } : c
+    ));
+    setModal(prev => prev ? { ...prev, status: "active", progress: 0 } : null);
   };
 
-  const getSuggestedCerts = () => {
-    if (!mbti) return MOCK_SUGGESTED.default;
-    return MOCK_SUGGESTED[mbti] || MOCK_SUGGESTED.default;
-  };
+
+  const isForYou = useCallback((item: any): boolean => {
+    if (!mbti) return false;
+    if (tab === "certificates") return MOCK_SUGGESTED[mbti]?.some(c => c.id === item.id) ?? false;
+    if (tab === "courses") return MOCK_COURSES_SUGGESTED[mbti]?.some(c => c.id === item.id) ?? false;
+    if (tab === "competition") return (MOCK_COMPETITIONS[mbti] || []).some(c => c.id === item.id);
+    return false;
+  }, [mbti, tab]);
 
   const currentData: any[] = useMemo(() => {
     if (tab === "certificates") {
-      return certSubTab === "achieved" ? MOCK_ACHIEVED : getSuggestedCerts();
+      return certSubTab === "achieved" ? achievedCerts : getAllSuggestedCerts();
     }
     if (tab === "courses") {
-      return courseSubTab === "achieved" ? MOCK_COURSES_ACHIEVED : (MOCK_COURSES_SUGGESTED[mbti || 'default'] || MOCK_COURSES_SUGGESTED.default);
+      return courseSubTab === "achieved" ? achievedCourses : getAllSuggestedCourses();
     }
     if (tab === "competition") {
-      return MOCK_COMPETITIONS.filter(c => c.status === compSubTab);
+      return competitions.filter(c => c.status === compSubTab);
     }
     return [];
-  }, [tab, certSubTab, courseSubTab, compSubTab, mbti, getSuggestedCerts]);
+  }, [tab, certSubTab, courseSubTab, compSubTab, achievedCerts, achievedCourses, competitions]);
 
   const filtered = useMemo(() => {
-    return currentData.filter(
-      (item: any) =>
-        (filter === "All" || item.field === filter || tab === "competition") &&
-        (item.title || "").toLowerCase().includes(search.toLowerCase())
-    );
-  }, [currentData, filter, search, tab]);
+    const base = currentData.filter((item: any) => {
+      const matchesSearch = (item.title || "").toLowerCase().includes(search.toLowerCase());
+      const matchesFilter = filter === "All" ? true : item.field === filter;
+      return matchesSearch && matchesFilter;
+    });
+    // Sort: MBTI-matched items first
+    if (mbti) {
+      base.sort((a: any, b: any) => (isForYou(b) ? 1 : 0) - (isForYou(a) ? 1 : 0));
+    }
+    return base;
+  }, [currentData, filter, search, mbti, isForYou]);
 
   const getActiveColor = () => {
     if (tab === "certificates") return "bg-[#FFD9D1]";
@@ -183,13 +232,6 @@ export default function Certificates() {
                 )}
               </AnimatePresence>
             </div>
-
-            {tab === "certificates" && certSubTab === "suggested" && mbti && (
-              <div className="bg-white/40 backdrop-blur-md px-8 py-5 rounded-full border border-white shadow-sm font-black text-sm text-[#FF6F61] uppercase tracking-widest flex items-center gap-3 animate-fadeIn ml-auto">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#FF6F61] shadow-[0_0_10px_rgba(255,111,97,0.8)]" />
-                GỢI Ý THEO MBTI: {mbti}
-              </div>
-            )}
           </div>
 
           {/* CERTIFICATES SUB-TABS Styled as Secondary Bookmarks */}
@@ -290,6 +332,11 @@ export default function Certificates() {
 
                           <div className="relative h-40 -mx-8 -mt-8 mb-6 overflow-hidden">
                             <img src={comp.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={comp.title} />
+                            {isForYou(comp) && (
+                              <span className="absolute top-4 left-4 bg-[#FF6F61] text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest flex items-center gap-1 animate-fadeIn">
+                                ✨ Dành cho bạn
+                              </span>
+                            )}
                             <div className="absolute top-4 right-4">
                               <span className={`bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest ${comp.tag === 'DẤU ẤN' ? 'text-green-600' : 'text-[#FF6F61]'}`}>
                                 {comp.tag || (comp.status === 'active' ? 'LIVE' : comp.status === 'completed' ? 'DONE' : 'NEW')}
@@ -343,12 +390,29 @@ export default function Certificates() {
                             )}
                           </div>
 
-                          <button
-                            onClick={() => setModal(comp)}
-                            className="w-full py-4 bg-white/20 hover:bg-[#FF6F61] hover:text-white text-gray-800 font-bold rounded-2xl transition-all border-2 border-white group-hover:shadow-xl mt-auto"
-                          >
-                            Xem chi tiết
-                          </button>
+                          {comp.status === 'active' ? (
+                            <div className="flex gap-3 mt-auto">
+                              <button
+                                onClick={() => setModal(comp)}
+                                className="flex-[2] py-4 bg-gray-900 text-white font-black text-xs uppercase tracking-widest rounded-2xl transition-all hover:bg-[#8DB6A0] shadow-lg"
+                              >
+                                Tiếp tục
+                              </button>
+                              <button
+                                onClick={() => { setModal(comp); setShowRanking(true); }}
+                                className="flex-1 py-4 bg-white border-2 border-gray-900 text-gray-900 font-black text-xs uppercase tracking-widest rounded-2xl transition-all hover:bg-gray-50 shadow-md"
+                              >
+                                Ranking
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setModal(comp)}
+                              className="w-full py-4 bg-white/20 hover:bg-[#FF6F61] hover:text-white text-gray-800 font-bold rounded-2xl transition-all border-2 border-white group-hover:shadow-xl mt-auto"
+                            >
+                              Xem chi tiết
+                            </button>
+                          )}
                         </div>
                       );
                     }
@@ -371,6 +435,11 @@ export default function Certificates() {
                             alt={cert.title}
                             className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
                           />
+                          {isForYou(cert) && (
+                            <span className="absolute top-4 left-4 bg-[#FF6F61] text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest flex items-center gap-1 animate-fadeIn">
+                              ✨ Dành cho bạn
+                            </span>
+                          )}
                           {cert.hot && (
                             <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-[0_10px_20px_-5px_rgba(249,115,22,0.5)] animate-bounce uppercase tracking-tighter flex items-center gap-1">
                               <span>🔥</span> Hot thị trường 2026
@@ -563,16 +632,23 @@ export default function Certificates() {
                           </div>
                           <div className="space-y-3">
                             {[
-                              { rank: 1, name: "Nguyễn Văn A", score: "98/100" },
-                              { rank: 2, name: "Trần Thị B", score: "95/100" },
-                              { rank: 3, name: "Lê Văn C", score: "92/100" },
+                              { rank: 1, name: "Nguyễn Văn Anh", score: "995 XP", avatar: "👨‍💻" },
+                              { rank: 2, name: "Trần Minh Tâm", score: "980 XP", avatar: "👩‍🔬" },
+                              { rank: 3, name: "Lê Bảo Ngọc", score: "965 XP", avatar: "🎨" },
+                              { rank: 4, name: "Hoàng Gia Bách", score: "920 XP", avatar: "🚀" },
+                              { rank: 12, name: "BẠN (You)", score: `${modal.progress * 10} XP`, avatar: "✨", isMe: true },
                             ].map((user) => (
-                              <div key={user.rank} className="flex justify-between items-center p-3 rounded-xl bg-white border border-gray-100 shadow-sm">
-                                <div className="flex flex-row items-center gap-3">
-                                  <span className={`w-8 h-8 flex items-center justify-center rounded-full font-black text-sm ${user.rank === 1 ? 'bg-yellow-100 text-yellow-600' : user.rank === 2 ? 'bg-gray-100 text-gray-500' : 'bg-orange-50 text-orange-400'}`}>{user.rank}</span>
-                                  <span className="font-bold text-gray-700">{user.name}</span>
+                              <div key={user.rank} className={`flex justify-between items-center p-4 rounded-2xl border transition-all ${user.isMe ? 'bg-[#FF6F61]/10 border-[#FF6F61] shadow-lg scale-[1.02] z-10 relative' : 'bg-white border-gray-100 shadow-sm'}`}>
+                                <div className="flex flex-row items-center gap-4">
+                                  <span className={`w-10 h-10 flex items-center justify-center rounded-full font-black text-sm ${
+                                    user.rank === 1 ? 'bg-yellow-100 text-yellow-600' : 
+                                    user.rank === 2 ? 'bg-gray-100 text-gray-500' : 
+                                    user.rank === 3 ? 'bg-orange-50 text-orange-400' : 'bg-gray-50 text-gray-300'
+                                  }`}>{user.rank}</span>
+                                  <span className="text-2xl">{user.avatar}</span>
+                                  <span className={`font-bold ${user.isMe ? 'text-[#FF6F61] text-lg' : 'text-gray-700'}`}>{user.name}</span>
                                 </div>
-                                <span className="font-black text-gray-400">{user.score}</span>
+                                <span className={`font-black ${user.isMe ? 'text-[#FF6F61]' : 'text-gray-400'}`}>{user.score}</span>
                               </div>
                             ))}
                           </div>
@@ -629,7 +705,7 @@ export default function Certificates() {
                         </section>
                       )}
 
-                      <div className="pt-8 flex flex-wrap gap-4 sticky bottom-0 bg-white pb-2 shadow-[0_-20px_20px_-20px_white]">
+                      <div className="pt-8 flex flex-wrap gap-4 sticky bottom-0 bg-white pb-6 px-10 -mx-10 shadow-[0_-40px_40px_-20px_white] z-50 border-t border-gray-50">
                         {modal.status === 'completed' && (
                           <>
                             <button className="flex-1 py-4 bg-[#FF6F61] text-white font-black rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">Certificates</button>
@@ -653,7 +729,12 @@ export default function Certificates() {
                           </>
                         )}
                         {modal.status === 'suggested' && (
-                          <button className="w-full py-4 bg-[#FF6F61] text-white font-black rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">Tham gia ngay</button>
+                          <button 
+                            onClick={() => handleJoinCompetition(modal.id)}
+                            className="w-full py-4 bg-[#FF6F61] text-white font-black rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95"
+                          >
+                            Tham gia ngay
+                          </button>
                         )}
                       </div>
                     </>
