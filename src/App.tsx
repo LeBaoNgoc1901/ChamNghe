@@ -1193,7 +1193,9 @@ export default function App() {
 
                       {/* Left side: Large featured competition (7 cols) */}
                       {(() => {
-                        const featuredCompetition = MOCK_COMPETITIONS.find(c => c.id === 'o1') || MOCK_COMPETITIONS[0];
+                        const allComps = Object.values(MOCK_COMPETITIONS).flat();
+                        const featuredCompetition = allComps.find(c => c.id === 'o1') || allComps[0];
+                        if (!featuredCompetition) return null;
                         return (
                           <motion.article
                             whileHover={{ y: -6 }}

@@ -222,12 +222,21 @@ export default function CareerExploration({ hasTested, mbtiResult, onStartQuiz }
   }, [activeCategories]);
 
   const filteredData = useMemo(() => {
-    return CAREER_DATA.filter(c => {
+    const base = CAREER_DATA.filter(c => {
       const matchBlock = c.block === currentBlock.title;
       const matchCat = c.category === activeCategory;
       return matchBlock && matchCat;
     });
-  }, [currentBlock, activeCategory]);
+    // Sort: MBTI-matched careers first
+    if (hasTested && mbtiResult) {
+      base.sort((a, b) => {
+        const aMatch = CAREER_DETAILS[a.id]?.mbtiMatch?.includes(mbtiResult) ? -1 : 0;
+        const bMatch = CAREER_DETAILS[b.id]?.mbtiMatch?.includes(mbtiResult) ? -1 : 0;
+        return aMatch - bMatch;
+      });
+    }
+    return base;
+  }, [currentBlock, activeCategory, hasTested, mbtiResult]);
 
   return (
     <div className="min-h-screen bg-[#FDF6EC] font-sans pb-24">
