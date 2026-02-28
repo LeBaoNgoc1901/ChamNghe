@@ -1,28 +1,14 @@
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  Download,
-  Share2,
-  Sparkles,
-  Zap,
-  Compass,
-  Palette,
-  Cpu,
-  ShieldCheck,
-  Heart,
-  Lightbulb,
-  Target,
-  Users,
-  ArrowRight,
-  TrendingUp,
-  Briefcase
-} from "lucide-react";
+import { Download, Share2, Sparkles, Zap, Compass, Palette, Cpu, ShieldCheck, Heart, Lightbulb, Target, Users, ArrowRight, TrendingUp, Briefcase, BarChart3 } from "lucide-react";
 import { CAREER_DATA, BLOCKS, CareerCard, CareerDetailModal } from "./CareerExploration";
 import { CAREER_DETAILS } from "../data/careerDetails";
+import { MBTIScores } from "./MBTIQuiz";
 
 interface QuizResultProps {
   result: string;
+  scores?: MBTIScores;
   onRestart: () => void;
   onExploreCareers: () => void;
 }
@@ -37,6 +23,25 @@ interface GroupData {
   colorClass: string;
   accentClass: string;
 }
+
+const DimensionBar = ({ labelL, labelR, pL, pR, activeL }: any) => (
+  <div className="space-y-3">
+    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+      <span className={activeL ? "text-primary" : "text-text-muted"}>{labelL} {pL}%</span>
+      <span className={!activeL ? "text-primary" : "text-text-muted"}>{pR}% {labelR}</span>
+    </div>
+    <div className="h-2 w-full bg-background rounded-full overflow-hidden flex border border-primary/10">
+      <div
+        style={{ width: `${pL}%` }}
+        className={`h-full transition-all duration-1000 ${activeL ? 'bg-primary' : 'bg-primary/20'}`}
+      />
+      <div
+        style={{ width: `${pR}%` }}
+        className={`h-full transition-all duration-1000 ${!activeL ? 'bg-primary' : 'bg-primary/20'}`}
+      />
+    </div>
+  </div>
+);
 
 const GROUP_CONTENT: Record<string, GroupData> = {
   'NF': {
@@ -97,7 +102,7 @@ const GROUP_CONTENT: Record<string, GroupData> = {
   }
 };
 
-export default function QuizResult({ result, onRestart, onExploreCareers }: QuizResultProps) {
+export default function QuizResult({ result, scores, onRestart, onExploreCareers }: QuizResultProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -220,6 +225,39 @@ export default function QuizResult({ result, onRestart, onExploreCareers }: Quiz
               — Your Chạm Nghề Tutor
             </div>
           </div>
+
+          {/* Dimension Percentages */}
+          {scores && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-12 bg-white/40 backdrop-blur-sm rounded-[2rem] p-8 border border-primary/10">
+              <div className="col-span-full mb-2">
+                <h3 className="flex items-center gap-2 text-sm font-black text-text-dark uppercase tracking-[0.2em]">
+                  <BarChart3 size={18} className="text-primary" />
+                  Cấu trúc cá tính của bạn
+                </h3>
+              </div>
+
+              <DimensionBar
+                labelL="Hướng ngoại (E)" labelR="Hướng nội (I)"
+                pL={scores.EI.E} pR={scores.EI.I}
+                activeL={result.includes('E')}
+              />
+              <DimensionBar
+                labelL="Giác quan (S)" labelR="Trực giác (N)"
+                pL={scores.SN.S} pR={scores.SN.N}
+                activeL={result.includes('S')}
+              />
+              <DimensionBar
+                labelL="Lý trí (T)" labelR="Cảm xúc (F)"
+                pL={scores.TF.T} pR={scores.TF.F}
+                activeL={result.includes('T')}
+              />
+              <DimensionBar
+                labelL="Nguyên tắc (J)" labelR="Linh hoạt (P)"
+                pL={scores.JP.J} pR={scores.JP.P}
+                activeL={result.includes('J')}
+              />
+            </div>
+          )}
 
           {/* Self-Understanding Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">

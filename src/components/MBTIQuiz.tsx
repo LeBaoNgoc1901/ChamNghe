@@ -5,14 +5,26 @@ import QuizResult from "./QuizResult";
 import { ChevronLeft, Sparkles } from "lucide-react";
 
 interface MBTIQuizProps {
-  onComplete: (result: string) => void;
+  onComplete: (result: string, scores: MBTIScores) => void;
   onExploreCareers: () => void;
+}
+
+export interface MBTIScores {
+  EI: { E: number; I: number };
+  SN: { S: number; N: number };
+  TF: { T: number; F: number };
+  JP: { J: number; P: number };
+}
+
+interface DetailedResult {
+  type: string;
+  scores: MBTIScores;
 }
 
 /**
  * Tính điểm MBTI 100 câu (Likert 1-5)
  */
-function calculateMBTI(answers: Record<number, number>): string {
+function calculateMBTI(answers: Record<number, number>): DetailedResult {
   const scores: Record<string, { first: number; second: number }> = {
     EI: { first: 0, second: 0 },
     SN: { first: 0, second: 0 },
@@ -55,18 +67,39 @@ function calculateMBTI(answers: Record<number, number>): string {
     }
   });
 
-  const pick = (dim: string, first: string, second: string) => {
-    const total = scores[dim].first + scores[dim].second;
-    if (total === 0) return first;
-    return scores[dim].first >= scores[dim].second ? first : second;
+  const getDimData = (dim: string, firstChar: string, secondChar: string) => {
+    const firstScore = scores[dim].first;
+    const secondScore = scores[dim].second;
+    const total = firstScore + secondScore;
+
+    if (total === 0) return {
+      type: firstChar,
+      percentages: { [firstChar]: 50, [secondChar]: 50 }
+    };
+
+    const pFirst = Math.round((firstScore / total) * 100);
+    const pSecond = 100 - pFirst;
+
+    return {
+      type: firstScore >= secondScore ? firstChar : secondChar,
+      percentages: { [firstChar]: pFirst, [secondChar]: pSecond }
+    };
   };
 
-  return (
-    pick('EI', 'E', 'I') +
-    pick('SN', 'S', 'N') +
-    pick('TF', 'T', 'F') +
-    pick('JP', 'J', 'P')
-  );
+  const ei = getDimData('EI', 'E', 'I');
+  const sn = getDimData('SN', 'S', 'N');
+  const tf = getDimData('TF', 'T', 'F');
+  const jp = getDimData('JP', 'J', 'P');
+
+  return {
+    type: ei.type + sn.type + tf.type + jp.type,
+    scores: {
+      EI: ei.percentages as { E: number; I: number },
+      SN: sn.percentages as { S: number; N: number },
+      TF: tf.percentages as { T: number; F: number },
+      JP: jp.percentages as { J: number; P: number },
+    }
+  };
 }
 
 export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps) {
@@ -74,6 +107,7 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [isFinished, setIsFinished] = useState(false);
   const [direction, setDirection] = useState(1);
+  const [detailedResult, setDetailedResult] = useState<DetailedResult | null>(null);
 
   const currentQuestion = questions[currentIndex];
   const progress = ((currentIndex + 1) / questions.length) * 100;
@@ -90,8 +124,9 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
       }, 300);
     } else {
       const result = calculateMBTI(newAnswers);
+      setDetailedResult(result);
       setIsFinished(true);
-      onComplete(result);
+      onComplete(result.type, result.scores);
     }
   };
 
@@ -107,12 +142,14 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
     setAnswers({});
     setIsFinished(false);
     setDirection(1);
+    setDetailedResult(null);
   };
 
-  if (isFinished) {
+  if (isFinished && detailedResult) {
     return (
       <QuizResult
-        result={calculateMBTI(answers)}
+        result={detailedResult.type}
+        scores={detailedResult.scores}
         onRestart={restartQuiz}
         onExploreCareers={onExploreCareers}
       />
@@ -170,6 +207,25 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
                       if (v === 2 || v === 4) return 'w-10 h-10 md:w-12 md:h-12';
                       return 'w-8 h-8 md:w-9 md:h-9';
                     };
+                    const getOptionStyles = (v: number, selected: boolean) => {
+                      const colors: Record<number, { border: string, bgScale: string, inner: string, text: string }> = {
+                        1: { border: 'border-red-400', bgScale: 'bg-red-50', inner: 'bg-red-500', text: 'text-red-500' },
+                        2: { border: 'border-rose-200', bgScale: 'bg-rose-50', inner: 'bg-rose-300', text: 'text-rose-400' },
+                        3: { border: 'border-gray-300', bgScale: 'bg-gray-50', inner: 'bg-gray-400', text: 'text-gray-500' },
+                        4: { border: 'border-emerald-200', bgScale: 'bg-emerald-50', inner: 'bg-emerald-300', text: 'text-emerald-400' },
+                        5: { border: 'border-emerald-500', bgScale: 'bg-emerald-50', inner: 'bg-emerald-600', text: 'text-emerald-600' },
+                      };
+                      const style = colors[v];
+                      return {
+                        button: selected
+                          ? `${style.border} ${style.bgScale} shadow-lg scale-110`
+                          : `border-gray-200 bg-white hover:${style.border} hover:scale-105`,
+                        inner: selected ? style.inner : "bg-transparent",
+                        text: style.text
+                      };
+                    };
+
+                    const styles = getOptionStyles(option.value, isSelected);
 
                     return (
                       <button
@@ -177,21 +233,18 @@ export default function MBTIQuiz({ onComplete, onExploreCareers }: MBTIQuizProps
                         onClick={() => handleAnswer(option.value)}
                         className={`relative rounded-full border-2 transition-all duration-300 flex items-center justify-center
                           ${getRadioSize(option.value)}
-                          ${isSelected
-                            ? "border-primary bg-primary/10 shadow-lg shadow-primary/20 scale-110"
-                            : "border-primary/20 bg-background hover:border-primary/40 hover:scale-105"
-                          }`}
+                          ${styles.button}`}
                         title={option.label}
                       >
                         <div className={`rounded-full transition-all duration-300 
-                          ${isSelected ? "w-1/2 h-1/2 bg-primary" : "w-0 h-0 bg-primary/20"}`}
+                          ${isSelected ? "w-1/2 h-1/2" : "w-0 h-0"} ${styles.inner}`}
                         />
 
                         {isSelected && (
                           <motion.span
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="absolute -bottom-10 whitespace-nowrap text-[10px] font-bold text-primary uppercase tracking-widest"
+                            className={`absolute -bottom-10 whitespace-nowrap text-[10px] font-bold uppercase tracking-widest ${styles.text}`}
                           >
                             {option.label}
                           </motion.span>
