@@ -14,6 +14,32 @@ import {
   MOCK_COMPETITIONS
 } from "../data/certificatesData";
 
+// Danh sách ảnh đa dạng theo chủ đề (Kinh tế, Tech, Kỹ năng, Social)
+const IMAGE_POOL = [
+  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop", // Teamwork
+  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop", // Digital tech
+  "https://images.unsplash.com/photo-1454165833767-027ffea9e77b?q=80&w=800&auto=format&fit=crop", // Business
+  "https://images.unsplash.com/photo-1517245318773-b7b71a163c59?q=80&w=800&auto=format&fit=crop", // Seminar
+  "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop", // Workshop
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop", // Students
+  "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=800&auto=format&fit=crop", // Learning
+  "https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?q=80&w=800&auto=format&fit=crop", // Tech Desk
+  "https://images.unsplash.com/photo-1525921429624-479b6a29d840?q=80&w=800&auto=format&fit=crop", // University
+  "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?q=80&w=800&auto=format&fit=crop", // Analysis
+];
+
+function fixDuplicateImages(list: any[]) {
+  return list.map((item, idx) => {
+    // Nếu item đã có ảnh hợp lệ thì giữ nguyên, nếu không thì lấy từ pool
+    // Sử dụng (item.id hoặc index) để lấy ảnh ổn định, không bị nhảy khi re-render
+    const imageIndex = typeof item.id === 'number' ? item.id : idx;
+    const finalImg = item.image && item.image.includes("http") 
+      ? item.image 
+      : IMAGE_POOL[imageIndex % IMAGE_POOL.length];
+
+    return { ...item, image: finalImg };
+  });
+}
 
 const getAllSuggestedCerts = () => {
   const all: Cert[] = [];
@@ -104,17 +130,38 @@ export default function Certificates() {
   }, [mbti, tab]);
 
   const currentData: any[] = useMemo(() => {
-    if (tab === "certificates") {
-      return certSubTab === "achieved" ? achievedCerts : getAllSuggestedCerts();
-    }
-    if (tab === "courses") {
-      return courseSubTab === "achieved" ? achievedCourses : getAllSuggestedCourses();
-    }
-    if (tab === "competition") {
-      return competitions.filter(c => c.status === compSubTab);
-    }
-    return [];
-  }, [tab, certSubTab, courseSubTab, compSubTab, achievedCerts, achievedCourses, competitions]);
+  let data: any[] = [];
+
+  if (tab === "certificates") {
+    data =
+      certSubTab === "achieved"
+        ? achievedCerts
+        : getAllSuggestedCerts();
+  }
+
+  if (tab === "courses") {
+    data =
+      courseSubTab === "achieved"
+        ? achievedCourses
+        : getAllSuggestedCourses();
+  }
+
+  if (tab === "competition") {
+    data = competitions.filter(
+      (c) => c.status === compSubTab
+    );
+  }
+
+  return fixDuplicateImages(data);
+}, [
+  tab,
+  certSubTab,
+  courseSubTab,
+  compSubTab,
+  achievedCerts,
+  achievedCourses,
+  competitions,
+]);
 
   const filtered = useMemo(() => {
     const base = currentData.filter((item: any) => {
@@ -330,8 +377,15 @@ export default function Certificates() {
                             <div className="w-12 h-1 bg-white/40 rounded-full" />
                           </div>
 
-                          <div className="relative h-40 -mx-8 -mt-8 mb-6 overflow-hidden">
-                            <img src={comp.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={comp.title} />
+                          <div className="relative h-40 -mx-8 -mt-8 mb-6 overflow-hidden bg-gray-200">
+                            <img
+                              src={comp.image}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              alt={comp.title}
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=800&auto=format&fit=crop";
+                              }}
+                            />
                             {isForYou(comp) && (
                               <span className="absolute top-4 left-4 bg-[#FF6F61] text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest flex items-center gap-1 animate-fadeIn">
                                 ✨ Dành cho bạn
@@ -429,11 +483,14 @@ export default function Certificates() {
                           <span className="text-[10px] font-black uppercase tracking-widest opacity-40">{cert.field}</span>
                         </div>
 
-                        <div className="relative h-60 overflow-hidden">
+                        <div className="relative h-60 overflow-hidden bg-gray-200">
                           <img
                             src={cert.image}
                             alt={cert.title}
                             className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop";
+                            }}
                           />
                           {isForYou(cert) && (
                             <span className="absolute top-4 left-4 bg-[#FF6F61] text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest flex items-center gap-1 animate-fadeIn">
@@ -546,6 +603,9 @@ export default function Certificates() {
                   src={modal.image}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   alt={modal.title}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-12">
                   <div className="flex flex-col gap-4">

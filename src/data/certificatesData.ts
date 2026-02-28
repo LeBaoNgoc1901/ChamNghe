@@ -65,7 +65,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "SHRM-CP (HR Professional)",
             field: "KINH TẾ – QUẢN LÝ",
             issuer: "SHRM",
-            image: "https://images.unsplash.com/photo-1573161158524-7932bc973da3?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1521791136064-7986c2950215?q=80&w=800&auto=format&fit=crop",
             hot: true,
             xp: 900,
             duration: "120 days"
@@ -75,7 +75,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Nonprofit Management",
             field: "KINH TẾ – QUẢN LÝ",
             issuer: "Northwestern University",
-            image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=800&auto=format&fit=crop",
             xp: 800,
             duration: "90 days"
         },
@@ -84,7 +84,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Google UX Design Professional",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             issuer: "Google",
-            image: "https://images.unsplash.com/photo-1541462608141-ad6019702965?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop",
             hot: true,
             xp: 850,
             duration: "180 days"
@@ -140,7 +140,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Ethical Supply Chain",
             field: "SẢN XUẤT – CÔNG NGHIỆP",
             issuer: "University of London",
-            image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1584931423298-c576fda54bd2?q=80&w=800&auto=format&fit=crop",
             xp: 850,
             duration: "60 days"
         },
@@ -167,7 +167,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Diplomacy and Governance",
             field: "PHÁP LÝ – HÀNH CHÍNH – CÔNG",
             issuer: "UNITAR",
-            image: "https://images.unsplash.com/photo-1521791136064-7986c2950215?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=800&auto=format&fit=crop",
             xp: 1000,
             duration: "120 days"
         },
@@ -291,7 +291,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "CIPP/E (Data Privacy Law)",
             field: "PHÁP LÝ – HÀNH CHÍNH – CÔNG",
             issuer: "IAPP",
-            image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop",
             hot: true,
             xp: 1300,
             duration: "90 days"
@@ -349,7 +349,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "CompTIA Security+",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             issuer: "CompTIA",
-            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=800&auto=format&fit=crop",
             hot: true,
             xp: 900,
             duration: "60 days"
@@ -359,7 +359,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "ITIL 4 Foundation",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             issuer: "Axelos",
-            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800&auto=format&fit=crop",
             xp: 750,
             duration: "30 days"
         },
@@ -462,7 +462,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Professional Scrum Master",
             field: "KINH TẾ – QUẢN LÝ",
             issuer: "Scrum.org",
-            image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop",
             xp: 700,
             duration: "14 days"
         },
@@ -471,7 +471,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Digital Sales",
             field: "KINH TẾ – QUẢN LÝ",
             issuer: "Google",
-            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&auto=format&fit=crop",
             xp: 500,
             duration: "40 hours"
         },
@@ -545,7 +545,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "AutoCAD Professional",
             field: "SẢN XUẤT – CÔNG NGHIỆP",
             issuer: "Autodesk",
-            image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?q=80&w=800&auto=format&fit=crop",
             xp: 850,
             duration: "45 days"
         },
@@ -563,7 +563,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Notary Public",
             field: "PHÁP LÝ – HÀNH CHÍNH – CÔNG",
             issuer: "National Notary",
-            image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1575505586569-646b2ca898fc?q=80&w=800&auto=format&fit=crop",
             xp: 450,
             duration: "15 days"
         },
@@ -572,7 +572,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Permaculture Design",
             field: "NÔNG NGHIỆP – TÀI NGUYÊN",
             issuer: "PRI",
-            image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=800&auto=format&fit=crop",
             xp: 900,
             duration: "72 hours"
         },
@@ -581,7 +581,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Arborist Certification",
             field: "NÔNG NGHIỆP – TÀI NGUYÊN",
             issuer: "ISA",
-            image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=800&auto=format&fit=crop",
             xp: 750,
             duration: "60 days"
         }
@@ -592,7 +592,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "IELTS Academic",
             field: "PHÁP LÝ – HÀNH CHÍNH – CÔNG",
             issuer: "British Council",
-            image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop",
             hot: true,
             xp: 1500,
             duration: "180 days"
@@ -611,7 +611,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Tư duy Thiết kế (Design Thinking)",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             issuer: "Chạm Nghề - Bloom Cert",
-            image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=800&auto=format&fit=crop",
             hot: true,
             xp: 500,
             lessons: 10,
@@ -632,7 +632,7 @@ export const MOCK_SUGGESTED: Record<string, Cert[]> = {
             title: "Quản trị Dự án Cơ bản",
             field: "KINH TẾ – QUẢN LÝ",
             issuer: "Google",
-            image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?q=80&w=800&auto=format&fit=crop",
             xp: 800,
             lessons: 24,
             duration: "40 hours"
@@ -662,7 +662,7 @@ export const MOCK_COURSES_SUGGESTED: Record<string, any[]> = {
             title: "Trí tuệ Nhân tạo Cho Mọi Người",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             issuer: "DeepLearning.AI",
-            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=800&auto=format&fit=crop",
             xp: 750,
             duration: "20 hours"
         }
@@ -673,7 +673,7 @@ export const MOCK_COURSES_SUGGESTED: Record<string, any[]> = {
             title: "Kế toán Tài chính Cơ bản",
             field: "KINH TẾ – QUẢN LÝ",
             issuer: "University of Virginia",
-            image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1554224155-67269092415a?q=80&w=800&auto=format&fit=crop",
             xp: 550,
             duration: "25 hours"
         }
@@ -693,7 +693,7 @@ export const MOCK_COURSES_SUGGESTED: Record<string, any[]> = {
             title: "Nhập môn Lập trình React",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             issuer: "FreeCodeCamp",
-            image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop",
             xp: 450,
             lessons: 30,
             duration: "25 hours"
@@ -718,7 +718,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Social Innovation Relay (SIR)",
             status: "suggested",
             host: "Junior Achievement Worldwide & NN Group",
-            image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Cuộc thi tìm kiếm các giải pháp sáng tạo cho vấn đề xã hội. Giải thưởng: Chuyến đi học tập tại Châu Âu.",
             field: "CHĂM SÓC – XÃ HỘI",
@@ -734,7 +734,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Global Student Entrepreneur Awards (GSEA)",
             status: "suggested",
             host: "Entrepreneurs' Organization",
-            image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Cuộc thi dành cho sinh viên vừa học vừa vận hành doanh nghiệp xã hội. Giải thưởng: 50,000 USD tiền mặt.",
             field: "CHĂM SÓC – XÃ HỘI",
@@ -760,6 +760,54 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
                 { step: "02", title: "Online Jury", date: "Tháng 10", status: "upcoming", desc: "Ban giám khảo quốc tế đánh giá sản phẩm.", xp: 500 },
                 { step: "03", title: "WSA Global Congress", date: "Tháng 3 (năm sau)", status: "upcoming", desc: "Tham gia lễ trao giải tại Châu Âu.", xp: 500 }
             ]
+        },
+        {
+            id: "SOC-REAL-04",
+            title: "Global Challenges Prize",
+            status: "suggested",
+            host: "Global Challenges Foundation",
+            image: "https://images.unsplash.com/photo-1444653389962-8149286c578a?q=80&w=800&auto=format&fit=crop",
+            progress: 0,
+            details: "Tìm kiếm các mô hình quản trị toàn cầu mới. Giải thưởng: 5 triệu USD.",
+            field: "CHĂM SÓC – XÃ HỘI",
+            xp: 2000,
+            roadmap: [
+                { step: "01", title: "Submission", date: "Tháng 9", status: "upcoming", desc: "Nộp đề án quản trị rủi ro toàn cầu.", xp: 500 },
+                { step: "02", title: "Review", date: "Tháng 12", status: "upcoming", desc: "Giai đoạn đánh giá bởi hội đồng khoa học.", xp: 500 },
+                { step: "03", title: "Award Ceremony", date: "Tháng 5", status: "upcoming", desc: "Công bố kết quả tại Stockholm.", xp: 1000 }
+            ]
+        },
+        {
+            id: "SOC-REAL-05",
+            title: "UNICEF Innovation Fund",
+            status: "suggested",
+            host: "UNICEF",
+            image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=800&auto=format&fit=crop",
+            progress: 0,
+            details: "Đầu tư vào các dự án công nghệ nguồn mở cho trẻ em. Giải thưởng: 100,000 USD tài trợ.",
+            field: "CHĂM SÓC – XÃ HỘI",
+            xp: 1500,
+            roadmap: [
+                { step: "01", title: "Call for Frontier Tech", date: "Tháng 12", status: "upcoming", desc: "Nộp dự án sử dụng AI, Blockchain cho trẻ em.", xp: 500 },
+                { step: "02", title: "Technical Review", date: "Tháng 2", status: "upcoming", desc: "Hội đồng UNICEF xem xét mã nguồn dự án.", xp: 500 },
+                { step: "03", title: "Investment", date: "Tháng 4", status: "upcoming", desc: "Giải ngân và hỗ trợ kỹ thuật từ UNICEF.", xp: 500 }
+            ]
+        },
+        {
+            id: "SOC-REAL-06",
+            title: "Clinton Global Initiative University",
+            status: "suggested",
+            host: "Clinton Foundation",
+            image: "https://images.unsplash.com/photo-1531206715517-5c0ba140ecb0?q=80&w=800&auto=format&fit=crop",
+            progress: 0,
+            details: "Hỗ trợ các dự án phục vụ cộng đồng của sinh viên. Giải thưởng: Quỹ Commitments to Action.",
+            field: "CHĂM SÓC – XÃ HỘI",
+            xp: 1600,
+            roadmap: [
+                { step: "01", title: "Application", date: "Tháng 1", status: "upcoming", desc: "Nộp bản cam kết hành động cụ thể cho cộng đồng.", xp: 400 },
+                { step: "02", title: "Virtual Skills Lab", date: "Tháng 3", status: "upcoming", desc: "Tham gia các khóa đào tạo kỹ năng lãnh đạo.", xp: 600 },
+                { step: "03", title: "CGI U Annual Meeting", date: "Tháng 4", status: "upcoming", desc: "Gặp gỡ và kết nối nguồn lực tại hội nghị.", xp: 600 }
+            ]
         }
     ],
     NT: [
@@ -768,7 +816,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "HSBC Business Case Competition 2026",
             status: "suggested",
             host: "HSBC & National University of Singapore",
-            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1507679799987-c73774573baf?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Cuộc thi giải quyết tình huống kinh doanh lớn nhất khu vực. Giải thưởng: 10,000 USD và cơ hội thực tập quản trị tại HSBC.",
             field: "KINH TẾ – QUẢN LÝ",
@@ -784,7 +832,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Hult Prize Global Challenge 2026",
             status: "suggested",
             host: "Hult Prize Foundation & United Nations",
-            image: "https://images.unsplash.com/photo-1521791136064-7986c2950215?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Giải thưởng Nobel cho sinh viên khởi nghiệp xã hội. Giải thưởng: 1 triệu USD vốn hạt giống.",
             field: "KINH TẾ – QUẢN LÝ",
@@ -796,18 +844,32 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             ]
         },
         {
+            id: "ECO-REAL-04",
+            title: "Bloomberg Global Trading Challenge",
+            status: "suggested",
+            host: "Bloomberg",
+            image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+            progress: 0,
+            details: "Cuộc thi đầu tư chứng khoán ảo trên terminal Bloomberg. Giải thưởng: Tuyển dụng trực tiếp tại Bloomberg.",
+            field: "KINH TẾ – QUẢN LÝ",
+            xp: 1400,
+            roadmap: [
+                { step: "01", title: "University Selection", date: "Tháng 9", status: "upcoming", desc: "Đăng ký đội 3-5 người đại diện trường.", xp: 400 },
+                { step: "03", title: "Global Leaderboard", date: "Tháng 12", status: "upcoming", desc: "Top các đội có lợi nhuận cao nhất toàn cầu.", xp: 500 }
+            ]
+        },
+        {
             id: "ECO-REAL-03",
             title: "CFA Institute Research Challenge",
             status: "suggested",
             host: "CFA Institute",
-            image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Phân tích tài chính và định giá cổ phiếu thực tế. Giải thưởng: Chứng nhận danh giá từ CFA và tiền mặt.",
             field: "KINH TẾ – QUẢN LÝ",
             xp: 1800,
             roadmap: [
                 { step: "01", title: "Local Analysis", date: "Tháng 10 - Tháng 1", status: "upcoming", desc: "Viết báo cáo phân tích một công ty niêm yết thực tế.", xp: 600 },
-                { step: "02", title: "Sub-Regional Finals", date: "Tháng 3", status: "upcoming", desc: "Thuyết trình báo cáo trước các chuyên gia tài chính (Charterholders).", xp: 600 },
                 { step: "03", title: "Global Final", date: "Tháng 5", status: "upcoming", desc: "Tranh tài tại Mỹ/Châu Âu.", xp: 600 }
             ]
         },
@@ -832,14 +894,13 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Google Solution Challenge",
             status: "suggested",
             host: "Google Developers",
-            image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Sử dụng công nghệ Google để giải quyết 17 mục tiêu bền vững của LHQ. Giải thưởng: 3,000 USD/thành viên và cố vấn từ Google.",
             field: "CÔNG NGHỆ – KỸ THUẬT",
             xp: 1500,
             roadmap: [
                 { step: "01", title: "Project Submission", date: "Tháng 3", status: "upcoming", desc: "Gửi dự án thực tế sử dụng tối thiểu 1 công nghệ Google.", xp: 400 },
-                { step: "02", title: "Top 100 Selection", date: "Tháng 4", status: "upcoming", desc: "Được Google chuyên gia cố vấn trong 2 tháng.", xp: 500 },
                 { step: "03", title: "Demo Day", date: "Tháng 6", status: "upcoming", desc: "Trình diễn trực tiếp trên kênh Google Developers toàn cầu.", xp: 600 }
             ]
         },
@@ -848,7 +909,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "ACM-ICPC World Finals",
             status: "suggested",
             host: "ICPC Foundation",
-            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Thế vận hội lập trình thuật toán cho sinh viên. Giải thưởng: Huy chương vàng và sự săn đón của Big Tech.",
             field: "CÔNG NGHỆ – KỸ THUẬT",
@@ -866,7 +927,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Philip C. Jessup International Law Moot Court 2026",
             status: "suggested",
             host: "International Law Students Association (ILSA)",
-            image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1589994160839-163cd2b5fd9f?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Cuộc thi diễn án luật quốc tế lâu đời nhất. Giải thưởng: Cúp vô địch và thực tập tại các hãng luật quốc tế.",
             field: "PHÁP LÝ – HÀNH CHÍNH – CÔNG",
@@ -882,7 +943,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Willem C. Vis International Commercial Arbitration Moot",
             status: "suggested",
             host: "Association for the Organization of the Vis Moot",
-            image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Cuộc thi trọng tài thương mại quốc tế uy tín nhất. Giải thưởng: Giải Eric Bergsten danh giá.",
             field: "PHÁP LÝ – HÀNH CHÍNH – CÔNG",
@@ -946,7 +1007,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "ASME Student Design Exposition",
             status: "suggested",
             host: "American Society of Mechanical Engineers",
-            image: "https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Thiết kế và chế tạo robot/thiết bị cơ khí theo đề bài. Giải thưởng: 5,000 USD.",
             field: "SẢN XUẤT – CÔNG NGHIỆP",
@@ -964,7 +1025,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Young Hotelier Summit (YHS) Global Challenge",
             status: "suggested",
             host: "EHL Hospitality Business School (Thụy Sĩ)",
-            image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Thách thức giải quyết bài toán thực tế cho các tập đoàn lớn như Marriott, Accor. Giải thưởng: Thực tập tại Thụy Sĩ/Paris.",
             field: "DỊCH VỤ – DU LỊCH – GIẢI TRÍ",
@@ -980,7 +1041,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "WorldSkills Hospitality Services",
             status: "suggested",
             host: "WorldSkills International",
-            image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Kỳ thi kỹ năng nghề thế giới. Giải thưởng: Huy chương kỹ năng nghề quốc tế và danh tiếng sự nghiệp.",
             field: "DỊCH VỤ – DU LỊCH – GIẢI TRÍ",
@@ -1012,7 +1073,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Thought For Food (TFF) Global Challenge",
             status: "suggested",
             host: "TFF Foundation",
-            image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1530507629858-e4977d33e9e6?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Tìm kiếm giải pháp cho an ninh lương thực. Giải thưởng: 30,000 USD vốn đầu tư hạt giống.",
             field: "NÔNG NGHIỆP – TÀI NGUYÊN",
@@ -1028,7 +1089,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "Schneider Electric Go Green - Green Industry",
             status: "suggested",
             host: "Schneider Electric",
-            image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Giải pháp năng lượng và nông nghiệp xanh. Giải thưởng: Cơ hội làm việc chính thức tại Schneider toàn cầu.",
             field: "NÔNG NGHIỆP – TÀI NGUYÊN",
@@ -1044,7 +1105,7 @@ export const MOCK_COMPETITIONS: Record<string, Competition[]> = {
             title: "International Soil Judging Contest",
             status: "suggested",
             host: "International Union of Soil Sciences (IUSS)",
-            image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=800&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=800&auto=format&fit=crop",
             progress: 0,
             details: "Cuộc thi đánh giá và phân loại đất chuyên sâu cho các nhà khoa học trẻ. Giải thưởng: Chứng nhận chuyên gia quốc tế.",
             field: "NÔNG NGHIỆP – TÀI NGUYÊN",

@@ -293,6 +293,9 @@ export default function App() {
                       src={user?.avatar || "https://i.pravatar.cc/100"}
                       alt="avatar"
                       className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://i.pravatar.cc/100?u=fallback";
+                      }}
                     />
                     <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
